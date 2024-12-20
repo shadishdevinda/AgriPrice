@@ -8,7 +8,7 @@ use App\Http\Controllers\ProfileController;
 
 
 // Home page
-Route::get('/home', [HomeController::class, 'welcome'])->name('home');
+Route::get('/', [HomeController::class, 'welcome'])->name('home');
 
 
 
