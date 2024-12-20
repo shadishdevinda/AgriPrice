@@ -6,7 +6,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\MarketController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PermissionController;
-
+use App\Http\Controllers\RoleController;
 
 // Home page
 Route::get('/', [HomeController::class, 'welcome'])->name('home');
@@ -37,3 +37,8 @@ Route::middleware([
 
 // Permissions Routes
 Route::resource('permissions', PermissionController::class);
+
+// Roles Routes
+Route::resource('roles', RoleController::class);
+Route::put('roles/{roleId}/permissions', [RoleController::class, 'givePermissions'])->name('roles.give-permissions');
+
