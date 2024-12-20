@@ -27,16 +27,19 @@
                                         <td>{{ $permission->id }}</td>
                                         <td>{{ $permission->name }}</td>
                                         <td>
-                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                                data-bs-target="#editPermissionModal" data-id="{{ $permission->id }}"
-                                                data-name="{{ $permission->name }}">
+                                            <!-- Edit Button -->
+                                            <button type="button" class="btn btn-primary"
+                                                style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
+                                                data-bs-toggle="modal" data-bs-target="#editPermissionModal"
+                                                data-id="{{ $permission->id }}" data-name="{{ $permission->name }}">
                                                 Edit
                                             </button>
 
                                             <!-- Delete Button -->
-                                            <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                                data-bs-target="#deletePermissionModal" data-id="{{ $permission->id }}"
-                                                data-name="{{ $permission->name }}">
+                                            <button type="button" class="btn btn-danger"
+                                                style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
+                                                data-bs-toggle="modal" data-bs-target="#deletePermissionModal"
+                                                data-id="{{ $permission->id }}" data-name="{{ $permission->name }}">
                                                 Delete
                                             </button>
                                         </td>
