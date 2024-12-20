@@ -5,10 +5,11 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\MarketController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PermissionController;
 
 
 // Home page
-Route::get('/home', [HomeController::class, 'welcome'])->name('home');
+Route::get('/', [HomeController::class, 'welcome'])->name('home');
 
 
 
@@ -32,3 +33,7 @@ Route::middleware([
     Route::get('/market/dashboard', [MarketController::class, 'index'])->name('market.dashboard');
     Route::get('/market/profile', [ProfileController::class, 'marketProfile'])->name('market.profile');
 });
+
+
+// Permissions Routes
+Route::resource('permissions', PermissionController::class);
