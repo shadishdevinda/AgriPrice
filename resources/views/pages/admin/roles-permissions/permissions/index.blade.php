@@ -1,4 +1,5 @@
 <x-admin-layout>
+    <x-slot name="title">Permission Management</x-slot>
     <div class="container mt-3">
         <div class="row">
             <div class="col-md-12">
