@@ -6,15 +6,23 @@
 
         <title>Laravel</title>
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&amp;display=swap" rel="stylesheet">
+	    <link href="https://fonts.googleapis.com/css2?family=Covered+By+Your+Grace&amp;display=swap" rel="stylesheet">
 
-        <!-- css file -->
-        <link rel = "stylesheet" href = "{{url('css/app.css')}}">
-        
+	
 
-         
+    
+        <link rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}">
+  
+       <link rel="stylesheet" href="{{ asset('css/animate.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/owl.carousel.min.css') }}">
+   
+        <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    
+        <link rel="stylesheet" href="{{ asset('css/flaticon.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/magnific-popup.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/owl.theme.default.min.css') }}">
+
 
         <!-- Styles / Scripts -->
         @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
@@ -26,139 +34,7 @@
             </style>
         @endif
 
-        <style>
-            
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-}
-
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 50px;
-    background-color: #f8f9fa;
-}
-
-.logo h1 {
-    font-size: 24px;
-    color: #2c6e49;
-    margin: 0;
-}
-
-.contact-info {
-    display: flex;
-    gap: 20px;
-    font-size: 14px;
-}
-
-.contact-info div {
-    text-align: right;
-}
-
-nav {
-    background-color: #2c6e49;
-    padding: 10px 50px;
-}
-
-nav ul {
-    display: flex;
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-}
-
-nav ul li {
-    margin: 0 15px;
-}
-
-nav ul li a {
-    text-decoration: none;
-    color: white;
-    font-size: 16px;
-}
-
-nav ul li a:hover {
-    border-bottom: 2px solid #ffbe0b;
-}
-
-.hero {
-    position: relative;
-    background: url('https://via.placeholder.com/1500x500') no-repeat center center/cover;
-    height: 500px;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-}
-
-.hero h1 {
-    font-size: 50px;
-    margin: 0;
-}
-
-.hero p {
-    font-size: 18px;
-    margin: 10px 0;
-}
-
-.hero .buttons {
-    margin-top: 20px;
-}
-
-.hero .buttons a {
-    display: inline-block;
-    margin: 0 10px;
-    padding: 10px 20px;
-    background-color: #ffbe0b;
-    color: #2c6e49;
-    text-decoration: none;
-    font-weight: bold;
-    border-radius: 5px;
-}
-
-.hero .buttons a:hover {
-    background-color: #e0a800;
-}
-
-footer {
-    padding: 20px 50px;
-    background-color: #2c6e49;
-    color: white;
-    text-align: center;
-}
-
-.btn-custom {
-    background-color: #ffbe0b;
-    color: #2c6e49;
-    padding: 8px 20px;
-    border-radius: 5px;
-    font-weight: bold;
-    text-decoration: none;
-}
-
-.btn-custom:hover {
-    background-color: #e0a800;
-    color: white;
-}
-
-.navbar-dark .navbar-nav .nav-link {
-    color: #fff;
-    transition: color 0.3s ease;
-}
-
-.navbar-dark .navbar-nav .nav-link:hover {
-    color: #ffbe0b;
-}
-
-.navbar-nav ml-auto {
-    position: register_shutdown_function;
-}
-        </style>
+        
 
     </head>
 
@@ -166,26 +42,60 @@ footer {
     </head>
     <body class="font-sans antialiased">
 
-    <header>
-        <div class="logo">
-            <h1>AGRIPRICE</h1>
-            <p>Agriculture Farming</p>
-        </div>
-        <div class="contact-info">
-            <div>
-                <p><b>Free Call:</b> 0572221935</p>
-                <p>Call Us Now 24/7 Customer Support</p>
-            </div>
-            <div>
-                <p><b>Our Location:</b> 198 West 21th Street</p>
-                <p>Suite 721  Colombo NY 10016</p>
-            </div>
-        </div>
-
-    </header>
-
-       <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+   
+	<div class="top bg-light">
+		<div class="container">
+			<div class="row justify-content-between">
+				<div class="col-sm text-md-left mb-md-0 mt-2 pr-md-4 d-flex topper align-items-center">
+					<p class="mb-0 w-100 pl-2 pl-md-0">
+						<span class="fa fa-paper-plane"></span>
+						<span class="text"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="9ae3f5efe8fff7fbf3f6dafff7fbf3f6b4f9f5f7">[email�&nbsp;protected]</a></span>
+					</p>
+				</div>
+				<div class="col-sm d-flex mb-md-0 mb-2">
+					<div class="social-media">
+						<p class="mb-0 d-flex">
+							<a href="#" class="d-flex align-items-center justify-content-center"><span class="fa fa-facebook"><i class="sr-only">Facebook</i></span></a>
+							<a href="#" class="d-flex align-items-center justify-content-center"><span class="fa fa-twitter"><i class="sr-only">Twitter</i></span></a>
+							<a href="#" class="d-flex align-items-center justify-content-center"><span class="fa fa-instagram"><i class="sr-only">Instagram</i></span></a>
+							<a href="#" class="d-flex align-items-center justify-content-center"><span class="fa fa-dribbble"><i class="sr-only">Dribbble</i></span></a>
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="pt-4 pb-5">
+		<div class="container">
+			<div class="row d-flex align-items-start align-items-center px-3 px-md-0">
+				<div class="col-md-4 d-flex mb-2 mb-md-0">
+					<a class="navbar-brand d-flex align-items-center" href="index.html">
+						<span class="flaticon flaticon-agriculture"></span>
+						<span class="ml-2">Farmland <small>Agriculture Farming</small></span>
+					</a>
+				</div>
+				<div class="col-md-4 d-flex topper mb-md-0 mb-2 align-items-center">
+					<div class="icon d-flex justify-content-center align-items-center">
+						<span class="fa fa-map"></span>
+					</div>
+					<div class="pr-md-4 pl-md-3 pl-3 text">
+						<p class="con"><span>Free Call</span> <span>+1 234 456 78910</span></p>
+						<p class="con">Call Us Now 24/7 Customer Support</p>
+					</div>
+				</div>
+				<div class="col-md-4 d-flex topper mb-md-0 align-items-center">
+					<div class="icon d-flex justify-content-center align-items-center"><span class="fa fa-paper-plane"></span>
+					</div>
+					<div class="text pl-3 pl-md-3">
+						<p class="hr"><span>Our Location</span></p>
+						<p class="con">198 West 21th Street, Suite 721 New York NY 10016</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	  <!-- Navbar -->
+	  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
             
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -235,19 +145,688 @@ footer {
         </div>
     </nav>
     <!-- END nav -->
-    
-       
-     
+	<section class="hero-wrap js-fullheight">
+		<div class="overlay"></div>
+		<div class="overlay-2"></div>
+		<div class="container">
+			<div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center" data-scrollax-parent="true">
+				<div class="col-md-8 text-center ftco-animate">
+					<div class="mb-5">
+						<span class="subheading">Welcome to Famrland</span>
+						<h1 class="mb-4">Agriculture is the Most Healthful</h1>
+						<p class="mb-4">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove.</p>
+						<p><a href="#" class="btn btn-primary">Our Services</a> <a href="#" class="btn btn-secondary">Request A Quote</a></p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="home-slider owl-carousel js-fullheight">
+			<div class="slider-item js-fullheight" style="background-image:url('/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
+			</div>
+			<div class="slider-item js-fullheight" style="background-image:url('/images/bg_2.jpg');" data-stellar-background-ratio="0.5">
+			</div>
+		</div>
+	</section>
 
-    
-    
-    
+	<section class="ftco-section ftco-services ftco-no-pt">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-3 d-flex align-self-stretch ftco-animate">
+					<div class="services">
+						<div class="p-4">
+							<div class="media-body">
+								<h3 class="heading mb-3">Fresh <br>Vegetables</h3>
+								<p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts</p>
+							</div>
+						</div>
+						<div class="img" style="background-image: url(images/services-1.jpg);">
+							<a href="#" class="btn-custom d-flex align-items-center justify-content-center"><span class="fa fa-chevron-right"></span></a>
+						</div>
+					</div>      
+				</div>
+				<div class="col-md-3 d-flex align-self-stretch ftco-animate">
+					<div class="services">
+						<div class="p-4">
+							<div class="media-body">
+								<h3 class="heading mb-3">Agricultural <br>Products</h3>
+								<p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts</p>
+							</div>
+						</div>
+						<div class="img" style="background-image: url(images/services-2.jpg);">
+							<a href="#" class="btn-custom d-flex align-items-center justify-content-center"><span class="fa fa-chevron-right"></span></a>
+						</div>
+					</div>      
+				</div>
+				<div class="col-md-3 d-flex align-self-stretch ftco-animate">
+					<div class="services">
+						<div class="p-4">
+							<div class="media-body">
+								<h3 class="heading mb-3">Organic <br>Products</h3>
+								<p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts</p>
+							</div>
+						</div>
+						<div class="img" style="background-image: url(images/services-3.jpg);">
+							<a href="#" class="btn-custom d-flex align-items-center justify-content-center"><span class="fa fa-chevron-right"></span></a>
+						</div>
+					</div>      
+				</div>
+				<div class="col-md-3 d-flex align-self-stretch ftco-animate">
+					<div class="services">
+						<div class="p-4">
+							<div class="media-body">
+								<h3 class="heading mb-3">Dairy <br>Products</h3>
+								<p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts</p>
+							</div>
+						</div>
+						<div class="img" style="background-image: url(images/services-4.jpg);">
+							<a href="#" class="btn-custom d-flex align-items-center justify-content-center"><span class="fa fa-chevron-right"></span></a>
+						</div>
+					</div>      
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="ftco-section ftco-no-pt ftco-no-pb ftco-about img">
+		<div class="container">
+			<div class="row d-flex">
+				<div class="col-md-12 about-intro">
+					<div class="row d-flex">
+						<div class="col-md-6 d-flex align-items-stretch">
+							<div class="img d-flex align-items-center align-self-stretch justify-content-center" style="background-image:url(images/about-1.jpg);">
+								<div class="year-stablish text-center">
+									<div class="icon2"><span class="flaticon-calendar"></span></div>
+									<div class="text">
+										<strong class="number" data-number="42">0</strong>
+										<span>Year Of<br> Experienced</span>
+									</div>
+								</div>
+								<div class="img-2 d-flex align-items-center justify-content-center" style="background-image:url(images/about-2.jpg);">
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6 pl-md-5 py-5">
+							<div class="row justify-content-start pb-3">
+								<div class="col-md-12 heading-section ftco-animate">
+									<span class="subheading">About Farmland</span>
+									<h2 class="mb-4">We're Leader In Agricultural Market</h2>
+									<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. A small river named Duden flows by their place and supplies it with the necessary regelialia.</p>
+									<div class="row my-4">
+										<div class="col-md-6 ftco-animate">
+											<div class="services-2 d-flex align-items-center">
+												<div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-agriculture"></span></div>
+												<div class="media-body">
+													<h3 class="heading">Growing Fruits<br> and Vegetables</h3>
+												</div>
+											</div>    
+										</div>
+										<div class="col-md-6 ftco-animate">
+											<div class="services-2 d-flex align-items-center">
+												<div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-agriculture-2"></span></div>
+												<div class="media-body">
+													<h3 class="heading">Tips for Ripening<br> Fruits</h3>
+												</div>
+											</div>    
+										</div>
+									</div>
+									<p><a href="#" class="btn btn-secondary">Learn More</a></p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="ftco-section ftco-counter img" id="section-counter" style="background-image: url(images/bg_2.jpg);">
+		<div class="overlay"></div>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-6 col-lg-3 d-flex counter-wrap ftco-animate">
+					<div class="block-18 mb-xl-0 mb-2 d-flex align-items-center">
+						<div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-agriculture-1"></span></div>
+						<div class="text pl-3">
+							<strong class="number" data-number="4800">0</strong>
+							<span>Project Completed</span>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6 col-lg-3 d-flex counter-wrap ftco-animate">
+					<div class="block-18 mb-xl-0 mb-2 d-flex align-items-center">
+						<div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-agriculture"></span></div>
+						<div class="text pl-3">
+							<strong class="number" data-number="14000">0</strong>
+							<span>Total Products</span>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6 col-lg-3 d-flex counter-wrap ftco-animate">
+					<div class="block-18 mb-xl-0 mb-2 d-flex align-items-center">
+						<div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-agriculture-2"></span></div>
+						<div class="text pl-3">
+							<strong class="number" data-number="200">0</strong>
+							<span>Services Provide</span>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6 col-lg-3 d-flex counter-wrap ftco-animate">
+					<div class="block-18 mb-xl-0 mb-2 d-flex align-items-center">
+						<div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-approve"></span></div>
+						<div class="text pl-3">
+							<strong class="number" data-number="71650">0</strong>
+							<span>Satisfied Customers</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
 
 
-    
 
-                  
-            
-        </div>
+	<section class="ftco-section">
+		<div class="container">
+			<div class="row justify-content-center pb-5">
+				<div class="col-md-12 heading-section text-center ftco-animate">
+					<span class="subheading">Recent Work</span>
+					<h2 class="mb-4">Explore Projects</h2>
+				</div>
+			</div>
+		</div>
+		<div class="container-fluid px-md-4">
+			<div class="row">
+				<div class="col-md-3 ftco-animate">
+					<div class="project-wrap img d-flex align-items-end" style="background-image: url(images/work-1.jpg);">
+						<div class="text">
+							<h3><a href="portfolio-single.html">Organic Solution</a></h3>
+							<a href="portfolio-single.html" class="icon d-flex align-items-center justify-content-center"><span class="fa fa-chevron-right"></span></a>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-3 ftco-animate">
+					<div class="project-wrap img d-flex align-items-end" style="background-image: url(images/work-2.jpg);">
+						<div class="text">
+							<h3><a href="portfolio-single.html">Harvest Innovation</a></h3>
+							<a href="portfolio-single.html" class="icon d-flex align-items-center justify-content-center"><span class="fa fa-chevron-right"></span></a>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-3 ftco-animate">
+					<div class="project-wrap img d-flex align-items-end" style="background-image: url(images/work-3.jpg);">
+						<div class="text">
+							<h3><a href="portfolio-single.html">Farm System</a></h3>
+							<a href="portfolio-single.html" class="icon d-flex align-items-center justify-content-center"><span class="fa fa-chevron-right"></span></a>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-3 ftco-animate">
+					<div class="project-wrap img d-flex align-items-end" style="background-image: url(images/work-4.jpg);">
+						<div class="text">
+							<h3><a href="portfolio-single.html">Agricultural Farming</a></h3>
+							<a href="portfolio-single.html" class="icon d-flex align-items-center justify-content-center"><span class="fa fa-chevron-right"></span></a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="video-image img" style="background-image: url(images/bg_3.jpg);">
+		<div class="overlay-2"></div>
+		<div class="overlay"></div>
+		<div class="container">
+			<div class="row justify-content-center align-items-center wrap-video">
+				<div class="col-md-6 text-center">
+					<a href="https://vimeo.com/45830194" class="icon-video popup-vimeo d-flex align-items-center justify-content-center mb-4">
+						<span class="fa fa-play"></span>
+					</a>
+					<h3>Watch Modern Agricultural Farming</h3>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="ftco-section ftco-no-pt testimony-section">
+		<div class="overlay"></div>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-6 heading-section pr-md-5 pt-5 mt-md-5 mb-5 mb-md-0">
+					<span class="subheading">Testimonial</span>
+					<h2 class="mb-4">What Are Cutomers Says About</h2>
+					<p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
+					<div class="block-18 d-flex align-items-center">
+						<div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-agriculture"></span></div>
+						<div class="text pl-3">
+							<strong class="number" data-number="30587">0</strong>
+							<span>Total Products</span>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6 pl-md-5 d-flex align-items-stretch">
+					<div class="carousel-testimony owl-carousel d-flex align-items-center">
+						<div class="item">
+							<div class="testimony-wrap">
+								<div class="text">
+									<span class="fa">"</span>
+									<p class="mb-4">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
+									<div class="d-flex align-items-center">
+										<div class="user-img" style="background-image: url(images/person_1.jpg)"></div>
+										<div class="pl-3">
+											<p class="name">Roger Scott</p>
+											<span class="position">Marketing Manager</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="item">
+							<div class="testimony-wrap">
+								<div class="text">
+									<p class="mb-4">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
+									<div class="d-flex align-items-center">
+										<div class="user-img" style="background-image: url(images/person_2.jpg)"></div>
+										<div class="pl-3">
+											<p class="name">Roger Scott</p>
+											<span class="position">Marketing Manager</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="item">
+							<div class="testimony-wrap">
+								<div class="text">
+									<p class="mb-4">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
+									<div class="d-flex align-items-center">
+										<div class="user-img" style="background-image: url(images/person_3.jpg)"></div>
+										<div class="pl-3">
+											<p class="name">Roger Scott</p>
+											<span class="position">Marketing Manager</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="item">
+							<div class="testimony-wrap">
+								<div class="text">
+									<p class="mb-4">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
+									<div class="d-flex align-items-center">
+										<div class="user-img" style="background-image: url(images/person_1.jpg)"></div>
+										<div class="pl-3">
+											<p class="name">Roger Scott</p>
+											<span class="position">Marketing Manager</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="item">
+							<div class="testimony-wrap">
+								<div class="text">
+									<p class="mb-4">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
+									<div class="d-flex align-items-center">
+										<div class="user-img" style="background-image: url(images/person_2.jpg)"></div>
+										<div class="pl-3">
+											<p class="name">Roger Scott</p>
+											<span class="position">Marketing Manager</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<hr style="margin: 0;">
+
+	<section class="ftco-section ftco-faqs services-section">
+		<div class="container">
+			<div class="row d-flex">
+				<div class="col-lg-6 mb-5 md-md-0 heading-section">
+					<span class="subheading">Request Quote</span>
+					<h2 class="mb-5">Request An Estimate</h2>
+					<form action="#" class="appointment-form ftco-animate">
+						<div class="">
+							<div class="form-group">
+								<input type="text" class="form-control" placeholder="First Name">
+							</div>
+							<div class="form-group">
+								<input type="text" class="form-control" placeholder="Last Name">
+							</div>
+							<div class="form-group">
+								<input type="text" class="form-control" placeholder="Phone">
+							</div>
+						</div>
+						<div class="">
+							<div class="form-group">
+								<div class="form-field">
+									<div class="select-wrap">
+										<div class="icon"><span class="fa fa-chevron-down"></span></div>
+										<select name="" id="" class="form-control">
+											<option value="">Select Your Services</option>
+											<option value="">Organic Solution</option>
+											<option value="">Harvest Innovation</option>
+											<option value="">Farm System</option>
+											<option value="">Agriculture Farming</option>
+											<option value="">Other Services</option>
+										</select>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="">
+							<div class="form-group">
+								<textarea name="" id="" cols="30" rows="4" class="form-control" placeholder="Message"></textarea>
+							</div>
+							<div class="form-group">
+								<input type="submit" value="Request A Quote" class="btn btn-primary py-3 px-4">
+							</div>
+						</div>
+					</form>
+				</div>
+
+				<div class="col-lg-6 heading-section pl-lg-5 ftco-animate">
+					<div class="w-100 mb-4 mb-md-0">
+						<span class="subheading">Freequesntly Ask Question</span>
+						<h2 class="mb-5">Frequently Ask Question</h2>
+						<div id="accordion" class="myaccordion w-100" aria-multiselectable="true">
+							<div class="card">
+								<div class="card-header p-0" id="headingOne">
+									<h2 class="mb-0">
+										<button href="#collapseOne" class="d-flex align-items-center justify-content-between btn btn-link" data-parent="#accordion" data-toggle="collapse" aria-expanded="true" aria-controls="collapseOne">
+											<p class="mb-0">How to Manage Your Farm?</p>
+											<i class="fa" aria-hidden="true"></i>
+										</button>
+									</h2>
+								</div>
+								<div class="collapse show" id="collapseOne" role="tabpanel" aria-labelledby="headingOne">
+									<div class="card-body py-3 px-0">
+										<ol>
+											<li>Far far away, behind the word mountains</li>
+											<li>Consonantia, there live the blind texts</li>
+											<li>When she reached the first hills of the Italic Mountains</li>
+											<li>Bookmarksgrove, the headline of Alphabet Village</li>
+											<li>Separated they live in Bookmarksgrove right</li>
+										</ol>
+									</div>
+								</div>
+							</div>
+
+							<div class="card">
+								<div class="card-header p-0" id="headingTwo" role="tab">
+									<h2 class="mb-0">
+										<button href="#collapseTwo" class="d-flex align-items-center justify-content-between btn btn-link" data-parent="#accordion" data-toggle="collapse" aria-expanded="false" aria-controls="collapseTwo">
+											<p class="mb-0">How to Cultivate Soil?</p>
+											<i class="fa" aria-hidden="true"></i>
+										</button>
+									</h2>
+								</div>
+								<div class="collapse" id="collapseTwo" role="tabpanel" aria-labelledby="headingTwo">
+									<div class="card-body py-3 px-0">
+										<ol>
+											<li>Far far away, behind the word mountains</li>
+											<li>Consonantia, there live the blind texts</li>
+											<li>When she reached the first hills of the Italic Mountains</li>
+											<li>Bookmarksgrove, the headline of Alphabet Village</li>
+											<li>Separated they live in Bookmarksgrove right</li>
+										</ol>
+									</div>
+								</div>
+							</div>
+
+							<div class="card">
+								<div class="card-header p-0" id="headingThree" role="tab">
+									<h2 class="mb-0">
+										<button href="#collapseThree" class="d-flex align-items-center justify-content-between btn btn-link" data-parent="#accordion" data-toggle="collapse" aria-expanded="false" aria-controls="collapseThree">
+											<p class="mb-0">How To Ripe Fruits in A Better Way</p>
+											<i class="fa" aria-hidden="true"></i>
+										</button>
+									</h2>
+								</div>
+								<div class="collapse" id="collapseThree" role="tabpanel" aria-labelledby="headingTwo">
+									<div class="card-body py-3 px-0">
+										<ol>
+											<li>Far far away, behind the word mountains</li>
+											<li>Consonantia, there live the blind texts</li>
+											<li>When she reached the first hills of the Italic Mountains</li>
+											<li>Bookmarksgrove, the headline of Alphabet Village</li>
+											<li>Separated they live in Bookmarksgrove right</li>
+										</ol>
+									</div>
+								</div>
+							</div>
+
+							<div class="card">
+								<div class="card-header p-0" id="headingFour" role="tab">
+									<h2 class="mb-0">
+										<button href="#collapseFour" class="d-flex align-items-center justify-content-between btn btn-link" data-parent="#accordion" data-toggle="collapse" aria-expanded="false" aria-controls="collapseFour">
+											<p class="mb-0">What are those requirements for businesses?</p>
+											<i class="fa" aria-hidden="true"></i>
+										</button>
+									</h2>
+								</div>
+								<div class="collapse" id="collapseFour" role="tabpanel" aria-labelledby="headingTwo">
+									<div class="card-body py-3 px-0">
+										<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+
+
+
+	<section class="ftco-section bg-light">
+		<div class="container">
+			<div class="row justify-content-center pb-4">
+				<div class="col-md-12 heading-section text-center ftco-animate">
+					<span class="subheading">Our Blog</span>
+					<h2 class="mb-4">Recent Post</h2>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-4 ftco-animate">
+					<div class="blog-entry">
+						<a href="blog-single.html" class="block-20" style="background-image: url('images/image_1.jpg');">
+						</a>
+						<div class="text d-block text-center">
+							<div class="meta">
+								<p>
+									<a href="#"><span class="fa fa-calendar mr-2"></span>Sept. 23, 2020</a>
+									<a href="#"><span class="fa fa-user mr-2"></span>Admin</a>
+									<a href="#" class="meta-chat"><span class="fa fa-comment mr-2"></span> 3</a>
+								</p>
+							</div>
+							<h3 class="heading"><a href="#">Organic Products For Healthy Living</a></h3>
+							<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia...</p>
+							<p class="mb-0"><a href="#" class="btn-custom">Read more</a></p>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-md-4 ftco-animate">
+					<div class="blog-entry">
+						<a href="blog-single.html" class="block-20" style="background-image: url('images/image_2.jpg');">
+						</a>
+						<div class="text d-block text-center">
+							<div class="meta">
+								<p>
+									<a href="#"><span class="fa fa-calendar mr-2"></span>Sept. 23, 2020</a>
+									<a href="#"><span class="fa fa-user mr-2"></span>Admin</a>
+									<a href="#" class="meta-chat"><span class="fa fa-comment mr-2"></span> 3</a>
+								</p>
+							</div>
+							<h3 class="heading"><a href="#">Organic Products For Healthy Living</a></h3>
+							<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia...</p>
+							<p class="mb-0"><a href="#" class="btn-custom">Read more</a></p>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4 ftco-animate">
+					<div class="blog-entry">
+						<a href="blog-single.html" class="block-20" style="background-image: url('images/image_3.jpg');">
+						</a>
+						<div class="text d-block text-center">
+							<div class="meta">
+								<p>
+									<a href="#"><span class="fa fa-calendar mr-2"></span>Sept. 23, 2020</a>
+									<a href="#"><span class="fa fa-user mr-2"></span>Admin</a>
+									<a href="#" class="meta-chat"><span class="fa fa-comment mr-2"></span> 3</a>
+								</p>
+							</div>
+							<h3 class="heading"><a href="#">Organic Products For Healthy Living</a></h3>
+							<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia...</p>
+							<p class="mb-0"><a href="#" class="btn-custom">Read more</a></p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="ftco-intro img" style="background-image: url(images/bg_4.jpg);">
+		<div class="overlay"></div>
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-md-12 heading-section heading-section-white text-center ftco-animate">
+					<p class="subheading">A small river named Duden flows by their place</p>
+					<h2>Subscribe to our Newsletter</h2>
+				</div>
+			</div>
+			<div class="row justify-content-center">
+				<div class="col-md-6">
+					<form action="#" class="subscribe-form ftco-animate">
+						<div class="form-group d-flex">
+							<input type="text" class="form-control" placeholder="Enter email address">
+							<input type="submit" value="Subscribe" class="submit px-3">
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<footer class="ftco-footer">
+		<div class="container">
+			<div class="row mb-5 justify-content-between">
+				<div class="col-sm-12 col-md">
+					<div class="ftco-footer-widget mb-4">
+						<h2 class="ftco-heading-2 logo"><a href="#">Farmland</a></h2>
+						<p>Far far away, behind the word mountains, far from the countries.</p>
+						<ul class="ftco-footer-social list-unstyled mt-2">
+							<li class="ftco-animate"><a href="#"><span class="fa fa-twitter"></span></a></li>
+							<li class="ftco-animate"><a href="#"><span class="fa fa-facebook"></span></a></li>
+							<li class="ftco-animate"><a href="#"><span class="fa fa-instagram"></span></a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-sm-12 col-md-4">
+					<div class="ftco-footer-widget mb-4 ml-md-4">
+						<h2 class="ftco-heading-2">Explore</h2>
+						<div class="block-21 mb-4 d-flex">
+							<a class="img mr-4 rounded" style="background-image: url(images/image_1.jpg);"></a>
+							<div class="text">
+								<h3 class="heading"><a href="#">Organic Products For Healthy Living</a></h3>
+								<div class="meta">
+									<div><a href="#"><span class="fa fa-calendar"></span> Oct. 06, 2020</a></div>
+									<div><a href="#"><span class="fa fa-user"></span> Admin</a></div>
+									<div><a href="#"><span class="fa fa-comment"></span> 19</a></div>
+								</div>
+							</div>
+						</div>
+						<div class="block-21 mb-4 d-flex">
+							<a class="img mr-4 rounded" style="background-image: url(images/image_2.jpg);"></a>
+							<div class="text">
+								<h3 class="heading"><a href="#">Organic Products For Healthy Living</a></h3>
+								<div class="meta">
+									<div><a href="#"><span class="fa fa-calendar"></span> Oct. 06, 2020</a></div>
+									<div><a href="#"><span class="fa fa-user"></span> Admin</a></div>
+									<div><a href="#"><span class="fa fa-comment"></span> 19</a></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-12 col-md-2">
+					<div class="ftco-footer-widget mb-4">
+						<h2 class="ftco-heading-2">Explore</h2>
+						<ul class="list-unstyled">
+							<li><a href="#"><span class="fa fa-chevron-right mr-2"></span>About</a></li>
+							<li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Contact</a></li>
+							<li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Projects</a></li>
+							<li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Services</a></li>
+							<li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Blog</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-sm-12 col-md">
+					<div class="ftco-footer-widget mb-4">
+						<h2 class="ftco-heading-2">Have a Questions?</h2>
+						<div class="block-23 mb-3">
+							<ul>
+								<li><span class="icon fa fa-map marker"></span><span class="text">203 Fake St. Mountain View, San Francisco, California, USA</span></li>
+								<li><a href="#"><span class="icon fa fa-phone"></span><span class="text">+2 392 3929 210</span></a></li>
+								<li><a href="#"><span class="icon fa fa-paper-plane pr-4"></span><span class="text"><span class="__cf_email__" data-cfemail="d4bdbab2bb94adbba1a6b0bbb9b5bdbafab7bbb9">[email�&nbsp;protected]</span></span></a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="container-fluid px-0 py-5 bg-black">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+
+						<p class="mb-0" style="color: rgba(255,255,255,.5);">Copyright ©<script data-cfasync="false" src="js/email-decode.min.js"></script><script>document.write(new Date().getFullYear());</script>2024 All rights reserved | This template is made with <i class="fa fa-heart color-danger" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank" rel="nofollow noopener">Colorlib</a></p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</footer>
+
+
+
+	<!-- loader -->
+	<div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"></circle><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"></circle></svg></div>
+
+
+	<script src="js/jquery.min.js"></script>
+	<script src="js/jquery-migrate-3.0.1.min.js"></script>
+	<script src="js/popper.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/jquery.easing.1.3.js"></script>
+	<script src="js/jquery.waypoints.min.js"></script>
+	<script src="js/jquery.stellar.min.js"></script>
+	<script src="js/owl.carousel.min.js"></script>
+	<script src="js/jquery.magnific-popup.min.js"></script>
+	<script src="js/jquery.animateNumber.min.js"></script>
+	<script src="js/scrollax.min.js"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&amp;sensor=false"></script>
+	<script src="js/google-map.js"></script>
+	<script src="js/main.js"></script>
+
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+
+		gtag('config', 'UA-23581568-13');
+	</script>
+
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" data-cf-beacon="{" rayid":"8efc9380fe84671b","servertiming":{"name":{"cfextpri":true,"cfl4":true,"cfspeedbrain":true,"cfcachestatus":true}},"version":"2024.10.5","token":"cd0b4b3a733644fc843ef0b185f98241"}"="" crossorigin="anonymous"></script>
+
     </body>
 </html>
