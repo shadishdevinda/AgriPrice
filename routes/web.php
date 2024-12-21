@@ -23,7 +23,7 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
-    Route::get('/admin/profile', [ProfileController::class, 'adminProfile'])->name('admin.profile');
+    Route::get('/admin/profile', [AdminController::class, 'adminProfile'])->name('admin.profile');
 });
 
 
@@ -34,7 +34,7 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/market/dashboard', [MarketController::class, 'index'])->name('market.dashboard');
-    Route::get('/market/profile', [ProfileController::class, 'marketProfile'])->name('market.profile');
+    Route::get('/market/profile', [MarketController::class, 'marketProfile'])->name('market.profile');
 });
 
 
