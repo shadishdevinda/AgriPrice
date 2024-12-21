@@ -2,16 +2,19 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\MarketController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\PermissionController;
-use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserManageController;
 
 // Home page
 Route::get('/', [HomeController::class, 'welcome'])->name('home');
 
-
+// Login route
+Route::post('/login', [LoginController::class, 'login'])->name('login');
 
 // Admin Routes
 Route::middleware([
@@ -42,3 +45,5 @@ Route::resource('permissions', PermissionController::class);
 Route::resource('roles', RoleController::class);
 Route::put('roles/{roleId}/permissions', [RoleController::class, 'givePermissions'])->name('roles.give-permissions');
 
+// Users Manage Routes
+Route::resource('users', UserManageController::class);
