@@ -90,9 +90,6 @@
 {{-- Market Details Add Form --}}
 @include('pages.admin.userManagement.marketInfo.create')
 
-<!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
 <script>
     // Handle dynamic footer change based on user type selection
     document.getElementById('user_type').addEventListener('change', function() {
@@ -228,3 +225,4 @@
         }
     });
 </script>
+
