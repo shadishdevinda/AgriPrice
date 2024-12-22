@@ -1,6 +1,6 @@
 {{-- Bootstrap CDN --}}
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
 <x-admin-layout>
     <x-slot name="title">Permission Management</x-slot>
@@ -20,7 +20,7 @@ integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEw
                     <div class="card-body">
                         <table class="table table-bordered table-striped mt-3">
                             <thead>
-                                <tr>
+                                <tr style="text-align: center;">
                                     <th>Id</th>
                                     <th>Permission</th>
                                     <th>Actions</th>
@@ -28,10 +28,10 @@ integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEw
                             </thead>
                             <tbody>
                                 @foreach ($permissions as $permission)
-                                    <tr>
+                                    <tr style="text-align: center;">
                                         <td>{{ $permission->id }}</td>
                                         <td>{{ $permission->name }}</td>
-                                        <td>
+                                        <td style="display: flex; justify-content: center; gap: 10%;">
                                             <!-- Edit Button -->
                                             <button type="button" class="btn btn-primary"
                                                 style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
@@ -70,7 +70,7 @@ integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEw
 
 {{-- Bootstrap CDN --}}
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
 </script>
 
 <script>

@@ -15,7 +15,8 @@ class UserManageController extends Controller
      */
     public function index()
     {
-        return view('pages.admin.userManagement.index');
+        $users = User::where('user_type', 'system-user')->get();
+        return view('pages.admin.userManagement.index', compact('users'));
     }
 
     /**
@@ -90,21 +91,118 @@ class UserManageController extends Controller
         }
     }
 
-
-
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
     {
-        //
+        try {
+            // Log incoming request data
+            Log::info('Updating user with ID: ' . $id, ['request_data' => $request->all()]);
+
+            // Validate the request data
+            $validated = $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|unique:users,email,' . $id,
+                'user_type' => 'required|string',
+                'password' => 'nullable|string|min:8|confirmed',
+                'profile_photo' => 'nullable|image|mimes:jpg,jpeg,png,gif,webp',
+            ]);
+
+            // Log validated data
+            Log::info('Validation passed for user update.', ['validated_data' => $validated]);
+
+            // Find the user by ID
+            $user = User::findOrFail($id);
+            Log::info('User found', ['user' => $user]);
+
+            // If a password is provided, hash it
+            if ($request->filled('password')) {
+                $validated['password'] = Hash::make($request->password);
+                Log::info('Password is provided, hashed password.');
+            } else {
+                // If no password is provided, retain the existing password
+                unset($validated['password']);
+                Log::info('No new password provided, retaining old password.');
+            }
+
+            // Handle the profile photo upload if provided
+            if ($request->hasFile('profile_photo')) {
+                // Delete the old profile photo if it exists
+                if ($user->profile_photo && file_exists(public_path('storage/profile-photos/' . $user->profile_photo))) {
+                    unlink(public_path('storage/profile-photos/' . $user->profile_photo));
+                    Log::info('Old profile photo deleted.');
+                }
+                $path = $request->file('profile_photo')->store('profile-photos', 'public');
+                $validated['profile_photo'] = basename($path); // Store only the filename
+                Log::info('New profile photo uploaded.', ['path' => $path]);
+            }
+
+            // Update the user record
+            $user->update($validated);
+            Log::info('User updated successfully.', ['user_id' => $user->id]);
+
+            // Return success response
+            return response()->json([
+                'success' => true,
+                'message' => 'User updated successfully.',
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Log validation exception errors
+            Log::error('Validation error while updating user.', ['errors' => $e->validator->errors()->all()]);
+
+            // Return validation errors as JSON
+            return response()->json([
+                'success' => false,
+                'errors' => $e->validator->errors()->all(),
+            ], 422);
+        } catch (\Exception $e) {
+            // Log unexpected errors
+            Log::error('An unexpected error occurred while updating user.', [
+                'error_message' => $e->getMessage(),
+                'stack_trace' => $e->getTraceAsString()
+            ]);
+
+            // Return general errors as JSON
+            return response()->json([
+                'success' => false,
+                'message' => 'An unexpected error occurred: ' . $e->getMessage(),
+            ], 500);
+        }
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            // Find the user by ID
+            $user = User::findOrFail($id);
+            Log::info('User found', ['user' => $user]);
+
+            // Delete the user
+            $user->delete();
+            Log::info('User deleted successfully.', ['user_id' => $user->id]);
+
+            // Return success response
+            return response()->json([
+                'success' => true,
+                'message' => 'User deleted successfully.',
+            ]);
+        } catch (\Exception $e) {
+            // Log unexpected errors
+            Log::error('An unexpected error occurred while deleting user.', [
+                'error_message' => $e->getMessage(),
+                'stack_trace' => $e->getTraceAsString()
+            ]);
+
+            // Return general errors as JSON
+            return response()->json([
+                'success' => false,
+                'message' => 'An unexpected error occurred: ' . $e->getMessage(),
+            ], 500);
+        }
     }
 }

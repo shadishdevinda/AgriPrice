@@ -20,18 +20,18 @@ integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEw
                     <div class="card-body">
                         <table class="table table-bordered table-striped mt-3">
                             <thead>
-                                <tr>
+                                <tr style="text-align: center;">
                                     <th>Id</th>
-                                    <th>Role</th>
+                                    <th style="width: 30%">Role</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($roles as $role)
-                                    <tr>
+                                    <tr style="text-align: center;">
                                         <td>{{ $role->id }}</td>
                                         <td>{{ $role->name }}</td>
-                                        <td>
+                                        <td style="display: flex; justify-content: center; gap: 10%;">
                                             <!-- Edit Button -->
                                             <button type="button" class="btn btn-warning"
                                                 style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
