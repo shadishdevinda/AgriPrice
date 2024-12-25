@@ -31,7 +31,7 @@ integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEw
                                     <tr style="text-align: center;">
                                         <td>{{ $role->id }}</td>
                                         <td>{{ $role->name }}</td>
-                                        <td style="display: flex; justify-content: center; gap: 10%;">
+                                        <td style="display: flex; justify-content: center; gap: 5%;">
                                             <!-- Edit Button -->
                                             <button type="button" class="btn btn-warning"
                                                 style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"

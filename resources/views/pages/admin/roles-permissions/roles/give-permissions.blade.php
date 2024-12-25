@@ -20,8 +20,10 @@
                             @foreach ($permissions as $permission)
                                 <div class="col-md-2">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="permission[]"
-                                               value="{{ $permission->name }}" id="permission{{ $permission->id }}"
+                                        <input class="form-check-input"
+                                                type="checkbox" name="permission[]"
+                                                value="{{ $permission->name }}"
+                                                id="permission{{ $permission->id }}"
                                                {{ $role->hasPermissionTo($permission->name) ? 'checked' : '' }}>
                                         <label class="form-check-label" for="permission{{ $permission->id }}">
                                             {{ $permission->name }}
@@ -40,7 +42,6 @@
         </div>
     </div>
 </div>
-
 
 <script>
     document.getElementById('givePermissionForm').addEventListener('submit', function (e) {

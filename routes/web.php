@@ -47,3 +47,9 @@ Route::put('roles/{roleId}/permissions', [RoleController::class, 'givePermission
 
 // Users Manage Routes
 Route::resource('users', UserManageController::class);
+Route::get('users/{userID}/permissions', [UserManageController::class, 'userPermissions'])->name('users.permissions');
+Route::put('users/{userID}/permissions', [UserManageController::class, 'givePermissions'])->name('users.give-permissions');
+
+
+Route::get('market/users', [UserManageController::class, 'marketUsers'])->name('market.users');
+
