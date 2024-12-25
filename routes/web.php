@@ -13,6 +13,7 @@ use App\Http\Controllers\UserManageController;
 // Home page
 Route::get('/', [HomeController::class, 'welcome'])->name('home');
 
+
 // Login route
 Route::post('/login', [LoginController::class, 'login'])->name('login');
 
