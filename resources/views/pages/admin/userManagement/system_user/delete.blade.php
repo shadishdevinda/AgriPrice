@@ -3,7 +3,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="deleteUserModalLabel">Delete User</h5>
+                <h5 class="modal-title" id="deleteUserModalLabel">Delete System User</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -51,7 +51,22 @@
                         title: 'Success!',
                         text: data.message,
                     }).then(() => {
-                        window.location.reload(); // Reload the page to reflect changes
+                        // Show the "Please wait" message with a spinner
+                        Swal.fire({
+                            title: 'Please wait...',
+                            text: 'Reloading the page.',
+                            allowOutsideClick: false,
+                            showConfirmButton: false,
+                            didOpen: () => {
+                                Swal.showLoading(); // Show the loading spinner
+                            }
+                        });
+
+                        // Close the modal and reload the page after a slight delay
+                        setTimeout(() => {
+                            $('#deleteUserModal').modal('hide'); // Close the modal
+                            location.reload(); // Reload the page
+                        }, 1000); // Adjust the delay as needed
                     });
                 } else {
                     Swal.fire({
