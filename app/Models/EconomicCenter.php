@@ -11,8 +11,8 @@ class EconomicCenter extends Model
 
     // Define the fillable columns
     protected $fillable = [
+        'id',
         'center_name',
-        'center_reg_id',
         'center_location',
         'profile_photo_path',
     ];
