@@ -25,16 +25,20 @@
                             id="givePermission">
                             @csrf
                             @method('PUT')
-                            <div class="form-group">
-                                <label for="role">User Name</label>
-                                <x-input type="text" class="form-control" name="name" id="name"
-                                    value="{{ $user->name }}" readonly />
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="role">User Name</label>
+                                    <x-input type="text" class="form-control" name="name" id="name"
+                                        value="{{ $user->name }}" readonly />
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="role">User Role</label>
+                                    <x-input type="text" class="form-control" name="role" id="role"
+                                        value="{{ $user->getRoleNames()->implode(', ') }}" readonly />
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="role">User Role</label>
-                                <x-input type="text" class="form-control" name="role" id="role"
-                                    value="{{ $user->getRoleNames()->implode(', ') }}" readonly />
-                            </div>
+
                             <div class="form-group">
                                 <label for="permission">Permissions</label>
                                 @foreach ($permissions as $permission)
@@ -47,7 +51,7 @@
                                     </div>
                                 @endforeach
                             </div>
-                            <button type="submit" class="btn btn-primary">Save</button>
+                            <button type="submit" class="btn btn-primary float-end">Save</button>
                         </form>
                     </div>
                 </div>

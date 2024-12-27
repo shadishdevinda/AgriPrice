@@ -22,30 +22,46 @@
                     </div>
                     <div class="card-body">
                         <form action="{{ route('economic-centers.store') }}" method="POST"
-                            enctype="multipart/form-data"
-                            id="createCenterForm">
+                            enctype="multipart/form-data" id="createCenterForm">
                             @csrf
-                            <div class="mb-3">
-                                <label for="center_id" class="form-label">Center Registration ID</label>
-                                <x-input type="text" class="form-control" id="center_id" name="center_id"/>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="center_id" class="form-label">Center Registration ID</label>
+                                    <x-input type="text" class="form-control" id="center_id" name="center_id" />
+                                    <small id="center_idHelp" class="form-text text-muted">Enter economic center Registration Id.</small>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="center_name" class="form-label">Center Name</label>
+                                    <x-input type="text" class="form-control" id="center_name" name="center_name" />
+                                    <small id="center_nameHelp" class="form-text text-muted">Enter economic center
+                                        name.</small>
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <label for="center_name" class="form-label">Center Name</label>
-                                <x-input type="text" class="form-control" id="center_name" name="center_name"/>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="contact_number" class="form-label">Center Contact Number</label>
+                                    <x-input type="text" class="form-control" id="contact_number"
+                                        name="contact_number" />
+                                    <small id="contact_numberHelp" class="form-text text-muted">Enter economic contact number.</small>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="center_location" class="form-label">Center Location</label>
+                                    <x-input type="text" class="form-control" id="center_location"
+                                        name="center_location" />
+                                    <small id="center_nameHelp" class="form-text text-muted">Enter economic Address.</small>
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <label for="contact_number" class="form-label">Center Contact Number</label>
-                                <x-input type="text" class="form-control" id="contact_number" name="contact_number"/>
-                            </div>
-                            <div class="mb-3">
-                                <label for="center_location" class="form-label">Center Location</label>
-                                <x-input type="text" class="form-control" id="center_location" name="center_location"/>
-                            </div>
+
                             <div class="mb-3">
                                 <label for="center_photo" class="form-label">Center Photo</label>
-                                <x-input type="file" class="form-control" id="center_photo" name="center_photo"/>
+                                <x-input type="file" class="form-control" id="center_photo" name="center_photo" />
                             </div>
-                            <button type="submit" class="btn btn-primary">Submit</button>
+
+                            <button type="submit" class="btn btn-primary float-end">Add</button>
                         </form>
                     </div>
                 </div>
@@ -64,8 +80,8 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <script>
-        // Initial form submission handler (unchanged)
-        document.getElementById('createCenterForm').addEventListener('submit', function(e) {
+    // Initial form submission handler (unchanged)
+    document.getElementById('createCenterForm').addEventListener('submit', function(e) {
         e.preventDefault(); // Prevent form from submitting normally
 
         // Show loading spinner

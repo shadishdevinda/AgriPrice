@@ -6,15 +6,15 @@
 
 <x-admin-layout>
 
-    <x-slot name="title">Market User Management</x-slot>
+    <x-slot name="title">Economic Center User Management</x-slot>
 
     <div class="container">
         <div class="row">
             <div class="col-md-12">
                 <div class="card mt-3">
                     <div class="card-header">
-                        <h5 class="card-title">Market User Management
-                            <a href="{{ route('market.users.create') }}" class="btn btn-primary float-end me-2">
+                        <h5 class="card-title">Economic Center User Management
+                            <a href="{{ route('economic-center-user.create') }}" class="btn btn-primary float-end me-2">
                                 Add User
                             </a>
                         </h5>
@@ -44,7 +44,7 @@
                                     </td>
                                     <td>
                                         <!-- Edit Button -->
-                                        <a href="{{ route('market.users.edit', $user->id) }}" class="btn btn-warning"
+                                        <a href="{{ route('economic-center-user.edit', $user->id) }}" class="btn btn-warning"
                                             style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
                                             Edit
                                         </a>
@@ -59,7 +59,7 @@
                                         </button>
 
                                         <!-- Assign Permission Buttons -->
-                                        <a href="{{ route('market.users.permissions', $user->id) }}" class="btn btn-info"
+                                        <a href="{{ route('economic.center.user.permissions', $user->id) }}" class="btn btn-info"
                                             style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
                                             Assign Permission
                                         </a>
@@ -78,7 +78,7 @@
     </div>
 
     <!-- Delete User Modal -->
-    @include('pages.admin.userManagement.system_user.delete')
+    @include('pages.admin.userManagement.economic_center_user.delete')
 </x-admin-layout>
 
 {{-- Bootstrap CDN --}}
