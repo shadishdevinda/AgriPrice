@@ -9,10 +9,10 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\UserManageController;
+use App\Http\Controllers\EconomicCenterController;
 
 // Home page
 Route::get('/', [HomeController::class, 'welcome'])->name('home');
-
 
 // Login route
 Route::post('/login', [LoginController::class, 'login'])->name('login');
@@ -51,6 +51,18 @@ Route::resource('users', UserManageController::class);
 Route::get('users/{userID}/permissions', [UserManageController::class, 'userPermissions'])->name('users.permissions');
 Route::put('users/{userID}/permissions', [UserManageController::class, 'givePermissions'])->name('users.give-permissions');
 
-
+// Market Users Manage Routes CURD
 Route::get('market/users', [UserManageController::class, 'marketUsers'])->name('market.users');
+Route::get('market/users/create', [UserManageController::class, 'createMarketUser'])->name('market.users.create');
+Route::post('market/users', [UserManageController::class, 'storeMarketUser'])->name('market.users.store');
+Route::get('market/users/{userID}/edit', [UserManageController::class, 'editMarketUser'])->name('market.users.edit');
+Route::put('market/users/{userID}', [UserManageController::class, 'updateMarketUser'])->name('market.users.update');
+Route::get('market/users/{userID}/permissions', [UserManageController::class, 'marketUserPermissions'])->name('market.users.permissions');
 
+
+
+// Economic Center Resource Route
+Route::resource('economic-centers', EconomicCenterController::class);
+// Route for assigning users
+Route::get('economic-centers/assign-user/{economicCenter}', [EconomicCenterController::class, 'assignUserPage'])->name('economic.center.assign.user');
+Route::put('economic-centers/add-user/{economicCenterID}', [EconomicCenterController::class, 'assignUser'])->name('economic.center.add.user');

@@ -6,17 +6,16 @@
 
 <x-admin-layout>
 
-    <x-slot name="title">System User Management</x-slot>
+    <x-slot name="title">Market User Management</x-slot>
 
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-
                 <div class="card mt-3">
                     <div class="card-header">
-                        <h5 class="card-title">System User Permissions
-                            <a href="{{ route('market.users') }}" class="btn btn-primary float-end me-2">
-                                Back
+                        <h5 class="card-title">Market User Management
+                            <a href="{{ route('market.users.create') }}" class="btn btn-primary float-end me-2">
+                                Add User
                             </a>
                         </h5>
                     </div>
@@ -45,7 +44,7 @@
                                     </td>
                                     <td>
                                         <!-- Edit Button -->
-                                        <a href="{{ route('users.edit', $user->id) }}" class="btn btn-warning"
+                                        <a href="{{ route('market.users.edit', $user->id) }}" class="btn btn-warning"
                                             style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
                                             Edit
                                         </a>
@@ -58,15 +57,28 @@
                                             data-role="{{ $user->getRoleNames()->implode(', ') }}">
                                             Delete
                                         </button>
+
+                                        <!-- Assign Permission Buttons -->
+                                        <a href="{{ route('market.users.permissions', $user->id) }}" class="btn btn-info"
+                                            style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
+                                            Assign Permission
+                                        </a>
                                     </td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
+                    {{-- Pagination --}}
+                    <div class="d-flex justify-content-end mt-3">
+                        {{ $users->links() }}
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Delete User Modal -->
+    @include('pages.admin.userManagement.system_user.delete')
 </x-admin-layout>
 
 {{-- Bootstrap CDN --}}
@@ -76,3 +88,26 @@
 
 {{-- Select2 CDN --}}
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script>
+    // JavaScript to dynamically populate the modal with user data
+    var deleteUserModal = document.getElementById('deleteUserModal');
+    deleteUserModal.addEventListener('show.bs.modal', function(event) {
+        var button = event.relatedTarget; // Button that triggered the modal
+        var id = button.getAttribute('data-id'); // Get the user ID
+        var name = button.getAttribute('data-name'); // Get the user name
+        var role = button.getAttribute('data-role'); // Get the user role(s)
+        var form = document.getElementById('deleteUserForm'); // The form inside the modal
+
+        // Set the user name and role(s) in the modal
+        document.getElementById('userName').textContent = name;
+        document.getElementById('userRole').textContent = role;
+
+        // Update the modal's delete button action with user ID
+        document.getElementById('confirmDeleteButton').setAttribute('data-id', id);
+
+        // Optionally, you can set the user roles as a hidden field or include them in the form data
+        form.querySelector('input[name="user_id"]').value = id; // Pass the user ID to the form
+        form.querySelector('input[name="user_roles"]').value = role; // Pass the user role(s) to the form (if needed)
+    });
+</script>
