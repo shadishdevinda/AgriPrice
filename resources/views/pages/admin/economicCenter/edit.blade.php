@@ -25,26 +25,44 @@
                             @csrf
                             @method('PUT')
 
-                            <div class="mb-3">
-                                <label for="center_id" class="form-label">Center Registration ID</label>
-                                <x-input type="text" class="form-control" id="center_id" name="center_id"
-                                    value="{{ old('center_id', $economicCenter->id) }}" readonly/>
-                            </div>
-                            <div class="mb-3">
-                                <label for="center_name" class="form-label">Center Name</label>
-                                <x-input type="text" class="form-control" id="center_name" name="center_name"
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="center_id" class="form-label">Center Registration ID</label>
+                                    <x-input type="text" class="form-control" id="center_id" name="center_id"
+                                        value="{{ old('center_id', $economicCenter->id) }}" readonly />
+                                    <small id="center_idHelp" class="form-text text-muted">Cannot change Registration
+                                        Id.</small>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="center_name" class="form-label">Center Name</label>
+                                    <x-input type="text" class="form-control" id="center_name" name="center_name"
                                     value="{{ old('center_name', $economicCenter->center_name) }}"/>
+                                    <small id="center_nameHelp" class="form-text text-muted">Update economic center
+                                        name.</small>
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <label for="contact_number" class="form-label">Center Contact Number</label>
-                                <x-input type="text" class="form-control" id="contact_number" name="contact_number"
-                                    value="{{ old('contact_number', $economicCenter->contact_number) }}"/>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="contact_number" class="form-label">Center Contact Number</label>
+                                    <x-input type="text" class="form-control" id="contact_number"
+                                        name="contact_number"
+                                        value="{{ old('contact_number', $economicCenter->contact_number) }}"/>
+                                    <small id="contact_numberHelp" class="form-text text-muted">Update economic contact
+                                        number.</small>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="center_location" class="form-label">Center Location</label>
+                                    <x-input type="text" class="form-control" id="center_location"
+                                        name="center_location"
+                                        value="{{ old('center_location', $economicCenter->center_location) }}"/>
+                                    <small id="center_nameHelp" class="form-text text-muted">Update economic
+                                        Address.</small>
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <label for="center_location" class="form-label">Center Location</label>
-                                <x-input type="text" class="form-control" id="center_location" name="center_location"
-                                    value="{{ old('center_location', $economicCenter->center_location) }}"/>
-                            </div>
+
                             <div class="mb-3">
                                 <label for="center_photo" class="form-label">Center Photo</label>
                                 @if ($economicCenter->profile_photo_path)
@@ -54,7 +72,7 @@
                                 <x-input type="file" class="form-control" id="center_photo" name="center_photo"/>
                             </div>
 
-                            <button type="submit" class="btn btn-primary">Update</button>
+                            <button type="submit" class="btn btn-primary float-end">Update</button>
                         </form>
                     </div>
                 </div>

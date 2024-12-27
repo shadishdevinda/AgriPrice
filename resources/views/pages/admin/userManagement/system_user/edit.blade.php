@@ -34,9 +34,6 @@
                                         <option value="system-user"
                                             {{ $user->user_type == 'system-user' ? 'selected' : '' }}>System User
                                         </option>
-                                        <option value="market-user"
-                                            {{ $user->user_type == 'market-user' ? 'selected' : '' }}>Market User
-                                        </option>
                                     </select>
                                     <small id="user_typeHelp" class="form-text text-muted">Select the user type.</small>
                                 </div>

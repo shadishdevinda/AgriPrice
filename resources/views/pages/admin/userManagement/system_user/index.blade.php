@@ -111,6 +111,6 @@
         // Optionally, you can set the user roles as a hidden field or include them in the form data
         form.querySelector('input[name="user_id"]').value = id; // Pass the user ID to the form
         form.querySelector('input[name="user_roles"]').value =
-        role; // Pass the user role(s) to the form (if needed)
+            role; // Pass the user role(s) to the form (if needed)
     });
 </script>
