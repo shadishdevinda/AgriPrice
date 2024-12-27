@@ -7,7 +7,7 @@
 
 <x-admin-layout>
 
-    <x-slot name="title">Market User Management</x-slot>
+    <x-slot name="title">User Management</x-slot>
 
     <div class="container">
         <div class="row">
@@ -15,137 +15,116 @@
 
                 <div class="card mt-3">
                     <div class="card-header">
-                        <h5 class="card-title">Create Market User
-                            <a href="{{ route('market.users') }}" class="btn btn-primary float-end me-2">
+                        <h5 class="card-title">Edit System User
+                            <a href="{{ route('users.index') }}" class="btn btn-primary float-end me-2">
                                 Back
                             </a>
                         </h5>
                     </div>
                     <div class="card-body">
-                        <form id="createMarketUserForm" action="{{ route('market.users.store') }}" method="POST"
-                            enctype="multipart/form-data">
+                        <form action="{{ route('users.update', $user->id) }}" method="POST" id="editUserForm">
                             @csrf
-                            <!-- Row 1: User Type and Name -->
+                            @method('PUT')
                             <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <label for="user_type" class="form-label">User Type</label>
+                                <div class="col-md-2">
+                                    <label for="user_type" class="form-label">Choose</label>
                                     <select name="user_type" class="form-select" id="user_type"
-                                        aria-describedby="user_typeHelp" required>
-                                        <option value="" selected disabled>Select User Type</option>
-                                        <option value="market-user">Market User</option>
+                                        aria-describedby="user_typeHelp">
+                                        <option value="default" disabled>Select User Type</option>
+                                        <option value="system-user"
+                                            {{ $user->user_type == 'system-user' ? 'selected' : '' }}>System User
+                                        </option>
+                                        <option value="market-user"
+                                            {{ $user->user_type == 'market-user' ? 'selected' : '' }}>Market User
+                                        </option>
                                     </select>
                                     <small id="user_typeHelp" class="form-text text-muted">Select the user type.</small>
                                 </div>
-                                <div class="col-md-6">
-                                    <label for="username" class="form-label">Name</label>
-                                    <x-input type="text" name="username" class="form-control" id="username"
-                                        aria-describedby="usernameHelp" required />
-                                    <small id="usernameHelp" class="form-text text-muted">Enter the name of the
+                                <div class="col-md-5">
+                                    <label for="name" class="form-label">Name</label>
+                                    <x-input type="text" name="name" value="{{ old('name', $user->name) }}"
+                                        class="form-control" id="name" aria-describedby="nameHelp" />
+                                    <small id="nameHelp" class="form-text text-muted">Enter the name of the
                                         user.</small>
                                 </div>
-
-                                {{-- Roles --}}
-                                <div class="row mb-3">
-                                    <div class="col-md-12">
-                                        <label for="roles" class="form-label">Roles</label>
-                                        <select name="roles[]" class="form-select select2" id="roles" multiple
-                                            aria-describedby="rolesHelp" required>
-                                            @foreach ($roles as $role)
-                                                <option value="{{ $role }}">{{ $role }}</option>
-                                            @endforeach
-                                        </select>
-                                        <small id="rolesHelp" class="form-text text-muted">Select the roles of the
-                                            user.</small>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Row 2: Email and Password -->
-                            <div class="row mb-3">
-                                <div class="col-md-6">
+                                <div class="col-md-5">
                                     <label for="email" class="form-label">Email</label>
-                                    <x-input type="email" name="email" class="form-control" id="email"
-                                        aria-describedby="emailHelp" required />
+                                    <x-input type="email" name="email" value="{{ old('email', $user->email) }}"
+                                        class="form-control" id="email" aria-describedby="emailHelp" />
                                     <small id="emailHelp" class="form-text text-muted">Enter the email of the
                                         user.</small>
                                 </div>
+                            </div>
+
+                            {{-- Roles --}}
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <label for="roles" class="form-label">Roles</label>
+                                    <select name="roles[]" class="form-select select2" id="roles" multiple
+                                        aria-describedby="rolesHelp">
+                                        @foreach ($roles as $role)
+                                            <option value="{{ $role }}"
+                                                {{ in_array($role, $userRoles) ? 'selected' : '' }}>
+                                                {{ $role }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <small id="rolesHelp" class="form-text text-muted">Select the roles of the
+                                        user.</small>
+                                </div>
+                            </div>
+
+
+                            {{-- Password and Confirm Password --}}
+                            <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="password" class="form-label">Password</label>
                                     <div class="input-group">
                                         <x-input type="password" name="password" class="form-control" id="password"
-                                            aria-describedby="passwordHelp" required />
+                                            aria-describedby="passwordHelp" />
                                         <button type="button" class="btn btn-outline-secondary" id="togglePassword">
                                             <i class="fas fa-eye"></i>
                                         </button>
                                     </div>
                                     <small id="passwordHelp" class="form-text text-muted">Enter the password of the
-                                        user.</small>
+                                        user. Leave empty to keep unchanged.</small>
                                 </div>
-                            </div>
-
-                            <!-- Row 3: Re-Password and Profile Photo -->
-                            <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="password_confirmation" class="form-label">Re-Password</label>
                                     <div class="input-group">
                                         <x-input type="password" name="password_confirmation" class="form-control"
-                                            id="password_confirmation" aria-describedby="passwordHelp" required />
+                                            id="password_confirmation" aria-describedby="password_confirmationHelp" />
                                         <button type="button" class="btn btn-outline-secondary"
                                             id="togglePasswordConfirmation">
                                             <i class="fas fa-eye"></i>
                                         </button>
                                     </div>
                                     <small id="password_confirmationHelp" class="form-text text-muted">Re-enter the
-                                        password
-                                        of
-                                        the user.</small>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="profile_photo" class="form-label">Profile Photo</label>
-                                    <x-input type="file" name="profile_photo" class="form-control"
-                                        id="profile_photo" aria-describedby="profile_photoHelp" />
-                                    <small id="profile_photoHelp" class="form-text text-muted">Upload the profile
-                                        photo of the
-                                        user.</small>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label for="center_name" class="form-label">Economic Center Name</label>
-                                    <x-input type="text" name="center_name" class="form-control" id="center_name"
-                                        aria-describedby="center_nameHelp" />
-                                    <small id="center_nameHelp" class="form-text text-muted">Enter the name of the economic
-                                        center.</small>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="center_reg_id" class="form-label">Registration ID</label>
-                                    <x-input type="text" name="center_reg_id" class="form-control" id="center_reg_id"
-                                        aria-describedby="center_reg_idHelp" />
-                                    <small id="center_reg_idHelp" class="form-text text-muted">Enter the registration ID of the
-                                        economic center.</small>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label for="center_address" class="form-label">Economic Center Address</label>
-                                    <x-input type="text" name="center_address" class="form-control" id="center_address"
-                                        aria-describedby="center_addressHelp" />
-                                    <small id="center_addressHelp" class="form-text text-muted">Enter the address of the
-                                        economic center.</small>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label for="profile_photo" class="form-label">Profile Photo</label>
-                                    <x-input type="file" name="profile_photo" class="form-control"
-                                        id="profile_photo" aria-describedby="profile_photoHelp" />
-                                    <small id="profile_photoHelp" class="form-text text-muted">Upload economic center photos</small>
+                                        password of the user.</small>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary">Submit</button>
+
+                            {{-- Profile Photo --}}
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="profile_photo" class="form-label">Profile Photo</label>
+                                    <x-input type="file" name="profile_photo" class="form-control"
+                                        id="profile_photo" aria-describedby="profile_photoHelp" />
+                                    <img id="profile_photo_preview" src="#" alt="Profile Photo"
+                                        class="img-thumbnail mt-2" style="display: none; max-width: 150px;">
+                                    <small id="profile_photoHelp" class="form-text text-muted">Upload the profile
+                                        photo of the user.</small>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Update</button>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
 </x-admin-layout>
 
 {{-- Bootstrap CDN --}}
@@ -153,7 +132,6 @@
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
 </script>
 
-{{-- Select2 CDN --}}
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <script>
@@ -176,7 +154,7 @@
     });
 
     // Initial form submission handler (unchanged)
-    document.getElementById('createMarketUserForm').addEventListener('submit', function(e) {
+    document.getElementById('editUserForm').addEventListener('submit', function(e) {
         e.preventDefault(); // Prevent form from submitting normally
 
         // Show loading spinner
@@ -207,15 +185,6 @@
                         icon: 'success',
                         title: 'Success!',
                         text: data.message,
-                    }).then(() => {
-                        // Reset the form
-                        form.reset();
-
-                        // Clear the Roles field (select2 initialization)
-                        const rolesField = document.getElementById('roles');
-                        if (rolesField) {
-                            $(rolesField).val(null).trigger('change'); // Clear selected values
-                        }
                     });
                 } else {
                     // Handle validation errors

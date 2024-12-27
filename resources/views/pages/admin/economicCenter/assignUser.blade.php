@@ -4,29 +4,38 @@
 
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
-
 <x-admin-layout>
 
-    <x-slot name="title">Market User Management</x-slot>
+    <x-slot name="title">Economic Center Management</x-slot>
 
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-
                 <div class="card mt-3">
                     <div class="card-header">
-                        <h5 class="card-title">Create Market User
-                            <a href="{{ route('market.users') }}" class="btn btn-primary float-end me-2">
+                        <h5 class="card-title">Economic Center Assign User
+                            <a href="{{ route('economic-centers.index') }}" class="btn btn-primary float-end me-2">
                                 Back
                             </a>
                         </h5>
                     </div>
                     <div class="card-body">
-                        <form id="createMarketUserForm" action="{{ route('market.users.store') }}" method="POST"
-                            enctype="multipart/form-data">
+                        <form action="{{ route('economic.center.add.user', $economicCenter->id) }}" method="POST"
+                            enctype="multipart/form-data" id="assignUserForm">
                             @csrf
-                            <!-- Row 1: User Type and Name -->
+                            @method('PUT')
+
+                            <!-- Center ID, Name and User Type -->
                             <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="center_id" class="form-label">Center Registration ID :
+                                    </label><span style="font-weight: 500"> {{ $economicCenter->id }}</span>
+                                    <x-input type="hidden" name="center_id"
+                                        value="{{ old('center_id', $economicCenter->id) }}" />
+                                    <x-input type="text" class="form-control" id="center_name" name="center_name"
+                                        value="{{ old('center_name', $economicCenter->center_name) }}" disabled />
+                                    <small id="center_nameHelp" class="form-text text-muted">Economic center name.</small>
+                                </div>
                                 <div class="col-md-6">
                                     <label for="user_type" class="form-label">User Type</label>
                                     <select name="user_type" class="form-select" id="user_type"
@@ -36,11 +45,22 @@
                                     </select>
                                     <small id="user_typeHelp" class="form-text text-muted">Select the user type.</small>
                                 </div>
+                            </div>
+
+                            <!-- Row 1: User Type and Name -->
+                            <div class="row mb-3">
                                 <div class="col-md-6">
-                                    <label for="username" class="form-label">Name</label>
+                                    <label for="username" class="form-label">User Name</label>
                                     <x-input type="text" name="username" class="form-control" id="username"
                                         aria-describedby="usernameHelp" required />
                                     <small id="usernameHelp" class="form-text text-muted">Enter the name of the
+                                        user.</small>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="email" class="form-label">Email</label>
+                                    <x-input type="email" name="email" class="form-control" id="email"
+                                        aria-describedby="emailHelp" required />
+                                    <small id="emailHelp" class="form-text text-muted">Enter the email of the
                                         user.</small>
                                 </div>
 
@@ -63,13 +83,6 @@
                             <!-- Row 2: Email and Password -->
                             <div class="row mb-3">
                                 <div class="col-md-6">
-                                    <label for="email" class="form-label">Email</label>
-                                    <x-input type="email" name="email" class="form-control" id="email"
-                                        aria-describedby="emailHelp" required />
-                                    <small id="emailHelp" class="form-text text-muted">Enter the email of the
-                                        user.</small>
-                                </div>
-                                <div class="col-md-6">
                                     <label for="password" class="form-label">Password</label>
                                     <div class="input-group">
                                         <x-input type="password" name="password" class="form-control" id="password"
@@ -81,10 +94,6 @@
                                     <small id="passwordHelp" class="form-text text-muted">Enter the password of the
                                         user.</small>
                                 </div>
-                            </div>
-
-                            <!-- Row 3: Re-Password and Profile Photo -->
-                            <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="password_confirmation" class="form-label">Re-Password</label>
                                     <div class="input-group">
@@ -100,6 +109,10 @@
                                         of
                                         the user.</small>
                                 </div>
+                            </div>
+
+                            <!-- Row 3: Re-Password and Profile Photo -->
+                            <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="profile_photo" class="form-label">Profile Photo</label>
                                     <x-input type="file" name="profile_photo" class="form-control"
@@ -108,44 +121,16 @@
                                         photo of the
                                         user.</small>
                                 </div>
-
-                                <div class="col-md-6">
-                                    <label for="center_name" class="form-label">Economic Center Name</label>
-                                    <x-input type="text" name="center_name" class="form-control" id="center_name"
-                                        aria-describedby="center_nameHelp" />
-                                    <small id="center_nameHelp" class="form-text text-muted">Enter the name of the economic
-                                        center.</small>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="center_reg_id" class="form-label">Registration ID</label>
-                                    <x-input type="text" name="center_reg_id" class="form-control" id="center_reg_id"
-                                        aria-describedby="center_reg_idHelp" />
-                                    <small id="center_reg_idHelp" class="form-text text-muted">Enter the registration ID of the
-                                        economic center.</small>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label for="center_address" class="form-label">Economic Center Address</label>
-                                    <x-input type="text" name="center_address" class="form-control" id="center_address"
-                                        aria-describedby="center_addressHelp" />
-                                    <small id="center_addressHelp" class="form-text text-muted">Enter the address of the
-                                        economic center.</small>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label for="profile_photo" class="form-label">Profile Photo</label>
-                                    <x-input type="file" name="profile_photo" class="form-control"
-                                        id="profile_photo" aria-describedby="profile_photoHelp" />
-                                    <small id="profile_photoHelp" class="form-text text-muted">Upload economic center photos</small>
-                                </div>
                             </div>
-                            <button type="submit" class="btn btn-primary">Submit</button>
+
+                            <button type="submit" class="btn btn-primary float-end">Assign</button>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
 </x-admin-layout>
 
 {{-- Bootstrap CDN --}}
@@ -153,7 +138,6 @@
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
 </script>
 
-{{-- Select2 CDN --}}
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <script>
@@ -176,7 +160,7 @@
     });
 
     // Initial form submission handler (unchanged)
-    document.getElementById('createMarketUserForm').addEventListener('submit', function(e) {
+    document.getElementById('assignUserForm').addEventListener('submit', function(e) {
         e.preventDefault(); // Prevent form from submitting normally
 
         // Show loading spinner
@@ -210,12 +194,6 @@
                     }).then(() => {
                         // Reset the form
                         form.reset();
-
-                        // Clear the Roles field (select2 initialization)
-                        const rolesField = document.getElementById('roles');
-                        if (rolesField) {
-                            $(rolesField).val(null).trigger('change'); // Clear selected values
-                        }
                     });
                 } else {
                     // Handle validation errors
