@@ -29,7 +29,8 @@
                                 <div class="col-md-6">
                                     <label for="center_id" class="form-label">Center Registration ID</label>
                                     <x-input type="text" class="form-control" id="center_id" name="center_id" />
-                                    <small id="center_idHelp" class="form-text text-muted">Enter economic center Registration Id.</small>
+                                    <small id="center_idHelp" class="form-text text-muted">Enter economic center
+                                        Registration Id.</small>
                                 </div>
 
                                 <div class="col-md-6">
@@ -45,20 +46,31 @@
                                     <label for="contact_number" class="form-label">Center Contact Number</label>
                                     <x-input type="text" class="form-control" id="contact_number"
                                         name="contact_number" />
-                                    <small id="contact_numberHelp" class="form-text text-muted">Enter economic contact number.</small>
+                                    <small id="contact_numberHelp" class="form-text text-muted">Enter economic contact
+                                        number.</small>
                                 </div>
 
                                 <div class="col-md-6">
                                     <label for="center_location" class="form-label">Center Location</label>
                                     <x-input type="text" class="form-control" id="center_location"
                                         name="center_location" />
-                                    <small id="center_nameHelp" class="form-text text-muted">Enter economic Address.</small>
+                                    <small id="center_nameHelp" class="form-text text-muted">Enter economic
+                                        Address.</small>
                                 </div>
                             </div>
 
-                            <div class="mb-3">
-                                <label for="center_photo" class="form-label">Center Photo</label>
-                                <x-input type="file" class="form-control" id="center_photo" name="center_photo" />
+                            <div class="col-md-6">
+                                <label for="center_photo">Center Photo</label>
+                                <input type="file" id="center_photo" name="center_photo" class="form-control"
+                                    accept="image/*">
+
+                                <img id="photoPreview" src="#" alt="Center Photo Preview" class="mt-2"
+                                    style="display: none; width: 100px; height: 100px; object-fit: cover;">
+
+                                <button type="button" class="btn btn-secondary mt-2" id="removePhoto"
+                                    style="display: none;">
+                                    Remove Selected Photo
+                                </button>
                             </div>
 
                             <button type="submit" class="btn btn-primary float-end">Add</button>
@@ -80,6 +92,24 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <script>
+    // Preview center photo
+    document.getElementById('center_photo').addEventListener('change', function(event) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('photoPreview').src = e.target.result;
+            document.getElementById('photoPreview').style.display = 'block';
+            document.getElementById('removePhoto').style.display = 'inline-block';
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    });
+
+    // Remove center photo
+    document.getElementById('removePhoto').addEventListener('click', function() {
+        document.getElementById('center_photo').value = '';
+        document.getElementById('photoPreview').style.display = 'none';
+        this.style.display = 'none';
+    });
+
     // Initial form submission handler (unchanged)
     document.getElementById('createCenterForm').addEventListener('submit', function(e) {
         e.preventDefault(); // Prevent form from submitting normally
@@ -115,6 +145,8 @@
                     }).then(() => {
                         // Reset the form
                         form.reset();
+                        document.getElementById('photoPreview').style.display = 'none';
+                        document.getElementById('removePhoto').style.display = 'none';
                     });
                 } else {
                     // Handle validation errors

@@ -21,7 +21,7 @@
                         </h5>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('users.give-permissions', $user->id) }}" method="POST"
+                        <form action="{{ route('system.users.give-permissions', $user->id) }}" method="POST"
                             id="givePermission">
                             @csrf
                             @method('PUT')

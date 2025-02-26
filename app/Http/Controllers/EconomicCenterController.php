@@ -8,6 +8,7 @@ use App\Models\EconomicCenter;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class EconomicCenterController extends Controller
 {
@@ -42,29 +43,39 @@ class EconomicCenterController extends Controller
                 'center_name' => 'required|string|max:255',
                 'contact_number' => 'required|string|max:255',
                 'center_location' => 'required|string',
+                'center_photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             ]);
 
             Log::info('Validation successful.', ['validated_data' => $validated]);
 
-            //Create new economic center
+            // Handle the center photo upload if provided
+            $photoPath = null; // Default value
+
+            if ($request->hasFile('center_photo')) {
+                // Store the new profile photo
+                $photoPath = $request->file('center_photo')->store('center-photos', 'public');
+                Log::info('New center photo uploaded.', ['path' => $photoPath]);
+            }
+
+            // Create new economic center including profile_photo_path
             $eCenter = EconomicCenter::create([
                 'id' => $validated['center_id'],
                 'center_name' => $validated['center_name'],
                 'contact_number' => $validated['contact_number'],
                 'center_location' => $validated['center_location'],
+                'profile_photo_path' => $photoPath, // Store the image path
             ]);
 
-            Log::info('Economic center created successfully..', ['eCenter' => $eCenter]);
+            Log::info('Economic center created successfully.', ['eCenter' => $eCenter]);
 
             // Return success response
             return response()->json([
                 'success' => true,
-                'message' => 'Economic center created successfully..',
+                'message' => 'Economic center created successfully.',
             ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
             Log::error('Validation failed.', ['errors' => $e->validator->errors()->all()]);
 
-            // Return validation errors as JSON
             return response()->json([
                 'success' => false,
                 'errors' => $e->validator->errors()->all(),

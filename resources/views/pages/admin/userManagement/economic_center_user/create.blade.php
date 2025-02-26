@@ -118,14 +118,23 @@
                             <!-- Row 3: Profile Photo -->
                             <div class="row mb-3">
                                 <div class="col-md-12">
-                                    <label for="profile_photo" class="form-label">Profile Photo</label>
-                                    <x-input type="file" name="profile_photo" class="form-control"
-                                        id="profile_photo" aria-describedby="profile_photoHelp" />
-                                    <small id="profile_photoHelp" class="form-text text-muted">Upload the profile
-                                        photo of the
-                                        user.</small>
+                                    <div class="col-md-6">
+                                        <label for="profile_photo">Profile Photo</label>
+                                        <input type="file" id="profile_photo" name="profile_photo" class="form-control"
+                                            accept="image/*">
+
+                                        <img id="photoPreview" src="#" alt="Profile Photo Preview" class="mt-2"
+                                            style="display: none; width: 100px; height: 100px; object-fit: cover;">
+
+                                        <button type="button" class="btn btn-secondary mt-2" id="removePhoto"
+                                            style="display: none;">
+                                            Remove Selected Photo
+                                        </button>
+                                    </div>
+                                    <small id="profile_photoHelp" class="form-text text-muted">Upload the profile photo of the user.</small>
                                 </div>
                             </div>
+
                             <button type="submit" class="btn btn-primary float-end">Assign</button>
                         </form>
                     </div>
@@ -144,6 +153,24 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <script>
+    // Preview profile photo
+    document.getElementById('profile_photo').addEventListener('change', function(event) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('photoPreview').src = e.target.result;
+            document.getElementById('photoPreview').style.display = 'block';
+            document.getElementById('removePhoto').style.display = 'inline-block';
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    });
+
+    // Remove profile photo
+    document.getElementById('removePhoto').addEventListener('click', function() {
+        document.getElementById('profile_photo').value = '';
+        document.getElementById('photoPreview').style.display = 'none';
+        this.style.display = 'none';
+    });
+
     // Toggle password visibility
     document.getElementById('togglePassword').addEventListener('click', function() {
         const passwordField = document.getElementById('password');
@@ -198,6 +225,9 @@
                         // Reset the form
                         form.reset();
 
+                        document.getElementById('photoPreview').style.display = 'none';
+                        document.getElementById('removePhoto').style.display = 'none';
+
                         // Clear the Roles field (select2 initialization)
                         const rolesField = document.getElementById('roles');
                         if (rolesField) {
@@ -207,7 +237,8 @@
                         // Clear the Economic Center field (select2 initialization)
                         const economicCenterField = document.getElementById('economicCenters');
                         if (economicCenterField) {
-                            $(economicCenterField).val(null).trigger('change'); // Clear selected value
+                            $(economicCenterField).val(null).trigger(
+                            'change'); // Clear selected value
                         }
                     });
                 } else {
