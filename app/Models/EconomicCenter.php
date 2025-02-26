@@ -19,5 +19,8 @@ class EconomicCenter extends Model
         'center_name',
         'contact_number',
         'center_location',
+        'profile_photo_path',
     ];
 }
+
+

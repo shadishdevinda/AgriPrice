@@ -25,6 +25,8 @@
                         <form action="{{ route('users.update', $user->id) }}" method="POST" id="editUserForm">
                             @csrf
                             @method('PUT')
+
+                            {{-- User Type, Name, and Email --}}
                             <div class="row mb-3">
                                 <div class="col-md-2">
                                     <label for="user_type" class="form-label">Choose</label>
@@ -104,13 +106,29 @@
                             {{-- Profile Photo --}}
                             <div class="row mb-3">
                                 <div class="col-md-6">
-                                    <label for="profile_photo" class="form-label">Profile Photo</label>
-                                    <x-input type="file" name="profile_photo" class="form-control"
-                                        id="profile_photo" aria-describedby="profile_photoHelp" />
-                                    <img id="profile_photo_preview" src="#" alt="Profile Photo"
-                                        class="img-thumbnail mt-2" style="display: none; max-width: 150px;">
-                                    <small id="profile_photoHelp" class="form-text text-muted">Upload the profile
-                                        photo of the user.</small>
+                                    <label for="profile_photo">Profile Photo</label>
+
+                                    {{-- Display existing profile photo if available --}}
+                                    @if ($user->profile_photo_path)
+                                        <img id="photoPreview"
+                                            src="{{ asset('storage/' . $user->profile_photo_path) }}"
+                                            alt="Profile Photo" class="mt-2"
+                                            style="width: 100px; height: 100px; object-fit: cover;">
+                                    @else
+                                        <img id="photoPreview" src="#" alt="Profile Photo Preview"
+                                            class="mt-2"
+                                            style="display: none; width: 100px; height: 100px; object-fit: cover;">
+                                    @endif
+
+                                    {{-- Input for uploading a new profile photo --}}
+                                    <input type="file" id="profile_photo" name="profile_photo"
+                                        class="form-control" accept="image/*">
+
+                                    {{-- Remove Photo button visibility based on whether there is a selected photo --}}
+                                    <button type="button" class="btn btn-secondary mt-2" id="removePhoto"
+                                        style="display: none;">
+                                        Remove Selected Photo
+                                    </button>
                                 </div>
                             </div>
 
@@ -132,6 +150,28 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <script>
+    // Show preview of selected image when a user selects a file
+    document.getElementById('profile_photo').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+            document.getElementById('photoPreview').src = e.target.result;
+            document.getElementById('photoPreview').style.display = 'block';
+            document.getElementById('removePhoto').style.display = 'inline-block';
+        };
+
+        reader.readAsDataURL(file);
+    });
+
+    // Remove selected photo (reset the input and hide the preview)
+    document.getElementById('removePhoto').addEventListener('click', function() {
+        document.getElementById('profile_photo').value = '';
+        document.getElementById('photoPreview').src = '';
+        document.getElementById('photoPreview').style.display = 'none';
+        document.getElementById('removePhoto').style.display = 'none';
+    });
+
     // Toggle password visibility
     document.getElementById('togglePassword').addEventListener('click', function() {
         const passwordField = document.getElementById('password');

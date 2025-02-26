@@ -8,7 +8,9 @@ use App\Models\EconomicCenter;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Str;
 
 class UserManageController extends Controller
 {
@@ -17,7 +19,7 @@ class UserManageController extends Controller
      */
     public function index()
     {
-        $users = User::where('user_type', 'system-user')->paginate(1);
+        $users = User::where('user_type', 'system-user')->paginate(5);
         $roles = Role::pluck('name', 'name')->all();
         return view('pages.admin.userManagement.system_user.index', compact('users', 'roles'));
     }
@@ -30,6 +32,7 @@ class UserManageController extends Controller
         $roles = Role::pluck('name', 'name')->all();
         return view('pages.admin.userManagement.system_user.create', compact('roles'));
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -49,6 +52,7 @@ class UserManageController extends Controller
                 'center_reg_id' => 'nullable|string',
                 'center_name' => 'nullable|string',
                 'center_location' => 'nullable|string',
+                'profile_photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             ]);
 
             Log::info('Validation successful.', ['validated_data' => $validated]);
@@ -64,31 +68,57 @@ class UserManageController extends Controller
 
             $user->syncRoles($validated['roles']);
 
+            // Handle profile photo upload
+            if ($request->hasFile('profile_photo')) {
+                $existingPhoto = $user->profile_photo_path;
+
+                // If a profile photo exists, delete the old one before uploading a new one
+                if ($existingPhoto && Storage::disk('public')->exists('profile-photos/' . basename($existingPhoto))) {
+                    Storage::disk('public')->delete('profile-photos/' . basename($existingPhoto));
+                    Log::info('Old profile photo deleted.', ['file_path' => $existingPhoto, 'user_id' => $user->id]);
+                }
+
+                // Generate a unique filename using Str::random
+                $file = $request->file('profile_photo');
+                $fileExtension = $file->getClientOriginalExtension();
+                $fileName = Str::random(40) . '.' . $fileExtension; // Generate a 40-character random string as the filename
+                $filePath = 'profile-photos/' . $fileName;
+
+                // Store the file in the 'public' disk, under the 'profile-photos' directory
+                Storage::disk('public')->put($filePath, file_get_contents($file));
+
+                // Store the new file URL in the database, but remove the '/storage' part
+                $user->profile_photo_path = $filePath;  // Store just the relative path
+                $user->save();
+
+                Log::info('Profile photo uploaded.', ['file_path' => $filePath, 'user_id' => $user->id]);
+            }
+
             Log::info('User created.', ['user_id' => $user->id]);
 
-            // Check if Economic Center data is provided
-            $centerCreated = false;
-            if (!empty($validated['center_reg_id']) && !empty($validated['center_name']) && !empty($validated['center_location'])) {
-                $center = EconomicCenter::create([
-                    'center_name' => $validated['center_name'],
-                    'center_reg_id' => $validated['center_reg_id'],
-                    'center_location' => $validated['center_location'],
-                ]);
-                Log::info('Economic Center created.', ['center_id' => $center->id]);
-                $centerCreated = true;
-            }
-            // Set success message based on the outcome
-            $message = $centerCreated
-                ? 'User created with Economic Center successfully.'
-                : 'User created successfully.';
+            // // Check if Economic Center data is provided
+            // $centerCreated = false;
+            // if (!empty($validated['center_reg_id']) && !empty($validated['center_name']) && !empty($validated['center_location'])) {
+            //     $center = EconomicCenter::create([
+            //         'center_name' => $validated['center_name'],
+            //         'center_reg_id' => $validated['center_reg_id'],
+            //         'center_location' => $validated['center_location'],
+            //     ]);
+            //     Log::info('Economic Center created.', ['center_id' => $center->id]);
+            //     $centerCreated = true;
+            // }
+            // // Set success message based on the outcome
+            // $message = $centerCreated
+            //     ? 'User created with Economic Center successfully.'
+            //     : 'User created successfully.';
 
-            Log::info('Store method executed successfully.', ['message' => $message]);
+            // Log::info('Store method executed successfully.', ['message' => $message]);
 
-            // Return success response
-            return response()->json([
-                'success' => true,
-                'message' => $message,
-            ]);
+            // // Return success response
+            // return response()->json([
+            //     'success' => true,
+            //     'message' => $message,
+            // ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
             Log::error('Validation failed.', ['errors' => $e->validator->errors()->all()]);
 
@@ -132,7 +162,7 @@ class UserManageController extends Controller
                 'user_type' => 'required|string',
                 'roles' => 'required',
                 'password' => 'nullable|string|min:8|confirmed',
-                'profile_photo' => 'nullable|image|mimes:jpg,jpeg,png,gif,webp',
+                'profile_photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             ]);
 
             // Log validated data
@@ -141,16 +171,18 @@ class UserManageController extends Controller
             // Handle the profile photo upload if provided
             if ($request->hasFile('profile_photo')) {
                 // Delete the old profile photo if it exists
-                if ($user->profile_photo && file_exists(public_path('storage/profile-photos/' . $user->profile_photo))) {
-                    unlink(public_path('storage/profile-photos/' . $user->profile_photo));
+                if ($user->profile_photo_path && Storage::disk('public')->exists($user->profile_photo_path)) {
+                    Storage::disk('public')->delete($user->profile_photo_path);
                     Log::info('Old profile photo deleted.');
                 }
 
+                // Store the new profile photo
                 $path = $request->file('profile_photo')->store('profile-photos', 'public');
-                $validated['profile_photo'] = basename($path); // Store only the filename
+                $validated['profile_photo_path'] = $path; // Store the full path
                 Log::info('New profile photo uploaded.', ['path' => $path]);
             } else {
-                $validated['profile_photo'] = $user->profile_photo; // Retain the old profile photo
+                // If no new photo, retain the old one
+                $validated['profile_photo_path'] = $user->profile_photo_path;
             }
 
             // Prepare data for update
@@ -158,7 +190,7 @@ class UserManageController extends Controller
                 'name' => $validated['name'],
                 'email' => $validated['email'],
                 'user_type' => $validated['user_type'],
-                'profile_photo' => $validated['profile_photo'],
+                'profile_photo_path' => $validated['profile_photo_path'], // Ensure this is included
             ];
 
             // Update password if provided
@@ -166,8 +198,14 @@ class UserManageController extends Controller
                 $data['password'] = Hash::make($validated['password']);
             }
 
+            // Log the data array before updating
+            Log::info('Data array before update:', ['data' => $data]);
+
             // Update the user record
             $user->update($data);
+
+            // Log the updated user record
+            Log::info('User record after update:', ['user' => $user->fresh()]);
 
             // Sync roles
             $user->syncRoles($validated['roles']);
@@ -208,7 +246,6 @@ class UserManageController extends Controller
         $permissions = Permission::all();
         return view('pages.admin.userManagement.system_user.give-permissions', compact('user', 'permissions'));
     }
-
 
     public function givePermissions(Request $request, $userID)
     {
@@ -260,6 +297,7 @@ class UserManageController extends Controller
             ], 500);
         }
     }
+
     /**
      * Remove the specified resource from storage.
      */

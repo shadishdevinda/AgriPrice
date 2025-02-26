@@ -4,6 +4,18 @@
 
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
+<style>
+    .center-image {
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .center-image img {
+        display: block;
+        margin: 0 auto;
+    }
+</style>
+
 <x-admin-layout>
 
     <x-slot name="title">System User Management</x-slot>
@@ -27,6 +39,7 @@
                                 <th>ID</th>
                                 <th>Name</th>
                                 <th width="30%">Email</th>
+                                <td><b>Photo</b></th>
                                 <th>Roles</th>
                                 <th width="30%">Actions</th>
                             </tr>
@@ -37,6 +50,13 @@
                                     <td>{{ $user->id }}</td>
                                     <td>{{ $user->name }}</td>
                                     <td>{{ $user->email }}</td>
+                                    <td class="center-image">
+                                        @if ($user->profile_photo_path)
+                                            <img src="{{ asset('storage/' . $user->profile_photo_path) }}" alt="Profile Photo" class="rounded-circle" width="50" height="50">
+                                        @else
+                                            <img src="{{ asset('images/default-user/user.png') }}" alt="Default Photo" class="rounded-circle" width="50" height="50">
+                                        @endif
+                                    </td>
                                     <td>
                                         @if (!empty($user->getRoleNames()))
                                             @foreach ($user->getRoleNames() as $role)
@@ -61,7 +81,7 @@
                                         </button>
 
                                         <!-- Assign Permission Buttons -->
-                                        <a href="{{ route('users.permissions', $user->id) }}" class="btn btn-info"
+                                        <a href="{{ route('system.users.permissions', $user->id) }}" class="btn btn-info"
                                             style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
                                             Assign Permission
                                         </a>

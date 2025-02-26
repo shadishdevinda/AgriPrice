@@ -5,13 +5,11 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\MarketController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\UserManageController;
 use App\Http\Controllers\EconomicCenterController;
-use App\Http\Controllers\ECenterUserManageController;
 use App\Http\Controllers\EconomicCenterUserController;
 
 // Home page
@@ -49,22 +47,24 @@ Route::resource('permissions', PermissionController::class);
 Route::resource('roles', RoleController::class);
 Route::put('roles/{roleId}/permissions', [RoleController::class, 'givePermissions'])->name('roles.give-permissions');
 
-// System Users Manage Routes
-Route::resource('users', UserManageController::class);
-Route::get('users/{user}/permissions', [UserManageController::class, 'userPermissions'])->name('users.permissions');
-Route::put('users/{user}/permissions', [UserManageController::class, 'givePermissions'])->name('users.give-permissions');
 
-// Economic Center Resource Routes
-Route::resource('economic-centers', EconomicCenterController::class);
-Route::get('economic-centers/assign-user/{economicCenter}', [EconomicCenterController::class, 'assignUserPage'])->name('economic.center.assign.user');
-Route::put('economic-centers/add-user/{economicCenterID}', [EconomicCenterController::class, 'assignUser'])->name('economic.center.add.user');
+
+// System Users Manage Routes
+Route::prefix('system')->group(function () {
+    Route::resource('users', UserManageController::class);
+});
+Route::get('system-users/{user}/permissions', [UserManageController::class, 'userPermissions'])->name('system.users.permissions');
+Route::put('system-users/{user}/permissions', [UserManageController::class, 'givePermissions'])->name('system.users.give-permissions');
 
 
 // Economic Center User Mange Routes
 Route::resource('economic-center-user', EconomicCenterUserController::class)
     ->parameters(['economic-center-user' => 'user']);
-Route::get('users/{userID}/permissions', [EconomicCenterUserController::class, 'userPermissions'])->name('economic.center.user.permissions');
-Route::put('users/{userID}/permissions', [EconomicCenterUserController::class, 'givePermissions'])->name('economic.center.user.give-permissions');
+// Economic Center User Manage Routes
+Route::get('economic-center-users/{user}/permissions', [EconomicCenterUserController::class, 'userPermissions'])->name('economic.center.users.permissions');
+Route::put('economic-center-users/{user}/permissions', [EconomicCenterUserController::class, 'givePermissions'])->name('economic.center.users.give-permissions');
 
-
-// TODO
+// Economic Center Resource Routes
+Route::resource('economic-centers', EconomicCenterController::class);
+Route::get('economic-centers/assign-user/{economicCenter}', [EconomicCenterController::class, 'assignUserPage'])->name('economic.center.assign.user');
+Route::put('economic-centers/add-user/{economicCenterID}', [EconomicCenterController::class, 'assignUser'])->name('economic.center.add.user');
