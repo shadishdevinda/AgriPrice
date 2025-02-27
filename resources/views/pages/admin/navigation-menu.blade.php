@@ -13,14 +13,14 @@
                     </x-nav-link>
 
                     <!-- User Management Dropdown -->
-                    <div class="hidden sm:flex sm:items-center">
+                    <div class="hidden sm:flex sm:items-center pt-1">
                         <div class="relative">
                             <x-dropdown align="left" width="60">
                                 <x-slot name="trigger">
                                     <button style="border: none; background: none hove:text:black;"
                                         class="inline-flex items-center px-2 py-2 text-sm leading-4 font-medium text-white  hover:text-gray-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50 transition ease-in-out duration-150 btn border-0">
                                         {{ __('User Management') }}
-                                </button>
+                                    </button>
                                 </x-slot>
 
                                 <x-slot name="content">
@@ -29,13 +29,13 @@
                                             {{ __('User Management') }}
                                         </div>
 
-                                        <!-- System User CURD Operations -->
+                                        <!-- System user CURD Operations -->
                                         <x-dropdown-link href="{{ route('users.index') }}" :active="request()->routeIs('users.index')">
-                                            {{ __('System User') }}
+                                            {{ __('System Users') }}
                                         </x-dropdown-link>
-                                        <!-- Market User CURD Operations -->
-                                        <x-dropdown-link href="{{ route('market.users') }}" :active="request()->routeIs('market.users')">
-                                            {{ __('Market User') }}
+                                        <!-- Market user CURD Operations -->
+                                        <x-dropdown-link href="{{ route('economic-center-user.index') }}" :active="request()->routeIs('economic-center-user.index')">
+                                            {{ __('Market Users') }}
                                         </x-dropdown-link>
                                     </div>
                                 </x-slot>
@@ -44,14 +44,14 @@
                     </div>
 
                     <!-- Manage Access Dropdown -->
-                    <div class="hidden sm:flex sm:items-center">
+                    <div class="hidden sm:flex sm:items-center pt-1">
                         <div class="relative">
                             <x-dropdown align="left" width="60">
                                 <x-slot name="trigger">
                                     <button style="border: none; background: none;"
                                         class="inline-flex items-center px-2 py-2 text-sm leading-4 font-medium rounded-md text-white  hover:text-gray-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50 transition ease-in-out duration-150">
                                         {{ __('Manage Access') }}
-                                </button>
+                                    </button>
                                 </x-slot>
 
                                 <x-slot name="content">

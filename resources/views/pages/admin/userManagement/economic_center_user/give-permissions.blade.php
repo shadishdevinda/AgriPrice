@@ -6,7 +6,7 @@
 
 <x-admin-layout>
 
-    <x-slot name="title">System User Management</x-slot>
+    <x-slot name="title">Economic Center User Management</x-slot>
 
     <div class="container">
         <div class="row">
@@ -14,18 +14,17 @@
 
                 <div class="card mt-3">
                     <div class="card-header">
-                        <h5 class="card-title">System User Permissions
-                            <a href="{{ route('users.index') }}" class="btn btn-primary float-end me-2">
+                        <h5 class="card-title">Economic Center User Permissions
+                            <a href="{{ route('economic-center-user.index') }}" class="btn btn-primary float-end me-2">
                                 Back
                             </a>
                         </h5>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('system.users.give-permissions', $user->id) }}" method="POST"
+                        <form action="{{ route('economic.center.users.give-permissions', $user->id) }}" method="POST"
                             id="givePermission">
                             @csrf
                             @method('PUT')
-
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="role">User Name</label>
@@ -125,3 +124,4 @@
             });
     });
 </script>
+

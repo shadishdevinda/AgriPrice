@@ -69,10 +69,12 @@ Route::resource('economic-center-user', EconomicCenterUserController::class)
 Route::get('economic-center-users/{user}/permissions', [EconomicCenterUserController::class, 'userPermissions'])->name('economic.center.users.permissions');
 Route::put('economic-center-users/{user}/permissions', [EconomicCenterUserController::class, 'givePermissions'])->name('economic.center.users.give-permissions');
 
+
 // Economic Center Resource Routes
 Route::resource('economic-centers', EconomicCenterController::class);
 Route::get('economic-centers/assign-user/{economicCenter}', [EconomicCenterController::class, 'assignUserPage'])->name('economic.center.assign.user');
 Route::put('economic-centers/add-user/{economicCenterID}', [EconomicCenterController::class, 'assignUser'])->name('economic.center.add.user');
+
 
 
 // Vegetables Routes
@@ -86,11 +88,3 @@ Route::resource('/vegetable_advice',VegetableAdviceController::class);
 
 // fruit_advice Routes
 Route::resource('/fruit_advice',FruitAdviceController::class);
-
-
-
-
-
-
-
-

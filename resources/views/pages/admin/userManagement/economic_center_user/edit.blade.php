@@ -7,7 +7,7 @@
 
 <x-admin-layout>
 
-    <x-slot name="title">User Management</x-slot>
+    <x-slot name="title">Economic Center User Management</x-slot>
 
     <div class="container">
         <div class="row">
@@ -15,26 +15,25 @@
 
                 <div class="card mt-3">
                     <div class="card-header">
-                        <h5 class="card-title">Edit System User
-                            <a href="{{ route('users.index') }}" class="btn btn-primary float-end me-2">
+                        <h5 class="card-title">Edit Economic Center User
+                            <a href="{{ route('economic-center-user.index') }}" class="btn btn-primary float-end me-2">
                                 Back
                             </a>
                         </h5>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('users.update', $user->id) }}" method="POST" id="editUserForm">
+                        <form action="{{ route('economic-center-user.update', $user->id) }}" method="POST"
+                            id="editEconomicCenterUserForm">
                             @csrf
                             @method('PUT')
-
-                            {{-- User Type, Name, and Email --}}
                             <div class="row mb-3">
                                 <div class="col-md-2">
                                     <label for="user_type" class="form-label">Choose</label>
                                     <select name="user_type" class="form-select" id="user_type"
                                         aria-describedby="user_typeHelp">
                                         <option value="default" disabled>Select User Type</option>
-                                        <option value="system-user"
-                                            {{ $user->user_type == 'system-user' ? 'selected' : '' }}>System User
+                                        <option value="market-user"
+                                            {{ $user->user_type == 'market-user' ? 'selected' : '' }}>Market User
                                         </option>
                                     </select>
                                     <small id="user_typeHelp" class="form-text text-muted">Select the user type.</small>
@@ -110,8 +109,7 @@
 
                                     {{-- Display existing profile photo if available --}}
                                     @if ($user->profile_photo_path)
-                                        <img id="photoPreview"
-                                            src="{{ asset('storage/' . $user->profile_photo_path) }}"
+                                        <img id="photoPreview" src="{{ asset('storage/' . $user->profile_photo_path) }}"
                                             alt="Profile Photo" class="mt-2"
                                             style="width: 100px; height: 100px; object-fit: cover;">
                                     @else
@@ -132,7 +130,7 @@
                                 </div>
                             </div>
 
-                            <button type="submit" class="btn btn-primary">Update</button>
+                            <button type="submit" class="btn btn-primary float-end">Update</button>
                         </form>
                     </div>
                 </div>
@@ -191,7 +189,7 @@
     });
 
     // Initial form submission handler (unchanged)
-    document.getElementById('editUserForm').addEventListener('submit', function(e) {
+    document.getElementById('editEconomicCenterUserForm').addEventListener('submit', function(e) {
         e.preventDefault(); // Prevent form from submitting normally
 
         // Show loading spinner
