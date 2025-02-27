@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('economic_center', function (Blueprint $table) {
             $table->string('id')->primary();
             $table->string('center_name');
+            $table->string('contact_number');
             $table->string('center_location');
             $table->string('profile_photo_path', 2048)->nullable();
             $table->timestamps();

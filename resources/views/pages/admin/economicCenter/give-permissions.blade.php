@@ -15,7 +15,7 @@
                 <div class="card mt-3">
                     <div class="card-header">
                         <h5 class="card-title">System User Permissions
-                            <a href="{{ route('users.index') }}" class="btn btn-primary float-end me-2">
+                            <a href="{{ route('market.users') }}" class="btn btn-primary float-end me-2">
                                 Back
                             </a>
                         </h5>
@@ -25,20 +25,16 @@
                             id="givePermission">
                             @csrf
                             @method('PUT')
-
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <label for="role">User Name</label>
-                                    <x-input type="text" class="form-control" name="name" id="name"
-                                        value="{{ $user->name }}" readonly />
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="role">User Role</label>
-                                    <x-input type="text" class="form-control" name="role" id="role"
-                                        value="{{ $user->getRoleNames()->implode(', ') }}" readonly />
-                                </div>
+                            <div class="form-group">
+                                <label for="role">User Name</label>
+                                <x-input type="text" class="form-control" name="name" id="name"
+                                    value="{{ $user->name }}" readonly />
                             </div>
-
+                            <div class="form-group">
+                                <label for="role">User Role</label>
+                                <x-input type="text" class="form-control" name="role" id="role"
+                                    value="{{ $user->getRoleNames()->implode(', ') }}" readonly />
+                            </div>
                             <div class="form-group">
                                 <label for="permission">Permissions</label>
                                 @foreach ($permissions as $permission)
@@ -51,7 +47,7 @@
                                     </div>
                                 @endforeach
                             </div>
-                            <button type="submit" class="btn btn-primary float-end">Save</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
                         </form>
                     </div>
                 </div>
