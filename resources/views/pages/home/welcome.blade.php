@@ -918,41 +918,49 @@
     @endif
 </head>
 
+<style>
+    .nav-item.dropdown:hover .dropdown-menu {
+        display: block;
+        margin-top: 0;
+    }
+</style>
+
 <body class="font-sans antialiased">
+
+    {{-- Page 1st bar --}}
     <div class="top bg-light">
         <div class="container">
             <div class="row justify-content-between">
                 <div class="col-sm text-md-left mb-md-0 mt-2 pr-md-4 d-flex topper align-items-center">
                     <p class="mb-0 w-100 pl-2 pl-md-0">
                         <span class="fa fa-paper-plane"></span>
-                        <span class="text"><a href="/cdn-cgi/l/email-protection" class="__cf_email__"
-                                data-cfemail="9ae3f5efe8fff7fbf3f6dafff7fbf3f6b4f9f5f7">[email�&nbsp;protected]</a></span>
+                        <span class="text">agriprice@gamil.com</span>
                     </p>
                 </div>
                 <div class="col-sm d-flex mb-md-0 mb-2">
                     <div class="social-media">
                         <p class="mb-0 d-flex">
-                            <a href="#" class="d-flex align-items-center justify-content-center"><span
+                            <a href="https://www.facebook.com/" class="d-flex align-items-center justify-content-center"><span
                                     class="fa fa-facebook"><i class="sr-only">Facebook</i></span></a>
-                            <a href="#" class="d-flex align-items-center justify-content-center"><span
+                            <a href="https://x.com/" class="d-flex align-items-center justify-content-center"><span
                                     class="fa fa-twitter"><i class="sr-only">Twitter</i></span></a>
-                            <a href="#" class="d-flex align-items-center justify-content-center"><span
+                            <a href="https://www.instagram.com/" class="d-flex align-items-center justify-content-center"><span
                                     class="fa fa-instagram"><i class="sr-only">Instagram</i></span></a>
-                            <a href="#" class="d-flex align-items-center justify-content-center"><span
-                                    class="fa fa-dribbble"><i class="sr-only">Dribbble</i></span></a>
                         </p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    {{-- Page 2nd bar --}}
     <div class="pt-4 pb-5">
         <div class="container">
             <div class="row d-flex align-items-start align-items-center px-3 px-md-0">
                 <div class="col-md-4 d-flex mb-2 mb-md-0">
                     <a class="navbar-brand d-flex align-items-center" href="index.html">
                         <span class="flaticon flaticon-agriculture"></span>
-                        <span class="ml-2">Farmland <small>Agriculture Farming</small></span>
+                        <span class="ml-2">AgriPrice <small>Agriculture Farming</small></span>
                     </a>
                 </div>
                 <div class="col-md-4 d-flex topper mb-md-0 mb-2 align-items-center">
@@ -960,7 +968,7 @@
                         <span class="fa fa-map"></span>
                     </div>
                     <div class="pr-md-4 pl-md-3 pl-3 text">
-                        <p class="con"><span>Free Call</span> <span>+1 234 456 78910</span></p>
+                        <p class="con"><span>Free Call</span> <span>+94 7 748 602 17</span></p>
                         <p class="con">Call Us Now 24/7 Customer Support</p>
                     </div>
                 </div>
@@ -970,29 +978,46 @@
                     </div>
                     <div class="text pl-3 pl-md-3">
                         <p class="hr"><span>Our Location</span></p>
-                        <p class="con">198 West 21th Street, Suite 721 New York NY 10016</p>
+                        <p class="con">33/A Colombo Road.</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
 
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+                <span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/>
+                  </svg></span>
             </button>
+
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active"><a href="index.html" class="nav-link">Home</a></li>
-                    <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
-                    <li class="nav-item"><a href="services.html" class="nav-link">Services</a></li>
-                    <li class="nav-item"><a href="project.html" class="nav-link">Projects</a></li>
-                    <li class="nav-item"><a href="blog.html" class="nav-link">Blog</a></li>
-                    <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+                    <!-- Home with Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a href="index.html" class="nav-link dropdown-toggle" id="homeDropdown" role="button">
+                            Home
+                        </a>
+                            <ul class="dropdown-menu" aria-labelledby="homeDropdown">
+                                <li><a class="dropdown-item" href="about.html">About</a></li>
+                                <li><a class="dropdown-item" href="services.html">Services</a></li>
+                                <li><a class="dropdown-item" href="project.html">Projects</a></li>
+                                <li><a class="dropdown-item" href="blog.html">Blog</a></li>
+                                <li><a class="dropdown-item" href="contact.html">Contact</a></li>
+                            </ul>
+
+                        <li><a class="nav-link" href="vegetables-prices.html">Vegetables Prices</a></li>
+                        <li><a class="nav-link" href="fruits-prices.html">Fruits Prices</a></li>
+                        <li><a class="nav-link" href="crops-advices.html">Crops Advices</a></li>
+
+                    </li>
                 </ul>
+
                 <!-- Authentication Links -->
                 @if (Route::has('login'))
                     <ul class="navbar-nav ml-auto">
@@ -1018,18 +1043,14 @@
                             <li class="nav-item">
                                 <a href="{{ route('login') }}" class="nav-link">Log in</a>
                             </li>
-                            {{-- @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a href="{{ route('register') }}" class="nav-link">Register</a>
-                                </li>
-                            @endif --}}
                         @endauth
                     </ul>
                 @endif
             </div>
+
         </div>
     </nav>
-    <!-- END nav -->
+
     <section class="hero-wrap js-fullheight">
         <div class="overlay"></div>
         <div class="overlay-2"></div>
@@ -1162,7 +1183,8 @@
                                         <div class="col-md-6 ftco-animate">
                                             <div class="services-2 d-flex align-items-center">
                                                 <div class="icon d-flex align-items-center justify-content-center">
-                                                    <span class="flaticon-agriculture"></span></div>
+                                                    <span class="flaticon-agriculture"></span>
+                                                </div>
                                                 <div class="media-body">
                                                     <h3 class="heading">Growing Fruits<br> and Vegetables</h3>
                                                 </div>
@@ -1171,7 +1193,8 @@
                                         <div class="col-md-6 ftco-animate">
                                             <div class="services-2 d-flex align-items-center">
                                                 <div class="icon d-flex align-items-center justify-content-center">
-                                                    <span class="flaticon-agriculture-2"></span></div>
+                                                    <span class="flaticon-agriculture-2"></span>
+                                                </div>
                                                 <div class="media-body">
                                                     <h3 class="heading">Tips for Ripening<br> Fruits</h3>
                                                 </div>
@@ -1796,7 +1819,8 @@
                 stroke="#eeeeee"></circle>
             <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4"
                 stroke-miterlimit="10" stroke="#F96D00"></circle>
-        </svg></div>
+        </svg>
+    </div>
 
     <script src="js/jquery.min.js"></script>
     <script src="js/jquery-migrate-3.0.1.min.js"></script>
