@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Str;
 
+
 class UserManageController extends Controller
 {
     /**
@@ -19,10 +20,12 @@ class UserManageController extends Controller
      */
     public function index()
     {
+
         $users = User::where('user_type', 'system-user')->paginate(5);
         $roles = Role::pluck('name', 'name')->all();
         return view('pages.admin.userManagement.system_user.index', compact('users', 'roles'));
     }
+
 
     /**
      * Show the form for creating a new resource.
