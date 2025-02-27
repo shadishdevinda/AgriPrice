@@ -98,6 +98,7 @@ class EconomicCenterController extends Controller
         return view('pages.admin.economicCenter.edit', compact('economicCenter'));
     }
 
+    // TODO - Implement the update method for profile photo update
     /**
      * Update the specified resource in storage.
      */
@@ -157,12 +158,14 @@ class EconomicCenterController extends Controller
         }
     }
 
+
     public function assignUserPage(EconomicCenter $economicCenter)
     {
         $roles = Role::pluck('name', 'name')->all();
         return view('pages.admin.economicCenter.assignUser', compact('economicCenter', 'roles'));
     }
 
+    // TODO - Implement the update method for profile photo update
     public function assignUser(Request $request)
     {
         try {
