@@ -15,10 +15,10 @@ return new class extends Migration
         Schema::create('vegetable', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('description');
-            $table->string('Wholesale Price');
-            $table->string('Retail Price');
-            $table->string('photo_path', 2048);
+            $table->text('description');
+            $table->decimal('Wholesale_Price',10, 2);
+            $table->decimal('Retail_Price',10, 2);
+            $table->string('image', 2048);
             $table->timestamps();
         });
 
