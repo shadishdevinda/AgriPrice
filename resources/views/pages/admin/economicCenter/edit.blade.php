@@ -37,7 +37,7 @@
                                 <div class="col-md-6">
                                     <label for="center_name" class="form-label">Center Name</label>
                                     <x-input type="text" class="form-control" id="center_name" name="center_name"
-                                    value="{{ old('center_name', $economicCenter->center_name) }}"/>
+                                        value="{{ old('center_name', $economicCenter->center_name) }}" />
                                     <small id="center_nameHelp" class="form-text text-muted">Update economic center
                                         name.</small>
                                 </div>
@@ -48,7 +48,7 @@
                                     <label for="contact_number" class="form-label">Center Contact Number</label>
                                     <x-input type="text" class="form-control" id="contact_number"
                                         name="contact_number"
-                                        value="{{ old('contact_number', $economicCenter->contact_number) }}"/>
+                                        value="{{ old('contact_number', $economicCenter->contact_number) }}" />
                                     <small id="contact_numberHelp" class="form-text text-muted">Update economic contact
                                         number.</small>
                                 </div>
@@ -57,19 +57,39 @@
                                     <label for="center_location" class="form-label">Center Location</label>
                                     <x-input type="text" class="form-control" id="center_location"
                                         name="center_location"
-                                        value="{{ old('center_location', $economicCenter->center_location) }}"/>
+                                        value="{{ old('center_location', $economicCenter->center_location) }}" />
                                     <small id="center_nameHelp" class="form-text text-muted">Update economic
                                         Address.</small>
                                 </div>
                             </div>
 
-                            <div class="mb-3">
-                                <label for="center_photo" class="form-label">Center Photo</label>
-                                @if ($economicCenter->profile_photo_path)
-                                    <p>Current Photo: <a href="{{ asset($economicCenter->profile_photo_path) }}"
-                                            target="_blank">View</a></p>
-                                @endif
-                                <x-input type="file" class="form-control" id="center_photo" name="center_photo"/>
+                            {{-- Profile Photo --}}
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="profile_photo">Economic Center Photo</label>
+
+                                    {{-- Display existing profile photo if available --}}
+                                    @if ($economicCenter->profile_photo_path)
+                                        <img id="photoPreview"
+                                            src="{{ asset('storage/' . $economicCenter->profile_photo_path) }}"
+                                            alt="Profile Photo" class="mt-2"
+                                            style="width: 100px; height: 100px; object-fit: cover;">
+                                    @else
+                                        <img id="photoPreview" src="#" alt="Profile Photo Preview"
+                                            class="mt-2"
+                                            style="display: none; width: 100px; height: 100px; object-fit: cover;">
+                                    @endif
+
+                                    {{-- Input for uploading a new profile photo --}}
+                                    <input type="file" id="profile_photo" name="profile_photo"
+                                        class="form-control" accept="image/*">
+
+                                    {{-- Remove Photo button visibility based on whether there is a selected photo --}}
+                                    <button type="button" class="btn btn-secondary mt-2" id="removePhoto"
+                                        style="display: none;">
+                                        Remove Selected Photo
+                                    </button>
+                                </div>
                             </div>
 
                             <button type="submit" class="btn btn-primary float-end">Update</button>
@@ -79,7 +99,6 @@
             </div>
         </div>
     </div>
-
 </x-admin-layout>
 
 {{-- Bootstrap CDN --}}
@@ -90,6 +109,28 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <script>
+    // Show preview of selected image when a user selects a file
+    document.getElementById('profile_photo').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+            document.getElementById('photoPreview').src = e.target.result;
+            document.getElementById('photoPreview').style.display = 'block';
+            document.getElementById('removePhoto').style.display = 'inline-block';
+        };
+
+        reader.readAsDataURL(file);
+    });
+
+    // Remove selected photo (reset the input and hide the preview)
+    document.getElementById('removePhoto').addEventListener('click', function() {
+        document.getElementById('profile_photo').value = '';
+        document.getElementById('photoPreview').src = '';
+        document.getElementById('photoPreview').style.display = 'none';
+        document.getElementById('removePhoto').style.display = 'none';
+    });
+
     // Initial form submission handler (unchanged)
     document.getElementById('editEconomicCenterForm').addEventListener('submit', function(e) {
         e.preventDefault(); // Prevent form from submitting normally

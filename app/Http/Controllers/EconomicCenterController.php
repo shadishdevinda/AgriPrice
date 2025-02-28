@@ -9,6 +9,8 @@ use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+
 
 class EconomicCenterController extends Controller
 {
@@ -98,7 +100,6 @@ class EconomicCenterController extends Controller
         return view('pages.admin.economicCenter.edit', compact('economicCenter'));
     }
 
-    // TODO - Implement the update method for profile photo update
     /**
      * Update the specified resource in storage.
      */
@@ -117,6 +118,23 @@ class EconomicCenterController extends Controller
 
             // Log validate data
             Log::info('Validation passed for economic center update.', ['validated_data' => $validated]);
+
+            // Handle the profile photo upload if provided
+            if ($request->hasFile('center-photo')) {
+                // Delete the old profile photo if it exists
+                if ($economicCenter->profile_photo_path && Storage::disk('public')->exists($economicCenter->profile_photo_path)) {
+                    Storage::disk('public')->delete($economicCenter->profile_photo_path);
+                    Log::info('Old profile photo deleted.');
+                }
+
+                // Store the new profile photo
+                $path = $request->file('center-photo')->store('center-photo', 'public');
+                $validated['profile_photo_path'] = $path; // Store the full path
+                Log::info('New profile photo uploaded.', ['path' => $path]);
+            } else {
+                // If no new photo, retain the old one
+                $validated['profile_photo_path'] = $economicCenter->profile_photo_path;
+            }
 
             // Prepare data for update
             $data = [
@@ -158,14 +176,12 @@ class EconomicCenterController extends Controller
         }
     }
 
-
     public function assignUserPage(EconomicCenter $economicCenter)
     {
         $roles = Role::pluck('name', 'name')->all();
         return view('pages.admin.economicCenter.assignUser', compact('economicCenter', 'roles'));
     }
 
-    // TODO - Implement the update method for profile photo update
     public function assignUser(Request $request)
     {
         try {
@@ -200,6 +216,32 @@ class EconomicCenterController extends Controller
             if ($request->hasFile('profile_photo')) {
                 $user->profile_photo_path = $request->file('profile_photo')->store('profile_photos', 'public');
                 $user->save();
+            }
+
+            // Handle profile photo upload
+            if ($request->hasFile('profile_photo')) {
+                $existingPhoto = $user->profile_photo_path;
+
+                // If a profile photo exists, delete the old one before uploading a new one
+                if ($existingPhoto && Storage::disk('public')->exists('profile-photos/' . basename($existingPhoto))) {
+                    Storage::disk('public')->delete('profile-photos/' . basename($existingPhoto));
+                    Log::info('Old profile photo deleted.', ['file_path' => $existingPhoto, 'user_id' => $user->id]);
+                }
+
+                // Generate a unique filename using Str::random
+                $file = $request->file('profile_photo');
+                $fileExtension = $file->getClientOriginalExtension();
+                $fileName = Str::random(40) . '.' . $fileExtension; // Generate a 40-character random string as the filename
+                $filePath = 'profile-photos/' . $fileName;
+
+                // Store the file in the 'public' disk, under the 'profile-photos' directory
+                Storage::disk('public')->put($filePath, file_get_contents($file));
+
+                // Store the new file URL in the database, but remove the '/storage' part
+                $user->profile_photo_path = $filePath;  // Store just the relative path
+                $user->save();
+
+                Log::info('Profile photo uploaded.', ['file_path' => $filePath, 'user_id' => $user->id]);
             }
 
             Log::info('User assigned to economic center.', ['user_id' => $user->id]);
