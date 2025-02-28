@@ -34,7 +34,8 @@
                                         value="{{ old('center_id', $economicCenter->id) }}" />
                                     <x-input type="text" class="form-control" id="center_name" name="center_name"
                                         value="{{ old('center_name', $economicCenter->center_name) }}" disabled />
-                                    <small id="center_nameHelp" class="form-text text-muted">Economic center name.</small>
+                                    <small id="center_nameHelp" class="form-text text-muted">Economic center
+                                        name.</small>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="user_type" class="form-label">User Type</label>
@@ -47,7 +48,7 @@
                                 </div>
                             </div>
 
-                            <!-- Row 1: User Type and Name -->
+                            <!-- Row 1: User Type and Name  and Role -->
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="username" class="form-label">User Name</label>
@@ -111,15 +112,25 @@
                                 </div>
                             </div>
 
-                            <!-- Row 3: Re-Password and Profile Photo -->
+                            <!-- Row 3: Profile Photo -->
                             <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <label for="profile_photo" class="form-label">Profile Photo</label>
-                                    <x-input type="file" name="profile_photo" class="form-control"
-                                        id="profile_photo" aria-describedby="profile_photoHelp" />
+                                <div class="col-md-12">
+                                    <div class="col-md-6">
+                                        <label for="profile_photo">Profile Photo</label>
+                                        <input type="file" id="profile_photo" name="profile_photo"
+                                            class="form-control" accept="image/*">
+
+                                        <img id="photoPreview" src="#" alt="Profile Photo Preview"
+                                            class="mt-2"
+                                            style="display: none; width: 100px; height: 100px; object-fit: cover;">
+
+                                        <button type="button" class="btn btn-secondary mt-2" id="removePhoto"
+                                            style="display: none;">
+                                            Remove Selected Photo
+                                        </button>
+                                    </div>
                                     <small id="profile_photoHelp" class="form-text text-muted">Upload the profile
-                                        photo of the
-                                        user.</small>
+                                        photo of the user.</small>
                                 </div>
                             </div>
 
@@ -141,6 +152,24 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <script>
+    // Preview profile photo
+    document.getElementById('profile_photo').addEventListener('change', function(event) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('photoPreview').src = e.target.result;
+            document.getElementById('photoPreview').style.display = 'block';
+            document.getElementById('removePhoto').style.display = 'inline-block';
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    });
+
+    // Remove profile photo
+    document.getElementById('removePhoto').addEventListener('click', function() {
+        document.getElementById('profile_photo').value = '';
+        document.getElementById('photoPreview').style.display = 'none';
+        this.style.display = 'none';
+    });
+
     // Toggle password visibility
     document.getElementById('togglePassword').addEventListener('click', function() {
         const passwordField = document.getElementById('password');
@@ -194,6 +223,15 @@
                     }).then(() => {
                         // Reset the form
                         form.reset();
+
+                        // Clear the Roles field (select2 initialization)
+                        const rolesField = document.getElementById('roles');
+                        if (rolesField) {
+                            $(rolesField).val(null).trigger('change'); // Clear selected values
+                        }
+
+                        document.getElementById('photoPreview').style.display = 'none';
+                        document.getElementById('removePhoto').style.display = 'none';
                     });
                 } else {
                     // Handle validation errors

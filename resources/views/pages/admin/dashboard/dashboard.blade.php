@@ -5,39 +5,30 @@ integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEw
 
 
 <x-admin-layout>
-    
-    <x-slot name="title">Dashboard</x-slot>
+
+    <x-slot name="title">Admin Dashboard</x-slot>
     <div class="row">
         <div class="card">
-            <a href="{{ route('admin.dashboard.vegetableShow') }}">
-                <div class="card-body">
-                    <h1>Vegetables</h1>
-                    <p>{{ $vegetableCount }}</p>  <!-- Displays vegetable count -->
-                </div>
-            </a>
+            <div class="card-body">
+                <h1>Vegetables</h1>
+                <p>{{ $vegetableCount }}</p>  <!-- Displays vegetable count -->
+            </div>
         </div>
 
         <div class="card">
-            <a href="{{ route('admin.dashboard.fruitShow') }}">
-                <div class="card-body">
-                    <h1>Fruit</h1>
-                    <p>{{ $fruitCount }}</p>  <!-- Displays fruit count -->
-                </div>
-            </a>
+            <div class="card-body">
+                <h1>Fruit</h1>
+                <p>{{ $fruitCount }}</p>  <!-- Displays fruit count -->
+            </div>
         </div>
 
         <div class="card">
-            <a href="{{ route('admin.dashboard.economicCentersShow') }}">
-                <div class="card-body">
-                    <h1>Economic Center</h1>
-                    <p>{{ $economicCenter }}</p>  <!-- Displays vegetable count again -->
-                </div>
-            </a>
+            <div class="card-body">
+                <h1>Economic Center</h1>
+                <p>{{ $economicCenter }}</p>  <!-- Displays vegetable count again -->
+            </div>
         </div>
     </div>
-
-
-    <x-slot name="title">System User Management</x-slot>
 
     <div class="container">
         <div class="row">
@@ -86,8 +77,8 @@ integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEw
 
 </x-admin-layout>
 
-    
-    
+
+
 
 
 
@@ -107,7 +98,7 @@ body {
 /* Dashboard row layout */
 .row {
     display:grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 20px;
     padding-top: 50px;
     padding-left:200px;
