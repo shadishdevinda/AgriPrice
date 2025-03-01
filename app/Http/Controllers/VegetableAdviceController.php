@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\VegetableAdvice;
+use App\Models\Vegetable;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+use App\Models\VegetableAdvice;
+use App\Models\VegetableHasAdvice;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Validator;
+
 class VegetableAdviceController extends Controller
 {
     /**
@@ -14,11 +18,11 @@ class VegetableAdviceController extends Controller
     public function index()
     {
         $vegetableAdvice = VegetableAdvice::orderBy('created_at', 'DESC')->get();  // Use plural $vegetables for a collection
-    
-    // Pass the collection to the view
-    return view('pages.admin.advice.vegetable_advice.index', [
-        'vegetable_advice' => $vegetableAdvice  // Use plural form here
-    ]);
+
+        // Pass the collection to the view
+        return view('pages.admin.advice.vegetable_advice.index', [
+            'vegetable_advice' => $vegetableAdvice  // Use plural form here
+        ]);
     }
 
     /**
@@ -26,7 +30,13 @@ class VegetableAdviceController extends Controller
      */
     public function create()
     {
-        return view('pages.admin.advice.vegetable_advice.create');
+        $vegetables = Vegetable::pluck('name', 'name')->all();
+        return view(
+            'pages.admin.advice.vegetable_advice.create',
+            [
+                'vegetables' => $vegetables
+            ]
+        );
     }
 
     /**
@@ -34,20 +44,35 @@ class VegetableAdviceController extends Controller
      */
     public function store(Request $request)
     {
-        $rules = [
-            'description' => 'required|min:3'
-        ];
-        $validator = Validator::make($request->all(), $rules);
-        if ($validator->fails()){
-            return redirect()->route('vegetable_advice.create')->withInput()->withErrors($validator);
-        }
-    
-        // Initialize the product object
+        // Validate the request data
+        $validated = $request->validate([
+            'description' => 'required|min:3',
+            'vegetables' => 'required|array', // Ensure vegetables is an array
+        ]);
+
+        Log::info('Validation successful.', ['validated_data' => $validated]);
+
+        // Initialize the vegetable advice object
         $vegetableAdvice = new VegetableAdvice();
         $vegetableAdvice->description = $request->description;
-    
-        // Save the vegetable_advice in the database
+
+        // Save the vegetable advice in the database
         $vegetableAdvice->save();
+
+        // Attach the selected vegetables to the advice
+        foreach ($request->vegetables as $vegetableName) {
+            // Find the vegetable by name
+            $vegetable = Vegetable::where('name', $vegetableName)->first();
+
+            if ($vegetable) {
+                // Create a record in the vegetable_has_advice table
+                VegetableHasAdvice::create([
+                    'advice_id' => $vegetableAdvice->id,
+                    'vegetable_id' => $vegetable->id,
+                ]);
+            }
+        }
+
         return redirect()->route('vegetable_advice.index')->with('success', 'Vegetable Advice added successfully');
     }
 
@@ -56,6 +81,9 @@ class VegetableAdviceController extends Controller
      */
     public function show(VegetableAdvice $vegetableAdvice)
     {
+        // Load the related vegetables
+        $vegetableAdvice->load('vegetables');
+
         return view('pages.admin.advice.vegetable_advice.show', compact('vegetableAdvice'));
     }
 
@@ -64,7 +92,13 @@ class VegetableAdviceController extends Controller
      */
     public function edit(VegetableAdvice $vegetableAdvice)
     {
-        return view('pages.admin.advice.vegetable_advice.edit', compact('vegetableAdvice'));
+        // Fetch all vegetables
+        $vegetables = Vegetable::pluck('name', 'id')->all();
+
+        // Fetch the IDs of currently associated vegetables
+        $associatedVegetables = $vegetableAdvice->vegetables->pluck('id')->all();
+
+        return view('pages.admin.advice.vegetable_advice.edit', compact('vegetableAdvice', 'vegetables', 'associatedVegetables'));
     }
 
     /**
@@ -72,29 +106,34 @@ class VegetableAdviceController extends Controller
      */
     public function update(Request $request, VegetableAdvice $vegetableAdvice)
     {
+        // Validate the request
         $rules = [
             'description' => 'required|min:3',
+            'vegetables' => 'required|array', // Ensure vegetables is an array
         ];
         $validator = Validator::make($request->all(), $rules);
-        if ($validator->fails()){
-            return redirect()->route('vegetable_advice.edit',$vegetableAdvice->id)->withInput()->withErrors($validator);
+        if ($validator->fails()) {
+            return redirect()->route('vegetable_advice.edit', $vegetableAdvice->id)->withInput()->withErrors($validator);
         }
-        //  update description
+
+        // Update description
         $vegetableAdvice->description = $request->description;
-    
-        // Save the product in the database
         $vegetableAdvice->save();
-    
-        return redirect()->route('vegetable_advice.index')->with('success', 'vegetable_advice updated successfully');
+
+        // Sync the associated vegetables
+        $vegetableAdvice->vegetables()->sync($request->vegetables);
+
+        return redirect()->route('vegetable_advice.index')->with('success', 'Vegetable advice updated successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id){
+    public function destroy($id)
+    {
         $vegetableAdvice = VegetableAdvice::findOrFail($id);
 
-        File::delete(public_path('uploads/vegetable_advice/'.$vegetableAdvice->image));
+        File::delete(public_path('uploads/vegetable_advice/' . $vegetableAdvice->image));
         $vegetableAdvice->delete();
 
         return redirect()->route('vegetable_advice.index')->with('success', 'vegetable_advice deleted successfully');

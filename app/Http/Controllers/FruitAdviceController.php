@@ -1,24 +1,44 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\File;
+
+use App\Models\Fruit;
 use App\Models\FruitAdvice;
 use Illuminate\Http\Request;
+use App\Models\FruitHasAdvice;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Validator;
 
 class FruitAdviceController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $fruitAdvice = FruitAdvice::orderBy('created_at', 'DESC')->get();  // Use plural $vegetables for a collection
-    
-    // Pass the collection to the view
-    return view('pages.admin.advice.fruit_advice.index', [
-        'fruit_advice' => $fruitAdvice  // Use plural form here
-    ]);
+        // Fetch all fruits for the dropdown
+        $fruits = Fruit::pluck('name', 'id')->all();
+
+        // Initialize the query for fruit advice
+        $query = FruitAdvice::orderBy('created_at', 'DESC');
+
+        // Filter by selected fruit (if a fruit is selected)
+        if ($request->has('fruit_id') && $request->fruit_id) {
+            $fruitId = $request->fruit_id;
+            $query->whereHas('fruits', function ($q) use ($fruitId) {
+                $q->where('fruit_id', $fruitId);
+            });
+        }
+
+        // Fetch the filtered advice
+        $fruit_advice = $query->get();
+
+        // Pass the data to the view
+        return view('pages.admin.advice.fruit_advice.index', [
+            'fruit_advice' => $fruit_advice,
+            'fruits' => $fruits,
+        ]);
     }
 
     /**
@@ -26,7 +46,13 @@ class FruitAdviceController extends Controller
      */
     public function create()
     {
-        return view('pages.admin.advice.fruit_advice.create');
+        $fruits = Fruit::pluck('name', 'name')->all();
+        return view(
+            'pages.admin.advice.fruit_advice.create',
+            [
+                'fruits' => $fruits
+            ]
+        );
     }
 
     /**
@@ -34,20 +60,35 @@ class FruitAdviceController extends Controller
      */
     public function store(Request $request)
     {
-        $rules = [
-            'description' => 'required|min:3'
-        ];
-        $validator = Validator::make($request->all(), $rules);
-        if ($validator->fails()){
-            return redirect()->route('fruit_advice.create')->withInput()->withErrors($validator);
-        }
-    
-        // Initialize the product object
+        // Validate the request data
+        $validated = $request->validate([
+            'description' => 'required|min:3',
+            'fruits' => 'required|array', // Ensure fruits is an array
+        ]);
+
+        Log::info('Validation successful.', ['validated_data' => $validated]);
+
+        // Initialize the fruit advice object
         $fruitAdvice = new FruitAdvice();
         $fruitAdvice->description = $request->description;
-    
-        // Save the vegetable_advice in the database
+
+        // Save the fruit advice in the database
         $fruitAdvice->save();
+
+        // Attach the selected fruits to the advice
+        foreach ($request->fruits as $fruitName) {
+            // Find the fruit by name
+            $fruit = Fruit::where('name', $fruitName)->first();
+
+            if ($fruit) {
+                // Create a record in the fruit_has_advice table
+                FruitHasAdvice::create([
+                    'advice_id' => $fruitAdvice->id,
+                    'fruit_id' => $fruit->id,
+                ]);
+            }
+        }
+
         return redirect()->route('fruit_advice.index')->with('success', 'Fruit Advice added successfully');
     }
 
@@ -56,6 +97,9 @@ class FruitAdviceController extends Controller
      */
     public function show(FruitAdvice $fruitAdvice)
     {
+        // Load the related fruits
+        $fruitAdvice->load('fruits');
+
         return view('pages.admin.advice.fruit_advice.show', compact('fruitAdvice'));
     }
 
@@ -64,7 +108,13 @@ class FruitAdviceController extends Controller
      */
     public function edit(FruitAdvice $fruitAdvice)
     {
-        return view('pages.admin.advice.fruit_advice.edit', compact('fruitAdvice'));
+        // Fetch all fruits
+        $fruits = Fruit::pluck('name', 'id')->all();
+
+        // Fetch the IDs of currently associated fruits
+        $associatedFruits = $fruitAdvice->fruits->pluck('id')->all();
+
+        return view('pages.admin.advice.fruit_advice.edit', compact('fruitAdvice', 'fruits', 'associatedFruits'));
     }
 
     /**
@@ -72,21 +122,26 @@ class FruitAdviceController extends Controller
      */
     public function update(Request $request, FruitAdvice $fruitAdvice)
     {
+        // Validate the request
         $rules = [
             'description' => 'required|min:3',
+            'fruits' => 'required|array', // Ensure fruits is an array
         ];
         $validator = Validator::make($request->all(), $rules);
-        if ($validator->fails()){
-            return redirect()->route('fruit_advice.edit',$fruitAdvice->id)->withInput()->withErrors($validator);
+        if ($validator->fails()) {
+            return redirect()->route('fruit_advice.edit', $fruitAdvice->id)->withInput()->withErrors($validator);
         }
-        //  update description
+
+        // Update description
         $fruitAdvice->description = $request->description;
-    
-        // Save the product in the database
         $fruitAdvice->save();
-    
+
+        // Sync the associated fruits
+        $fruitAdvice->fruits()->sync($request->fruits);
+
         return redirect()->route('fruit_advice.index')->with('success', 'Fruit Advice updated successfully');
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -95,7 +150,7 @@ class FruitAdviceController extends Controller
     {
         $fruitAdvice = FruitAdvice::findOrFail($id);
 
-        File::delete(public_path('uploads/fruit_advice/'.$fruitAdvice->image));
+        File::delete(public_path('uploads/fruit_advice/' . $fruitAdvice->image));
         $fruitAdvice->delete();
 
         return redirect()->route('fruit_advice.index')->with('success', 'Fruit Advice deleted successfully');
