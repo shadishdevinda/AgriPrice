@@ -15,13 +15,29 @@ class VegetableAdviceController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $vegetableAdvice = VegetableAdvice::orderBy('created_at', 'DESC')->get();  // Use plural $vegetables for a collection
+        // Fetch all vegetables for the dropdown
+        $vegetables = Vegetable::pluck('name', 'id')->all();
 
-        // Pass the collection to the view
+        // Initialize the query for vegetable advice
+        $query = VegetableAdvice::orderBy('created_at', 'DESC');
+
+        // Filter by selected vegetable (if a vegetable is selected)
+        if ($request->has('vegetable_id') && $request->vegetable_id) {
+            $vegetableId = $request->vegetable_id;
+            $query->whereHas('vegetables', function ($q) use ($vegetableId) {
+                $q->where('vegetable_id', $vegetableId);
+            });
+        }
+
+        // Fetch the filtered advice
+        $vegetable_advice = $query->get();
+
+        // Pass the data to the view
         return view('pages.admin.advice.vegetable_advice.index', [
-            'vegetable_advice' => $vegetableAdvice  // Use plural form here
+            'vegetable_advice' => $vegetable_advice,
+            'vegetables' => $vegetables,
         ]);
     }
 
