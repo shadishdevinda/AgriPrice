@@ -19,6 +19,7 @@ use App\Http\Controllers\EconomicCenterController;
 // Home page
 Route::get('/', [HomeController::class, 'welcome'])->name('home');
 Route::get('/vegetables', [HomeController::class, 'vegetableIndex'])->name('vegetables.index');
+Route::get('/vegetable/{id}', [HomeController::class, 'vegetableDetails'])->name('vegetables.details');
 
 // Login route
 Route::post('/login', [LoginController::class, 'login'])->name('login');
