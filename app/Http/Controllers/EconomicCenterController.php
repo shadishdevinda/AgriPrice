@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
-
+// TODO: modify the unique photo name with time() function
 class EconomicCenterController extends Controller
 {
     /**
@@ -211,12 +211,6 @@ class EconomicCenterController extends Controller
             // Sync roles
             $validatedRoles = array_intersect($request['roles'], Role::pluck('name')->toArray());
             $user->syncRoles($validatedRoles);
-
-            // Handle file upload
-            if ($request->hasFile('profile_photo')) {
-                $user->profile_photo_path = $request->file('profile_photo')->store('profile_photos', 'public');
-                $user->save();
-            }
 
             // Handle profile photo upload
             if ($request->hasFile('profile_photo')) {
