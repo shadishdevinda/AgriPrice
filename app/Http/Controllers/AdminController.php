@@ -2,7 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Vegetable;
+use App\Models\Fruit;
+use App\Models\EconomicCenter;
 use Illuminate\Http\Request;
+use App\Models\User;
+use Spatie\Permission\Models\Role;
+
 
 class AdminController extends Controller
 {
@@ -11,54 +17,24 @@ class AdminController extends Controller
      */
     public function index()
     {
-        return view('pages.admin.dashboard.dashboard');
+        // Count the number of vegetables, fruits, and economic centers
+        $vegetableCount = Vegetable::count();
+        $fruitCount = Fruit::count();
+        $economicCenter = EconomicCenter::count();
+
+        // Get users and roles if needed
+        $users = User::where('user_type', 'system-user')->paginate(10);
+        $roles = Role::pluck('name', 'name')->all();
+
+        // Pass the counts and other data to the view
+        return view('pages.admin.dashboard.dashboard', compact('vegetableCount', 'fruitCount', 'economicCenter', 'users', 'roles'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Display the admin profile.
      */
-    public function create()
+    public function adminProfile()
     {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return view('pages.admin.profile.show');
     }
 }

@@ -10,4 +10,9 @@ class HomeController extends Controller
     {
         return view('pages.home.welcome');
     }
+
+    public function vegetableIndex()
+    {
+        return view('pages.home.vegetable.index');
+    }
 }
