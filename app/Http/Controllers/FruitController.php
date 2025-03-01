@@ -46,7 +46,6 @@ class FruitController extends Controller
             'Retail_Price' => 'required|numeric|min:0',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048' // Ensure the image is valid and has a reasonable size limit
         ];
-
         // Validate the request
         $validator = Validator::make($request->all(), $rules);
 
@@ -54,7 +53,6 @@ class FruitController extends Controller
         if ($validator->fails()) {
             return redirect()->route('fruit.create')->withInput()->withErrors($validator);
         }
-
         // Initialize the fruit object
         $fruit = new Fruit();
         $fruit->name = $request->name;

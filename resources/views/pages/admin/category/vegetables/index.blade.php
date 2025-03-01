@@ -6,7 +6,6 @@
         text-align: center;
         vertical-align: middle;
     }
-
     .vegetable-image img {
         display: block;
         margin: 0 auto;
@@ -17,9 +16,6 @@
     <x-slot name="title">Vegetable</x-slot>
     <div class="container">
         <div class="row justify-content-center mt-4">
-            <div class="col-md-10 d-flex justify-content-end">
-
-            </div>
             <div class="row d-flex justify-content-center">
                 @if (Session::has('success'))
                     <div class="col-md-10 mt-4">

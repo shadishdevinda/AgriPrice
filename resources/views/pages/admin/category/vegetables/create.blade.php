@@ -6,19 +6,18 @@ integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG
 
     <x-slot name="title">Vegetable</x-slot>
 
-    <div class="bg-dark py-3">
-      <h1 class="text-white text-center">Product List</h1>
-    </div>
     <div class="container">
       <div class="row justify-content-center mt-4">
-        <div class="col-md-10 d-flex justify-content-end">
-          <a href="{{route('vegetable.index')}}" class="btn btn-dark">Back</a>
+        <div class="col-md-10 d-flex ">
+          
         </div>
       <div class="row d-flex justify-content-center">
-        <div class="col-md-10">
+        <div class="col-md-20">
           <div class="card border-0 shadow-lg my-4">
             <div class="card-header bg-dark">
-              <h3 class="text-white">Create Product</h3>
+              <h3 class="text-white">Create Vegetable 
+                <a href="{{route('vegetable.index')}}" class="btn btn-dark float-end border border-white">Back</a>
+              </h3>
             </div>
             <form enctype="multipart/form-data" action="{{route('vegetable.store')}}" method="POST">
               @csrf
@@ -58,7 +57,7 @@ integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG
                 
               </div>
               <div class="d-grid">
-                <button class="btn btn-lg btn-primary">submit</button>
+                <button class="btn btn-lg text-white" style="background-color: #065744cc;">submit</button>
               </div>
             </div>
           </form>

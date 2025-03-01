@@ -48,7 +48,6 @@ class VegetableController extends Controller
             'Retail_Price' => 'required|numeric|min:0',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ];
-
         // Validate the request
         $validator = Validator::make($request->all(), $rules);
 
