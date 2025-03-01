@@ -131,7 +131,6 @@
         height: 50px; /* Adjust size as needed */
         justify-content: end;
     }
-    
 
     /* Hover effect for cards */
     .card:hover {

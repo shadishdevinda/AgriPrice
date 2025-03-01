@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use App\Models\EconomicCenter;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
@@ -12,7 +11,7 @@ use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Str;
 
-
+// TODO: modify the unique photo name with time() function
 class UserManageController extends Controller
 {
     /**
@@ -77,7 +76,7 @@ class UserManageController extends Controller
 
                 // If a profile photo exists, delete the old one before uploading a new one
                 if ($existingPhoto && Storage::disk('public')->exists('profile-photos/' . basename($existingPhoto))) {
-                    Storage::disk('public')->delete('profile-photos/' . basename($existingPhoto));
+                    Storage::disk('public')->delete('profile-photos/' . time() . basename($existingPhoto));
                     Log::info('Old profile photo deleted.', ['file_path' => $existingPhoto, 'user_id' => $user->id]);
                 }
 
@@ -99,29 +98,6 @@ class UserManageController extends Controller
 
             Log::info('User created.', ['user_id' => $user->id]);
 
-            // // Check if Economic Center data is provided
-            // $centerCreated = false;
-            // if (!empty($validated['center_reg_id']) && !empty($validated['center_name']) && !empty($validated['center_location'])) {
-            //     $center = EconomicCenter::create([
-            //         'center_name' => $validated['center_name'],
-            //         'center_reg_id' => $validated['center_reg_id'],
-            //         'center_location' => $validated['center_location'],
-            //     ]);
-            //     Log::info('Economic Center created.', ['center_id' => $center->id]);
-            //     $centerCreated = true;
-            // }
-            // // Set success message based on the outcome
-            // $message = $centerCreated
-            //     ? 'User created with Economic Center successfully.'
-            //     : 'User created successfully.';
-
-            // Log::info('Store method executed successfully.', ['message' => $message]);
-
-            // // Return success response
-            // return response()->json([
-            //     'success' => true,
-            //     'message' => $message,
-            // ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
             Log::error('Validation failed.', ['errors' => $e->validator->errors()->all()]);
 

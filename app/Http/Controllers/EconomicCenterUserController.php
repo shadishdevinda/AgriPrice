@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Permission;
 
+// TODO: modify the unique photo name with time() function
 class EconomicCenterUserController extends Controller
 {
     /**
