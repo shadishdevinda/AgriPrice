@@ -1,49 +1,64 @@
 {{-- Bootstrap CDN --}}
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-
-
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
 <x-admin-layout>
-    
+
     <x-slot name="title">Dashboard</x-slot>
-    <div class="row">
-        <div class="card">
-            <a href="{{ route('admin.dashboard.vegetableShow') }}">
-                <div class="card-body">
-                    <h1>Vegetables</h1>
-                    <p>{{ $vegetableCount }}</p>  <!-- Displays vegetable count -->
-                </div>
-            </a>
-        </div>
-
-        <div class="card">
-            <a href="{{ route('admin.dashboard.fruitShow') }}">
-                <div class="card-body">
-                    <h1>Fruit</h1>
-                    <p>{{ $fruitCount }}</p>  <!-- Displays fruit count -->
-                </div>
-            </a>
-        </div>
-
-        <div class="card">
-            <a href="{{ route('admin.dashboard.economicCentersShow') }}">
-                <div class="card-body">
-                    <h1>Economic Center</h1>
-                    <p>{{ $economicCenter }}</p>  <!-- Displays vegetable count again -->
-                </div>
-            </a>
-        </div>
-    </div>
-
-
-    <x-slot name="title">System User Management</x-slot>
-
     <div class="container">
-        <div class="row">
-            <div class="col-md-12">
+        <div class="row mt-5">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-text">
+                            <h1>Vegetables</h1>
+                        <p>{{ $vegetableCount }}</p> <!-- Displays vegetable count -->
+                        </div>
+                        <div class="card-img">
+                            <img src="\images\ad1.png" alt="">
+                        </div>
+                    </div>
+                    
+                    
+                </div>
+            </div>
 
-                <div class="card mt-3">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-text">
+                            <h1>Fruit</h1>
+                        <p>{{ $fruitCount }}</p> <!-- Displays fruit count -->
+                        </div>
+                        <div class="card-img">
+                            <img src="\images\ad2.png" alt="">
+                        </div>
+                    </div>
+                    
+                    
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-text">
+                            <h1>Economic Center</h1>
+                        <p>{{ $economicCenter }}</p> <!-- Displays vegetable count again -->
+                        </div>
+                        <div class="card-img">
+                            <img src="\images\ad3.png" alt="">
+                        </div>
+                    </div>
+                    
+                    
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-md-12">
+                <div class="card">
                     <div class="card-header">
                         <h5 class="card-title">System User Management</h5>
                     </div>
@@ -71,8 +86,6 @@ integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEw
                                     </td>
                                 </tr>
                             @endforeach
-
-
                         </tbody>
                     </table>
                     {{-- Pagination --}}
@@ -86,71 +99,70 @@ integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEw
 
 </x-admin-layout>
 
-    
-    
-
-
-
 <style>
     * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
-}
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+    }
 
-body {
-    background-color: #f4f4f4;
-    padding: 20px;
-}
+    body {
+        background-color: #f4f4f4;
+        padding: 20px;
+    }
 
-/* Dashboard row layout */
-.row {
-    display:grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
-    gap: 20px;
-    padding-top: 50px;
-    padding-left:200px;
-    padding-right:200px;
-}
+    /* Card Styling */
+    .card {
+        background: #007b5a59;
+        border-radius: 20px;
+        border: 2px solid white;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
 
-/* Card Styling */
-.card {
-    background: #007b5a59;
-    border-radius: 20px;
-    border: 2px solid white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    text-align: center;
-}
+    .card-body{
+        display: flex;
+        gap: 30px;
+    }
+    .card-img{
+        color: white;
+        width: 50px; /* Adjust size as needed */
+        height: 50px; /* Adjust size as needed */
+        justify-content: end;
+    }
+    
 
-/* Hover effect for cards */
-.card:hover {
-    box-shadow: 0 6px 12px rgba(255, 255, 255, 0.508);
-}
+    /* Hover effect for cards */
+    .card:hover {
+        box-shadow: 0 6px 12px rgba(255, 255, 255, 0.508);
+    }
 
-/* Card Body */
-.card-body h1 {
-    font-size: 22px;
-    color: #040404;
-    margin-bottom: 10px;
-}
+    /* Card Body */
+    .card-text{
+        margin-right: 10px;
+        width: 200px
 
-.card-body p {
-    font-size: 16px;
-    color: #000000b8;
-}
+    }
+    .card-text h1{
+    font-size: 20px;
+    font-weight: bold;
+    }
 
-/* Link Styling */
-.card a {
-    text-decoration: none;
-    display: block;
-    color: inherit;
-}
+    .card-text p {
+        font-size: 20px;
+        padding-left: 10px
+    }
 
+    /* Link Styling */
+    .card a {
+        text-decoration: none;
+        display: block;
+        color: inherit;
+    }
 </style>
 
 {{-- Bootstrap CDN --}}
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
 </script>
