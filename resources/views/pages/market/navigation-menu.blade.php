@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="border-b border-gray-100" style="background-color: #038562a3; padding-bottom:10px;">
+<nav x-data="{ open: false }" class="border-b border-gray-100" style="background-color: #065744; padding-bottom:10px;">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -10,9 +10,10 @@
                     </a>
                 </div>
 
+
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link href="{{ route('market.dashboard') }}" :active="request()->routeIs('market.dashboard')">
+                    <x-nav-link class="text-white hove:text:black" href="{{ route('market.dashboard') }}" :active="request()->routeIs('market.dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
                 </div>

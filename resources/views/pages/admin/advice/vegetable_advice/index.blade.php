@@ -23,10 +23,12 @@
                     <div class="card-body bg-light">
                         <form action="{{ route('vegetable_advice.index') }}" method="GET">
                             <div class="input-group">
-                                <select name="vegetable_id" id="vegetables" class="form-select select2" onchange="this.form.submit()">
+                                <select name="vegetable_id" id="vegetables" class="form-select select2"
+                                    onchange="this.form.submit()">
                                     <option value="">Select a vegetable to filter</option>
                                     @foreach ($vegetables as $id => $name)
-                                        <option value="{{ $id }}" {{ request('vegetable_id') == $id ? 'selected' : '' }}>
+                                        <option value="{{ $id }}"
+                                            {{ request('vegetable_id') == $id ? 'selected' : '' }}>
                                             {{ $name }}
                                         </option>
                                     @endforeach
@@ -44,14 +46,14 @@
                         @endif
 
                         <table class="table table-striped">
-                            <thead>
+                            <thead style="text-align: center;">
                                 <tr>
                                     <th>ID</th>
                                     <th>Description</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody style="text-align: center;">
                                 @if ($vegetable_advice->isNotEmpty())
                                     @foreach ($vegetable_advice as $vegetableAdvice)
                                         <tr>
@@ -60,18 +62,35 @@
                                                 {{ Str::limit($vegetableAdvice->description, 50, '...') }}
                                             </td>
                                             <td>
-                                                <a href="{{ route('vegetable_advice.edit', $vegetableAdvice->id) }}" class="btn btn-sm btn-warning">
-                                                    <i class="fas fa-edit"></i> Edit
-                                                </a>
-                                                <a href="{{ route('vegetable_advice.show', $vegetableAdvice->id) }}" class="btn btn-sm btn-info">
-                                                    <i class="fas fa-eye"></i> Show
-                                                </a>
-                                                <button type="button" class="btn btn-sm btn-danger" onclick="deleteProduct({{ $vegetableAdvice->id }})">
-                                                    <i class="fas fa-trash"></i> Delete
-                                                </button>
+                                                <div class="d-flex justify-content-end gap-2">
+                                                    <!-- Show Button -->
+                                                    <button type="button"
+                                                        class="btn btn-primary d-flex align-items-center gap-1"
+                                                        style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
+                                                        onclick="window.location.href='{{ route('vegetable_advice.show', $vegetableAdvice->id) }}'">
+                                                        <i class="fas fa-eye"></i> <span>Show</span>
+                                                    </button>
+
+                                                    <!-- Edit Button -->
+                                                    <button type="button"
+                                                        class="btn btn-warning d-flex align-items-center gap-1"
+                                                        style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
+                                                        onclick="window.location.href='{{ route('vegetable_advice.edit', $vegetableAdvice->id) }}'">
+                                                        <i class="fas fa-edit"></i> <span>Edit</span>
+                                                    </button>
+
+                                                    <button type="button"
+                                                        class="btn btn-danger btn-sm d-flex align-items-center gap-1"
+                                                        style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
+                                                        onclick="deleteVegAdvice({{ $vegetableAdvice->id }})">
+                                                        <i class="fas fa-trash"></i> Delete
+                                                    </button>
+                                                </div>
 
                                                 <!-- Hidden delete form -->
-                                                <form id="delete-product-form{{ $vegetableAdvice->id }}" action="{{ route('vegetable_advice.destroy', $vegetableAdvice->id) }}" method="POST" style="display: none;">
+                                                <form id="delete-vegetable-advice-form{{ $vegetableAdvice->id }}"
+                                                    action="{{ route('vegetable_advice.destroy', $vegetableAdvice->id) }}"
+                                                    method="POST" style="display: none;">
                                                     @csrf
                                                     @method('DELETE')
                                                 </form>
@@ -85,6 +104,11 @@
                                 @endif
                             </tbody>
                         </table>
+
+                        <!-- Pagination Links -->
+                        <div class="d-flex justify-content-center mt-4">
+                            {{ $vegetable_advice->links() }}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -102,11 +126,85 @@
 
 <!-- JavaScript for Delete Confirmation and select2 Initialization -->
 <script>
-    function deleteProduct(id) {
-        if (confirm("Are you sure you want to delete this vegetable advice?")) {
-            document.getElementById('delete-product-form' + id).submit();
-        }
+    // Function to delete a vegetable advice
+    function deleteVegAdvice(id) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'You are about to delete this vegetable advice. This action cannot be undone!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Show loading spinner
+                Swal.fire({
+                    title: 'Deleting...',
+                    text: 'Please wait while we delete the vegetable advice.',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+
+                // Submit the delete form via AJAX
+                const form = document.getElementById('delete-vegetable-advice-form' + id); // Correct form ID
+                const formData = new FormData(form);
+
+                fetch(form.action, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                        },
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Store success message in localStorage before reloading
+                            localStorage.setItem('deleteSuccess', 'Vegetable advice deleted successfully!');
+
+                            // Reload the page immediately after successful deletion
+                            window.location.reload();
+                        } else {
+                            // Show error message if deletion fails
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: data.message ||
+                                    'An error occurred while deleting the vegetable advice.',
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'An unexpected error occurred.',
+                        });
+                    });
+            }
+        });
     }
+
+    // Show the delete success message after page reload
+    document.addEventListener('DOMContentLoaded', function() {
+        const successMessage = localStorage.getItem('deleteSuccess');
+        if (successMessage) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Deleted!',
+                text: successMessage,
+                confirmButtonText: 'Okay',
+            });
+
+            // Remove the success message from localStorage after showing it
+            localStorage.removeItem('deleteSuccess');
+        }
+    });
 
     // Initialize select2 on the vegetables select input
     $(document).ready(function() {

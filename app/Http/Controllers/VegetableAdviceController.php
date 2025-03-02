@@ -32,7 +32,7 @@ class VegetableAdviceController extends Controller
         }
 
         // Fetch the filtered advice
-        $vegetable_advice = $query->get();
+        $vegetable_advice = $query->paginate(10); // 10 items per page
 
         // Pass the data to the view
         return view('pages.admin.advice.vegetable_advice.index', [
@@ -62,7 +62,7 @@ class VegetableAdviceController extends Controller
     {
         // Validate the request data
         $validated = $request->validate([
-            'description' => 'required|min:3',
+            'description' => 'required|min:3|unique:vegetable_advice,description',
             'vegetables' => 'required|array', // Ensure vegetables is an array
         ]);
 
@@ -89,7 +89,11 @@ class VegetableAdviceController extends Controller
             }
         }
 
-        return redirect()->route('vegetable_advice.index')->with('success', 'Vegetable Advice added successfully');
+        // Return a JSON response
+        return response()->json([
+            'success' => true,
+            'message' => 'Vegetable Advice added successfully!',
+        ]);
     }
 
     /**
@@ -127,9 +131,15 @@ class VegetableAdviceController extends Controller
             'description' => 'required|min:3',
             'vegetables' => 'required|array', // Ensure vegetables is an array
         ];
+
         $validator = Validator::make($request->all(), $rules);
+
+        // If validation fails, return JSON response with errors
         if ($validator->fails()) {
-            return redirect()->route('vegetable_advice.edit', $vegetableAdvice->id)->withInput()->withErrors($validator);
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors(),
+            ], 422); // 422 Unprocessable Entity
         }
 
         // Update description
@@ -139,7 +149,11 @@ class VegetableAdviceController extends Controller
         // Sync the associated vegetables
         $vegetableAdvice->vegetables()->sync($request->vegetables);
 
-        return redirect()->route('vegetable_advice.index')->with('success', 'Vegetable advice updated successfully');
+        // Return JSON response for success
+        return response()->json([
+            'success' => true,
+            'message' => 'Vegetable advice updated successfully!',
+        ]);
     }
 
     /**
@@ -147,11 +161,30 @@ class VegetableAdviceController extends Controller
      */
     public function destroy($id)
     {
-        $vegetableAdvice = VegetableAdvice::findOrFail($id);
+        try {
+            // Find the vegetable advice by ID
+            $vegetableAdvice = VegetableAdvice::findOrFail($id);
 
-        File::delete(public_path('uploads/vegetable_advice/' . $vegetableAdvice->image));
-        $vegetableAdvice->delete();
+            // Delete the associated image file
+            if ($vegetableAdvice->image) {
+                File::delete(public_path('uploads/vegetable_advice/' . $vegetableAdvice->image));
+            }
 
-        return redirect()->route('vegetable_advice.index')->with('success', 'vegetable_advice deleted successfully');
+            // Delete the vegetable advice
+            $vegetableAdvice->delete();
+
+            // Return JSON response for success
+            return response()->json([
+                'success' => true,
+                'message' => 'Vegetable advice deleted successfully!',
+            ]);
+        } catch (\Exception $e) {
+            // Return JSON response for error
+            return response()->json([
+                'success' => false,
+                'message' => 'An error occurred while deleting the vegetable advice.',
+                'error' => $e->getMessage(),
+            ], 500); // 500 Internal Server Error
+        }
     }
 }

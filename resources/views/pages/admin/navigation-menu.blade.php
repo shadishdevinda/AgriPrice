@@ -1,14 +1,21 @@
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-<nav x-data="{ open: false }" class=" border-b border-gray-200" style="background-color: #038562a3; padding-bottom:50px; padding-top:20px;">
+<nav x-data="{ open: false }" class="border-b border-gray-100" style="background-color: #065744; padding-bottom:10px;">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16" style="padding-left:70px;">
+        <div class="flex justify-between h-16">
             <div class="flex">
-                
+                <!-- Logo -->
+                <div class="shrink-0 flex items-center">
+                    <a href="{{ route('market.dashboard') }}">
+                        <x-application-mark class="block h-9 w-auto" />
+                    </a>
+                </div>
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link class="text-white hove:text:black" href="{{ route('admin.dashboard') }}" :active="request()->routeIs('admin.dashboard')">
+
+                    {{-- Dashboard --}}
+                    <x-nav-link class="text-white hove:text:black" href="{{ route('admin.dashboard') }}"
+                        :active="request()->routeIs('admin.dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
 
@@ -17,8 +24,8 @@
                         <div class="relative">
                             <x-dropdown align="left" width="60">
                                 <x-slot name="trigger">
-                                    <button style="border: none; background: none hove:text:black;"
-                                        class="inline-flex items-center px-2 py-2 text-sm leading-4 font-medium text-white  hover:text-gray-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50 transition ease-in-out duration-150 btn border-0">
+                                    <button style="border: none; background: none;"
+                                        class="inline-flex items-center px-2 py-2 text-sm leading-4 font-medium rounded-md text-white  hover:text-gray-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50 transition ease-in-out duration-150">
                                         {{ __('User Management') }}
                                     </button>
                                 </x-slot>
@@ -34,7 +41,8 @@
                                             {{ __('System Users') }}
                                         </x-dropdown-link>
                                         <!-- Market user CURD Operations -->
-                                        <x-dropdown-link href="{{ route('economic-center-user.index') }}" :active="request()->routeIs('economic-center-user.index')">
+                                        <x-dropdown-link href="{{ route('economic-center-user.index') }}"
+                                            :active="request()->routeIs('economic-center-user.index')">
                                             {{ __('Market Users') }}
                                         </x-dropdown-link>
                                     </div>
@@ -73,13 +81,6 @@
                             </x-dropdown>
                         </div>
                     </div>
-
-                    <!-- Logo -->
-                <div class="shrink-0 flex items-center pl-5 pr-5">
-                    <a href="{{ route('admin.dashboard') }}">
-                        <x-application-mark class="block h-9 w-auto" />
-                    </a>
-                </div>
 
                     <!-- Category -->
                     <div class="hidden sm:flex sm:items-center pt-1">
@@ -130,7 +131,8 @@
                                         </div>
 
                                         <!-- Vegetables Advice -->
-                                        <x-dropdown-link href="{{ route('vegetable_advice.index') }}" :active="request()->routeIs('vegetable_advice.index')">
+                                        <x-dropdown-link href="{{ route('vegetable_advice.index') }}"
+                                            :active="request()->routeIs('vegetable_advice.index')">
                                             {{ __('Vegetables Advice') }}
                                         </x-dropdown-link>
                                         <!-- User Roles -->
@@ -143,8 +145,7 @@
                         </div>
                     </div>
 
-                    <x-nav-link class="text-white" 
-                    href="{{ route('economic-centers.index') }}" :active="request()->routeIs('economic-centers.index')">
+                    <x-nav-link class="text-white" href="{{ route('economic-centers.index') }}" :active="request()->routeIs('economic-centers.index')">
                         {{ __('Economic Center Management') }}
                     </x-nav-link>
                 </div>
@@ -210,12 +211,14 @@
                 <div class="ms-3 relative">
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
-                            @if (Auth::check()) <!-- Ensure user is logged in -->
+                            @if (Auth::check())
+                                <!-- Ensure user is logged in -->
                                 @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
                                     <!-- Profile Photo Button -->
-                                    <button class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
+                                    <button
+                                        class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
                                         <img class="size-8 rounded-full object-cover"
-                                            src="{{ Auth::user()->profile_photo_path ? asset('storage/' . Auth::user()->profile_photo_path) : asset('images/default-avatar.png') }}" 
+                                            src="{{ Auth::user()->profile_photo_path ? asset('storage/' . Auth::user()->profile_photo_path) : asset('images/default-avatar.png') }}"
                                             alt="{{ Auth::user()->name }}" />
                                     </button>
                                 @else
@@ -224,9 +227,10 @@
                                         <button type="button"
                                             class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50 transition ease-in-out duration-150">
                                             {{ Auth::user()->name }}
-                        
+
                                             <svg class="ms-2 -me-0.5 size-4" xmlns="http://www.w3.org/2000/svg"
-                                                fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                                fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round"
                                                     d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                                             </svg>
@@ -240,37 +244,37 @@
                                 </a>
                             @endif
                         </x-slot>
-                        
-                        
 
-                       <!-- resources/views/components/navigation-menu.blade.php -->
-<x-slot name="content">
-    <!-- Account Management -->
-    <div class="block px-4 py-2 text-xs text-gray-400">
-        {{ __('Manage Account') }}
-    </div>
 
-    <x-dropdown-link href="{{ route('admin.profile') }}">
-        {{ __('Profile') }}
-    </x-dropdown-link>
 
-    @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
-        <x-dropdown-link href="{{ route('api-tokens.index') }}">
-            {{ __('API Tokens') }}
-        </x-dropdown-link>
-    @endif
+                        <!-- resources/views/components/navigation-menu.blade.php -->
+                        <x-slot name="content">
+                            <!-- Account Management -->
+                            <div class="block px-4 py-2 text-xs text-gray-400">
+                                {{ __('Manage Account') }}
+                            </div>
 
-    <div class="border-t border-gray-200"></div>
+                            <x-dropdown-link href="{{ route('admin.profile') }}">
+                                {{ __('Profile') }}
+                            </x-dropdown-link>
 
-    <!-- Authentication -->
-    <form method="POST" action="{{ route('logout') }}" x-data>
-        @csrf
+                            @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
+                                <x-dropdown-link href="{{ route('api-tokens.index') }}">
+                                    {{ __('API Tokens') }}
+                                </x-dropdown-link>
+                            @endif
 
-        <x-dropdown-link href="{{ route('logout') }}" @click.prevent="$root.submit();">
-            {{ __('Log Out') }}
-        </x-dropdown-link>
-    </form>
-</x-slot>
+                            <div class="border-t border-gray-200"></div>
+
+                            <!-- Authentication -->
+                            <form method="POST" action="{{ route('logout') }}" x-data>
+                                @csrf
+
+                                <x-dropdown-link href="{{ route('logout') }}" @click.prevent="$root.submit();">
+                                    {{ __('Log Out') }}
+                                </x-dropdown-link>
+                            </form>
+                        </x-slot>
 
                     </x-dropdown>
                 </div>
