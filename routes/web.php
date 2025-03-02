@@ -16,6 +16,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EconomicCenterUserController;
 use App\Http\Controllers\EconomicCenterController;
 
+
 // Home page
 Route::get('/', [HomeController::class, 'welcome'])->name('home');
 
@@ -44,6 +45,8 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/market/dashboard', [MarketController::class, 'index'])->name('market.dashboard');
+    Route::put('/vegetable/{id}', [MarketController::class, 'update'])->name('vegetable.update');
+    Route::put('/fruit/{id}', [MarketController::class, 'update'])->name('fruit.update');
     Route::get('/market/profile', [MarketController::class, 'marketProfile'])->name('market.profile');
 });
 
@@ -78,13 +81,13 @@ Route::put('economic-centers/add-user/{economicCenterID}', [EconomicCenterContro
 
 
 // Vegetables Routes
-Route::resource('/vegetable',VegetableController::class);
+Route::resource('/vegetable', VegetableController::class);
 
 // Fruit Routes
-Route::resource('/fruit',FruitController::class);
+Route::resource('/fruit', FruitController::class);
 
 // vegetable_advice Routes
-Route::resource('/vegetable_advice',VegetableAdviceController::class);
+Route::resource('/vegetable_advice', VegetableAdviceController::class);
 
 // fruit_advice Routes
-Route::resource('/fruit_advice',FruitAdviceController::class);
+Route::resource('/fruit_advice', FruitAdviceController::class);
