@@ -15,7 +15,7 @@ class AdminUserSeeder extends Seeder
     {
         DB::table('users')->insert([
             'name' => 'admin',
-            'email' => 'admin@gmail.com', // Corrected the typo in the email (gamil -> gmail)
+            'email' => 'admin@gmail.com', // Replace with your email
             'user_type' => 'system-user',
             'center_id' => null, // Update if you want to associate with a specific center
             'password' => Hash::make('password'), // Replace with a secure password

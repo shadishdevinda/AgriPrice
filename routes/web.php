@@ -45,11 +45,10 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/market/dashboard', [MarketController::class, 'index'])->name('market.dashboard');
-    Route::put('/vegetable/{id}', [MarketController::class, 'update'])->name('vegetable.update');
-    Route::put('/fruit/{id}', [MarketController::class, 'update'])->name('fruit.update');
+    Route::put('/market/vegetable/{id}', [MarketController::class, 'vegetableUpdate'])->name('market.vegetable.update');
+    Route::put('/market/fruit/{id}', [MarketController::class, 'fruitUpdate'])->name('market.fruit.update');
     Route::get('/market/profile', [MarketController::class, 'marketProfile'])->name('market.profile');
 });
-
 
 // Permissions Routes
 Route::resource('permissions', PermissionController::class);

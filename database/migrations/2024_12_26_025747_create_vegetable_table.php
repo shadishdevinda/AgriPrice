@@ -16,8 +16,6 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('description');
-            $table->decimal('Wholesale_Price',10, 2);
-            $table->decimal('Retail_Price',10, 2);
             $table->string('image', 2048);
             $table->timestamps();
         });
@@ -37,6 +35,9 @@ return new class extends Migration
             $table->foreignId('vegetable_id')
                 ->constrained('vegetable')
                 ->onDelete('cascade');
+
+            $table->decimal('vegetable_wholesale_price', 10, 2);
+            $table->decimal('vegetable_retail_price', 10, 2);
 
             $table->timestamps();
         });
