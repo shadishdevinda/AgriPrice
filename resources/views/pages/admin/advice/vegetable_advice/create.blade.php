@@ -34,7 +34,7 @@
     }
 
     .btn-custom {
-        background-color: #065744cc;
+        background-color: #065744;
         color: white;
         border: none;
         padding: 0.5rem 1rem;
@@ -42,9 +42,11 @@
     }
 
     .btn-custom:hover {
-        background-color: #054735cc;
+        background-color: #065744;
+        color: white;
     }
 </style>
+
 
 <x-admin-layout>
     <x-slot name="title">Vegetable Advice</x-slot>
