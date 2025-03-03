@@ -32,7 +32,7 @@ class FruitAdviceController extends Controller
         }
 
         // Fetch the filtered advice
-        $fruit_advice = $query->get();
+        $fruit_advice = $query->paginate(10); // 10 items per page
 
         // Pass the data to the view
         return view('pages.admin.advice.fruit_advice.index', [
@@ -40,6 +40,7 @@ class FruitAdviceController extends Controller
             'fruits' => $fruits,
         ]);
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -68,28 +69,48 @@ class FruitAdviceController extends Controller
 
         Log::info('Validation successful.', ['validated_data' => $validated]);
 
-        // Initialize the fruit advice object
-        $fruitAdvice = new FruitAdvice();
-        $fruitAdvice->description = $request->description;
+        try {
+            // Initialize the fruit advice object
+            $fruitAdvice = new FruitAdvice();
+            $fruitAdvice->description = $request->description;
 
-        // Save the fruit advice in the database
-        $fruitAdvice->save();
+            // Save the fruit advice in the database
+            $fruitAdvice->save();
 
-        // Attach the selected fruits to the advice
-        foreach ($request->fruits as $fruitName) {
-            // Find the fruit by name
-            $fruit = Fruit::where('name', $fruitName)->first();
+            // Attach the selected fruits to the advice
+            foreach ($request->fruits as $fruitName) {
+                // Find the fruit by name
+                $fruit = Fruit::where('name', $fruitName)->first();
 
-            if ($fruit) {
-                // Create a record in the fruit_has_advice table
-                FruitHasAdvice::create([
-                    'advice_id' => $fruitAdvice->id,
-                    'fruit_id' => $fruit->id,
-                ]);
+                if ($fruit) {
+                    // Create a record in the fruit_has_advice table
+                    FruitHasAdvice::create([
+                        'advice_id' => $fruitAdvice->id,
+                        'fruit_id' => $fruit->id,
+                    ]);
+                }
             }
-        }
 
-        return redirect()->route('fruit_advice.index')->with('success', 'Fruit Advice added successfully');
+            // Return JSON response for success
+            return response()->json([
+                'success' => true,
+                'message' => 'Fruit Advice added successfully!',
+                'data' => $fruitAdvice, // Optionally include the created advice object
+            ]);
+        } catch (\Exception $e) {
+            // Log the error
+            Log::error('Error storing fruit advice:', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+
+            // Return JSON response for error
+            return response()->json([
+                'success' => false,
+                'message' => 'An error occurred while adding the fruit advice.',
+                'error' => $e->getMessage(),
+            ], 500); // 500 Internal Server Error
+        }
     }
 
     /**
@@ -127,32 +148,77 @@ class FruitAdviceController extends Controller
             'description' => 'required|min:3',
             'fruits' => 'required|array', // Ensure fruits is an array
         ];
+
         $validator = Validator::make($request->all(), $rules);
+
+        // If validation fails, return JSON response with errors
         if ($validator->fails()) {
-            return redirect()->route('fruit_advice.edit', $fruitAdvice->id)->withInput()->withErrors($validator);
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation failed.',
+                'errors' => $validator->errors(),
+            ], 422); // 422 Unprocessable Entity
         }
 
-        // Update description
-        $fruitAdvice->description = $request->description;
-        $fruitAdvice->save();
+        try {
+            // Update description
+            $fruitAdvice->description = $request->description;
+            $fruitAdvice->save();
 
-        // Sync the associated fruits
-        $fruitAdvice->fruits()->sync($request->fruits);
+            // Sync the associated fruits
+            $fruitAdvice->fruits()->sync($request->fruits);
 
-        return redirect()->route('fruit_advice.index')->with('success', 'Fruit Advice updated successfully');
+            // Return JSON response for success
+            return response()->json([
+                'success' => true,
+                'message' => 'Fruit Advice updated successfully!',
+                'data' => $fruitAdvice, // Optionally include the updated advice object
+            ]);
+        } catch (\Exception $e) {
+            // Log the error
+            Log::error('Error updating fruit advice:', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+
+            // Return JSON response for error
+            return response()->json([
+                'success' => false,
+                'message' => 'An error occurred while updating the fruit advice.',
+                'error' => $e->getMessage(),
+            ], 500); // 500 Internal Server Error
+        }
     }
-
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy($id)
     {
-        $fruitAdvice = FruitAdvice::findOrFail($id);
+        try {
+            // Find the fruit advice by ID
+            $fruitAdvice = FruitAdvice::findOrFail($id);
 
-        File::delete(public_path('uploads/fruit_advice/' . $fruitAdvice->image));
-        $fruitAdvice->delete();
+            // Delete the associated image file
+            if ($fruitAdvice->image) {
+                File::delete(public_path('uploads/vegetable_advice/' . $fruitAdvice->image));
+            }
 
-        return redirect()->route('fruit_advice.index')->with('success', 'Fruit Advice deleted successfully');
+            // Delete the vegetable advice
+            $fruitAdvice->delete();
+
+            // Return JSON response for success
+            return response()->json([
+                'success' => true,
+                'message' => 'Fruit advice deleted successfully!',
+            ]);
+        } catch (\Exception $e) {
+            // Return JSON response for error
+            return response()->json([
+                'success' => false,
+                'message' => 'An error occurred while deleting the fruit advice.',
+                'error' => $e->getMessage(),
+            ], 500); // 500 Internal Server Error
+        }
     }
 }
