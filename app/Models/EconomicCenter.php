@@ -21,6 +21,12 @@ class EconomicCenter extends Model
         'center_location',
         'profile_photo_path',
     ];
+
+    // Relationship with CenterHasVegetable
+    public function vegetables()
+    {
+        return $this->hasMany(CenterHasVegetable::class, 'economic_center_id', 'id');
+    }
 }
 
 

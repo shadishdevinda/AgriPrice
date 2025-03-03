@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Vegetable;
+use App\Models\CenterHasVegetable;
+use Carbon\Carbon;
+use DB;
 
 class HomeController extends Controller
 {
@@ -18,9 +21,48 @@ class HomeController extends Controller
         return view('pages.home.vegetable.index', compact('vegetables'));
     }
 
-    public function vegetableDetails($id)
+    public function vegetableDetails(Request $request, $id)
     {
-        $vegetable = Vegetable::findOrFail($id); // Get vegetable by ID
-        return view('pages.home.vegetable.details', compact('vegetable'));
+        $vegetable = Vegetable::findOrFail($id);
+
+        // Get all unique dates and centers
+        $dates = CenterHasVegetable::where('vegetable_id', $id)
+                    ->selectRaw('DATE(created_at) as date')
+                    ->distinct()
+                    ->pluck('date');
+
+        $centers = CenterHasVegetable::where('vegetable_id', $id)
+                    ->with('center')
+                    ->select('center_id')
+                    ->distinct()
+                    ->get();
+
+        // Fetch latest available date
+        $latestDate = CenterHasVegetable::where('vegetable_id', $id)
+                        ->orderBy('created_at', 'desc')
+                        ->value(DB::raw('DATE(created_at)'));
+
+        // Default selected date (if filtering by "All Centers", use latest date)
+        $selectedDate = $request->has('center_id') && $request->center_id != '' ? null : ($request->input('date') ?? $latestDate);
+
+        // Query for data
+        $query = CenterHasVegetable::where('vegetable_id', $id);
+
+        if ($request->has('center_id') && $request->center_id != '') {
+            // If filtering by a specific center, show data for the last 10 days
+            $query->where('center_id', $request->center_id)
+                  ->whereDate('created_at', '>=', Carbon::now()->subDays(10));
+            $isCenterFiltered = true;
+        } else {
+            // Otherwise, show data for the latest or selected date
+            $query->whereDate('created_at', $selectedDate);
+            $isCenterFiltered = false;
+        }
+
+        $centerhasvegetable = $query->get();
+
+        return view('pages.home.vegetable.details', compact(
+            'vegetable', 'centerhasvegetable', 'dates', 'centers', 'latestDate', 'selectedDate', 'isCenterFiltered'
+        ));
     }
 }
