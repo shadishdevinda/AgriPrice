@@ -25,14 +25,13 @@
             <div class="col-lg-12 ms-3 me-3">
 
                 <div class="card">
-                    {{-- Card header --}}
-                    <div class="card-header bg-dark">
-                        <h3 class="text-white"><i class="fas fa-user-shield" style="margin-right: 10px;"></i>System User Management
-                            <a href="{{ route('users.create') }}"
-                                class="btn btn-dark float-end border border-white d-flex align-items-center gap-2 justify-content-end">
-                                <i class="fas fa-plus"></i> <span>Add System User</span>
-                            </a>
-                        </h3>
+                    <!-- Card Header -->
+                    <div class="card-header bg-dark d-flex justify-content-between align-items-center">
+                        <h3 class="text-white mb-0"><i class="fas fa-user-shield" style="margin-right: 10px;"></i>System User Management</h3>
+                        <a href="{{ route('users.create') }}"
+                            class="btn btn-dark float-end border border-white d-flex align-items-center gap-2 justify-content-end">
+                            <i class="fas fa-plus"></i> <span>Add System User</span>
+                        </a>
                     </div>
 
                     <!-- Filter Section -->

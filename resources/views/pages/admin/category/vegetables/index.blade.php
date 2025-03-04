@@ -32,14 +32,14 @@
             <div class="row d-flex justify-content-center">
                 <div class="col-md-12">
                     <div class="card">
-                        {{-- Card header --}}
-                        <div class="card-header bg-dark">
-                            <h3 class="text-white"><i class="fas fa-carrot" style="margin-right: 10px;"></i>Vegetables
-                                <a href="{{ route('vegetable.create') }}"
-                                    class="btn btn-dark float-end border border-white d-flex align-items-center gap-2 justify-content-end">
-                                    <i class="fas fa-seedling"></i> <span>Add Vegetable</span>
-                                </a>
-                            </h3>
+                        <!-- Card Header -->
+                        <div class="card-header bg-dark d-flex justify-content-between align-items-center">
+                            <h3 class="text-white mb-0"><i class="fas fa-carrot"
+                                    style="margin-right: 10px;"></i>Vegetable Management</h3>
+                            <a href="{{ route('vegetable.create') }}"
+                                class="btn btn-dark float-end border border-white d-flex align-items-center gap-2 justify-content-end">
+                                <i class="fas fa-seedling"></i> <span>Add Vegetable</span>
+                            </a>
                         </div>
 
                         <!-- Filter Section -->

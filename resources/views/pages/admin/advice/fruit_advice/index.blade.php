@@ -14,8 +14,9 @@
                     <!-- Card Header -->
                     <div class="card-header bg-dark d-flex justify-content-between align-items-center">
                         <h3 class="text-white mb-0"><i class="fas fa-apple-alt" style="margin-right: 10px;"></i>Fruit Advice</h3>
-                        <a href="{{ route('fruit_advice.create') }}" class="btn btn-light border border-white">
-                            <i class="fas fa-plus"></i> Create
+                        <a href="{{ route('fruit_advice.create') }}"
+                            class="btn btn-dark float-end border border-white d-flex align-items-center gap-2 justify-content-end">
+                            <i class="fas fa-seedling"></i> <span>Add Fruit Advice</span>
                         </a>
                     </div>
 
