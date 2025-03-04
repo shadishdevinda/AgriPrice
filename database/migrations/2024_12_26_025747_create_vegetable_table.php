@@ -38,9 +38,6 @@ return new class extends Migration
                 ->constrained('vegetable')
                 ->onDelete('cascade');
 
-            $table->string('vegetable_wholesale_price');
-            $table->string('vegetable_retail_price');
-
             $table->timestamps();
         });
 
