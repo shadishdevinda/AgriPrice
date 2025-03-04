@@ -17,11 +17,30 @@ class EconomicCenterController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $economicCenters = EconomicCenter::paginate(3);
-        return view('pages.admin.economicCenter.index', compact('economicCenters'));
+        // Fetch all economic centers for the dropdown
+        $userOptions = EconomicCenter::all()->mapWithKeys(function ($economicCenter) {
+            return [
+                $economicCenter->id => "{$economicCenter->id} - {$economicCenter->center_name}"
+            ];
+        });
+
+        // Base query for economic centers
+        $query = EconomicCenter::query();
+
+        // Apply filter if economicCenter_id is provided
+        if ($request->has('economicCenter_id') && $request->economicCenter_id) {
+            $query->where('id', $request->economicCenter_id);
+        }
+
+        // Paginate the results
+        $economicCenters = $query->paginate(10);
+
+        return view('pages.admin.economicCenter.index', compact('economicCenters', 'userOptions'));
     }
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -268,30 +287,36 @@ class EconomicCenterController extends Controller
     public function destroy(string $id)
     {
         try {
-            // Find the Economic center by ID
             $eCenter = EconomicCenter::findOrFail($id);
             Log::info('Economic center found', ['Economic Center' => $eCenter]);
 
-            // Delete the Economic center
+            // Delete profile photo if exists
+            if ($eCenter->profile_photo_path) {
+                $photoPath = 'public/center-photos/' . basename($eCenter->profile_photo_path);
+
+                if (Storage::exists($photoPath)) {
+                    Storage::delete($photoPath);
+                    Log::info('Profile photo deleted.', ['file_path' => $photoPath]);
+                }
+            }
+
+            // Delete the economic center
             $eCenter->delete();
             Log::info('Economic center deleted successfully.', ['id' => $eCenter->id]);
 
-            // Return success response
             return response()->json([
                 'success' => true,
                 'message' => 'Economic center deleted successfully.',
             ]);
         } catch (\Exception $e) {
-            // Log unexpected errors
             Log::error('An unexpected error occurred while deleting Economic center.', [
                 'error_message' => $e->getMessage(),
                 'stack_trace' => $e->getTraceAsString()
             ]);
 
-            // Return general errors as JSON
             return response()->json([
                 'success' => false,
-                'message' => 'An unexpected error occurred: ' . $e->getMessage(),
+                'message' => 'An error occurred: ' . $e->getMessage(),
             ], 500);
         }
     }

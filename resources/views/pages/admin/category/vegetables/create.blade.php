@@ -32,7 +32,7 @@
      }
 
      .btn-custom {
-         background-color: #065744cc;
+         background-color: #065744;
          color: white;
          border: none;
          padding: 0.5rem 1rem;
@@ -40,7 +40,13 @@
      }
 
      .btn-custom:hover {
-         background-color: #054735cc;
+         background-color: #065744;
+         color: white;
+     }
+
+     .btn-remove {
+         margin-top: 1rem;
+         display: none;
      }
 
      .photo-preview {
@@ -51,15 +57,10 @@
          margin-top: 1rem;
          display: none;
      }
-
-     .btn-remove {
-         margin-top: 1rem;
-         display: none;
-     }
  </style>
 
  <x-admin-layout>
-    {{-- Tab topic --}}
+     {{-- Tab topic --}}
      <x-slot name="title">Create Vegetable</x-slot>
 
      {{-- Content area --}}
@@ -71,7 +72,7 @@
                      <!-- Card Header -->
                      <div class="card-header bg-dark">
                          <h3 class="text-white mb-0">
-                            <i class="fas fa-plus-circle"></i> Create Vegetable
+                             <i class="fas fa-plus-circle"></i> Create Vegetable
                          </h3>
                          <a href="{{ route('vegetable.index') }}" class="btn btn-light">
                              <i class="fas fa-arrow-left"></i> Back
@@ -90,7 +91,7 @@
                                  </label>
                                  <x-input value="{{ old('name') }}" type="text"
                                      class="form-control form-control-lg" placeholder="Enter vegetable name"
-                                     name="name" />
+                                     name="name" required />
                              </div>
 
                              <!-- Description Field -->
@@ -99,7 +100,7 @@
                                      <i class="fas fa-info-circle"></i> Description
                                  </label>
                                  <textarea class="form-control" name="description" cols="30" rows="5"
-                                     placeholder="Enter vegetable description">{{ old('description') }}</textarea>
+                                     placeholder="Enter vegetable description" required>{{ old('description') }}</textarea>
                              </div>
 
                              <!-- Image Field -->
@@ -108,7 +109,7 @@
                                      <i class="fas fa-image"></i> Image
                                  </label>
                                  <input type="file" id="image" name="image"
-                                     class="form-control form-control-lg" accept="image/*">
+                                     class="form-control form-control-lg" accept="image/*" required>
                                  <small class="form-text text-muted">Upload an image of the vegetable.</small>
 
                                  <!-- Image Preview -->
@@ -121,12 +122,12 @@
 
                              <!-- Submit Button -->
                              <div class="row">
-                                <div class="col-md-12 d-flex justify-content-end">
-                                    <button type="submit" class="btn btn-custom">
-                                        <i class="fas fa-save"></i> Create Vegetable
-                                    </button>
-                                </div>
-                            </div>
+                                 <div class="col-md-12 d-flex justify-content-end">
+                                     <button type="submit" class="btn btn-custom">
+                                         <i class="fas fa-save"></i> Create Vegetable
+                                     </button>
+                                 </div>
+                             </div>
                          </form>
                      </div>
                  </div>
@@ -189,6 +190,7 @@
                          icon: 'success',
                          title: 'Success!',
                          text: data.message,
+                         confirmButtonText: 'Okay',
                      }).then(() => {
                          // Reset the form
                          form.reset();
@@ -199,14 +201,17 @@
                      });
                  } else {
                      // Handle validation errors
+                     let errorMessage = 'An error occurred.';
+                     if (data.errors && Array.isArray(data.errors)) {
+                         errorMessage = data.errors.map(error => `<li>${error}</li>`).join('');
+                     } else if (data.message) {
+                         errorMessage = data.message;
+                     }
+
                      Swal.fire({
                          icon: 'error',
-                         title: 'Validation Error',
-                         html: `
-                <ul>
-                    ${data.errors.map(error => `<li>${error}</li>`).join('')}
-                </ul>
-                `,
+                         title: 'Error',
+                         html: `<ul>${errorMessage}</ul>`,
                      });
                  }
              })
@@ -220,4 +225,3 @@
              });
      });
  </script>
-

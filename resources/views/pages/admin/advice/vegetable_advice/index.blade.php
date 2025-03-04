@@ -13,7 +13,7 @@
                 <div class="card">
                     <!-- Card Header -->
                     <div class="card-header bg-dark d-flex justify-content-between align-items-center">
-                        <h3 class="text-white mb-0">Vegetable Advice</h3>
+                        <h3 class="text-white mb-0"><i class="fas fa-carrot" style="margin-right: 10px;"></i>Vegetable Advice</h3>
                         <a href="{{ route('vegetable_advice.create') }}" class="btn btn-light border border-white">
                             <i class="fas fa-plus"></i> Create
                         </a>
@@ -39,12 +39,6 @@
 
                     <!-- Card Body -->
                     <div class="card-body">
-                        @if (Session::has('success'))
-                            <div class="alert alert-success">
-                                {{ Session::get('success') }}
-                            </div>
-                        @endif
-
                         <table class="table table-striped">
                             <thead style="text-align: center;">
                                 <tr>
@@ -83,7 +77,7 @@
                                                         class="btn btn-danger btn-sm d-flex align-items-center gap-1"
                                                         style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
                                                         onclick="deleteVegAdvice({{ $vegetableAdvice->id }})">
-                                                        <i class="fas fa-trash"></i> Delete
+                                                        <i class="fas fa-trash"></i> <span>Delete</span>
                                                     </button>
                                                 </div>
 

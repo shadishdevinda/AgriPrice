@@ -30,10 +30,9 @@
             <!-- Card for Fruit Table -->
             <div class="col-md-12">
                 <div class="card">
-                    <!-- Card Header -->
+                    {{-- Card header --}}
                     <div class="card-header bg-dark">
-                        <h3 class="text-white d-flex justify-content-between align-items-center">
-                            Fruits
+                        <h3 class="text-white"><i class="fas fa-apple-alt" style="margin-right: 10px;"></i>Fruits
                             <a href="{{ route('fruit.create') }}"
                                 class="btn btn-dark float-end border border-white d-flex align-items-center gap-2 justify-content-end">
                                 <i class="fas fa-seedling"></i> <span>Create</span>
@@ -77,7 +76,9 @@
                                         <tr>
                                             <td>{{ $fruit->id }}</td>
                                             <td>{{ $fruit->name }}</td>
-                                            <td>{{ $fruit->description }}</td>
+                                            <td class="description-column">
+                                                {{ Str::limit($fruit->description, 50, '...') }}
+                                            </td>
                                             <td class="fruit-image">
                                                 @if ($fruit->image)
                                                     <img src="{{ asset('storage/' . $fruit->image) }}" alt="Fruit Photo"
