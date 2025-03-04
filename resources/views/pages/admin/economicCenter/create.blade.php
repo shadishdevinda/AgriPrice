@@ -2,7 +2,50 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
+<!-- FontAwesome for icons -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+{{-- Select2 CDN --}}
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+{{-- SweetAlert2 CDN --}}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+{{-- Custom styles --}}
+<style>
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 1.5rem;
+    }
+
+    .btn-custom {
+        background-color: #065744;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+    }
+
+    .btn-custom:hover {
+        background-color: #065744;
+        color: white;
+    }
+
+    .photo-preview {
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 8px;
+        margin-top: 1rem;
+        display: none;
+    }
+
+    .btn-remove {
+        margin-top: 1rem;
+        display: none;
+    }
+</style>
 
 
 <x-admin-layout>
@@ -10,59 +53,71 @@
     <x-slot name="title">Economic Center Management</x-slot>
 
     <div class="container">
-        <div class="row">
+        <div class="row justify-content-center mt-4">
             <div class="col-md-12">
-                <div class="card mt-3">
-                    <div class="card-header">
-                        <h5 class="card-title">Economic Center Management
-                            <a href="{{ route('economic-centers.index') }}" class="btn btn-primary float-end me-2">
-                                Back
-                            </a>
-                        </h5>
+                <div class="card">
+
+                    <!-- Card Header -->
+                    <div class="card-header bg-dark">
+                        <h3 class="text-white mb-0">
+                            <i class="fas fa-plus-circle"></i> Create Economic Center
+                        </h3>
+                        <a href="{{ route('economic-centers.index') }}" class="btn btn-light">
+                            <i class="fas fa-arrow-left"></i> Back
+                        </a>
                     </div>
+
+                    <!-- Card Body -->
                     <div class="card-body">
                         <form action="{{ route('economic-centers.store') }}" method="POST"
                             enctype="multipart/form-data" id="createCenterForm">
                             @csrf
 
+                            {{-- Economic Center Register ID & Center Name --}}
                             <div class="row mb-3">
+                                {{-- Economic Center Register ID --}}
                                 <div class="col-md-6">
                                     <label for="center_id" class="form-label">Center Registration ID</label>
-                                    <x-input type="text" class="form-control" id="center_id" name="center_id" />
+                                    <x-input type="text" class="form-control" id="center_id" name="center_id" required/>
                                     <small id="center_idHelp" class="form-text text-muted">Enter economic center
                                         Registration Id.</small>
                                 </div>
 
+                                {{-- Economic Center Name --}}
                                 <div class="col-md-6">
                                     <label for="center_name" class="form-label">Center Name</label>
-                                    <x-input type="text" class="form-control" id="center_name" name="center_name" />
+                                    <x-input type="text" class="form-control" id="center_name" name="center_name" required/>
                                     <small id="center_nameHelp" class="form-text text-muted">Enter economic center
                                         name.</small>
                                 </div>
                             </div>
 
+                            {{-- Economic Center Contact Number & Location --}}
                             <div class="row mb-3">
+                                {{-- Economic Center Contact Number --}}
                                 <div class="col-md-6">
                                     <label for="contact_number" class="form-label">Center Contact Number</label>
                                     <x-input type="text" class="form-control" id="contact_number"
-                                        name="contact_number" />
+                                        name="contact_number" required/>
                                     <small id="contact_numberHelp" class="form-text text-muted">Enter economic contact
                                         number.</small>
                                 </div>
 
+                                {{-- Economic Center Location --}}
                                 <div class="col-md-6">
                                     <label for="center_location" class="form-label">Center Location</label>
                                     <x-input type="text" class="form-control" id="center_location"
-                                        name="center_location" />
+                                        name="center_location" required/>
                                     <small id="center_nameHelp" class="form-text text-muted">Enter economic
                                         Address.</small>
                                 </div>
                             </div>
 
+                            {{-- Economic center photo --}}
                             <div class="col-md-6">
                                 <label for="center_photo">Center Photo</label>
                                 <input type="file" id="center_photo" name="center_photo" class="form-control"
-                                    accept="image/*">
+                                    accept="image/*" required>
 
                                 <img id="photoPreview" src="#" alt="Center Photo Preview" class="mt-2"
                                     style="display: none; width: 100px; height: 100px; object-fit: cover;">
@@ -73,7 +128,14 @@
                                 </button>
                             </div>
 
-                            <button type="submit" class="btn btn-primary float-end">Add</button>
+                            <!-- Submit Button -->
+                            <div class="row">
+                                <div class="col-md-12 d-flex justify-content-end">
+                                    <button type="submit" class="btn btn-custom">
+                                        <i class="fas fa-save"></i> Create Economic Center
+                                    </button>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>

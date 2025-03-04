@@ -50,9 +50,12 @@
                                     <td>{{ $user->email }}</td>
                                     <td class="center-image">
                                         @if ($user->profile_photo_path)
-                                            <img src="{{ asset('storage/' . $user->profile_photo_path) }}" alt="Profile Photo" class="rounded-circle" width="50" height="50">
+                                            <img src="{{ asset('storage/' . $user->profile_photo_path) }}"
+                                                alt="Profile Photo" class="rounded-circle" width="50"
+                                                height="50">
                                         @else
-                                            <img src="{{ asset('images/default-user/user.png') }}" alt="Default Photo" class="rounded-circle" width="50" height="50">
+                                            <img src="{{ asset('images/default-user/user.png') }}" alt="Default Photo"
+                                                class="rounded-circle" width="50" height="50">
                                         @endif
                                     </td>
                                     <td>
@@ -63,26 +66,38 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <!-- Edit Button -->
-                                        <a href="{{ route('economic-center-user.edit', $user->id) }}" class="btn btn-warning"
-                                            style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
-                                            Edit
-                                        </a>
+                                        <div class="d-flex justify-content-end gap-2">
+                                            <!-- Edit Button -->
+                                            <a href="{{ route('economic-center-user.edit', $user->id) }}"
+                                                class="btn btn-warning"
+                                                style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
+                                                <i class="fas fa-edit">Edit
+                                            </a>
 
-                                        <!-- Delete Button -->
-                                        <button type="button" class="btn btn-danger"
-                                            style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
-                                            data-bs-toggle="modal" data-bs-target="#deleteUserModal"
-                                            data-id="{{ $user->id }}" data-name="{{ $user->name }}"
-                                            data-role="{{ $user->getRoleNames()->implode(', ') }}">
-                                            Delete
-                                        </button>
+                                            <!-- Delete Button -->
+                                            <button type="button" class="btn btn-danger"
+                                                style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
+                                                data-bs-toggle="modal" data-bs-target="#deleteUserModal"
+                                                data-id="{{ $user->id }}" data-name="{{ $user->name }}"
+                                                data-role="{{ $user->getRoleNames()->implode(', ') }}">
+                                                <i class="fas fa-trash">Delete
+                                            </button>
 
-                                        <!-- Assign Permission Buttons -->
-                                        <a href="{{ route('economic.center.users.permissions', $user->id) }}" class="btn btn-info"
-                                            style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
-                                            Assign Permission
-                                        </a>
+                                            <!-- Assign Permission Buttons -->
+                                            <a href="{{ route('economic.center.users.permissions', $user->id) }}"
+                                                class="btn btn-info"
+                                                style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
+                                                Assign Permission
+                                            </a>
+                                        </div>
+
+                                        <!-- Hidden delete form -->
+                                        <form id="delete-system-user-delete-form{{ $user->id }}"
+                                            action="{{ route('users.destroy', $user->id) }}"
+                                            method="POST" style="display: none;">
+                                            @csrf
+                                            @method('DELETE')
+                                        </form>
                                     </td>
                                 </tr>
                             @endforeach
@@ -117,7 +132,6 @@
         var id = button.getAttribute('data-id'); // Get the user ID
         var name = button.getAttribute('data-name'); // Get the user name
         var role = button.getAttribute('data-role'); // Get the user role(s)
-        var form = document.getElementById('deleteUserForm'); // The form inside the modal
 
         // Set the user name and role(s) in the modal
         document.getElementById('userName').textContent = name;
@@ -126,8 +140,60 @@
         // Update the modal's delete button action with user ID
         document.getElementById('confirmDeleteButton').setAttribute('data-id', id);
 
-        // Optionally, you can set the user roles as a hidden field or include them in the form data
-        form.querySelector('input[name="user_id"]').value = id; // Pass the user ID to the form
-        form.querySelector('input[name="user_roles"]').value = role; // Pass the user role(s) to the form (if needed)
+        // Update the form's hidden fields
+        var form = document.getElementById('deleteUserForm');
+        form.querySelector('input[name="user_id"]').value = id;
+        form.querySelector('input[name="user_roles"]').value = role;
     });
+
+    // Function to handle user deletion
+    function deleteUser() {
+        var userId = document.getElementById('confirmDeleteButton').getAttribute('data-id');
+        var form = document.getElementById('deleteUserForm');
+
+        // Show loading spinner
+        Swal.fire({
+            title: 'Deleting...',
+            text: 'Please wait while we process your request.',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        fetch(form.action, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: data.message,
+                    }).then(() => {
+                        $('#deleteUserModal').modal('hide'); // Close the modal
+                        location.reload(); // Reload the page
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: data.message,
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'An unexpected error occurred. Please try again.',
+                });
+            });
+    }
 </script>

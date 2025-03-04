@@ -2,30 +2,75 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
+<!-- FontAwesome for icons -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+{{-- Select2 CDN --}}
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
+{{-- SweetAlert2 CDN --}}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+{{-- Custom styles --}}
+<style>
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 1.5rem;
+    }
+
+    .btn-custom {
+        background-color: #065744;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+    }
+
+    .btn-custom:hover {
+        background-color: #065744;
+        color: white;
+    }
+
+    .photo-preview {
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 8px;
+        margin-top: 1rem;
+        display: none;
+    }
+
+    .btn-remove {
+        margin-top: 1rem;
+        display: none;
+    }
+</style>
 
 <x-admin-layout>
 
     <x-slot name="title">System User Management</x-slot>
 
     <div class="container">
-        <div class="row">
+        <div class="row justify-content-center mt-4">
             <div class="col-md-12">
-
-                <div class="card mt-3">
-                    <div class="card-header">
-                        <h5 class="card-title">Create System User
-                            <a href="{{ route('users.index') }}" class="btn btn-primary float-end me-2">
-                                Back
-                            </a>
-                        </h5>
+                <div class="card">
+                    <!-- Card Header -->
+                    <div class="card-header bg-dark">
+                        <h3 class="text-white mb-0">
+                            <i class="fas fa-plus-circle"></i> Create System User
+                        </h3>
+                        <a href="{{ route('users.index') }}" class="btn btn-light">
+                            <i class="fas fa-arrow-left"></i> Back
+                        </a>
                     </div>
+
+                    <!-- Card Body -->
                     <div class="card-body">
                         <form id="createUserForm" action="{{ route('users.store') }}" method="POST"
                             enctype="multipart/form-data">
                             @csrf
-                            <!-- Row 1: User Type and Name -->
+                            <!-- Row 1: User Type and Name and Role-->
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="user_type" class="form-label">User Type</label>
@@ -34,7 +79,8 @@
                                         <option value="" selected disabled>Select User Type</option>
                                         <option value="system-user">System User</option>
                                     </select>
-                                    <small id="user_typeHelp" class="form-text text-muted">Select the user type.</small>
+                                    <small id="user_typeHelp" class="form-text text-muted">Select the user
+                                        type.</small>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="username" class="form-label">Name</label>
@@ -100,8 +146,8 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label for="profile_photo">Profile Photo</label>
-                                    <input type="file" id="profile_photo" name="profile_photo" class="form-control"
-                                        accept="image/*">
+                                    <input type="file" id="profile_photo" name="profile_photo"
+                                        class="form-control" accept="image/*">
 
                                     <img id="photoPreview" src="#" alt="Profile Photo Preview" class="mt-2"
                                         style="display: none; width: 100px; height: 100px; object-fit: cover;">
@@ -112,7 +158,15 @@
                                     </button>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary">Submit</button>
+
+                            <!-- Submit Button -->
+                            <div class="row">
+                                <div class="col-md-12 d-flex justify-content-end">
+                                    <button type="submit" class="btn btn-custom">
+                                        <i class="fas fa-save"></i> Create User
+                                    </button>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -120,6 +174,7 @@
         </div>
     </div>
 </x-admin-layout>
+
 
 {{-- Bootstrap CDN --}}
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
@@ -191,13 +246,19 @@
                     'X-Requested-With': 'XMLHttpRequest'
                 },
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
             .then(data => {
                 if (data.success) {
                     Swal.fire({
                         icon: 'success',
                         title: 'Success!',
                         text: data.message,
+                        confirmButtonText: 'Okay',
                     }).then(() => {
                         // Reset the form
                         form.reset();
@@ -217,10 +278,10 @@
                         icon: 'error',
                         title: 'Validation Error',
                         html: `
-                        <ul>
-                            ${data.errors.map(error => `<li>${error}</li>`).join('')}
-                        </ul>
-                    `,
+                            <ul>
+                                ${data.errors.map(error => `<li>${error}</li>`).join('')}
+                            </ul>
+                        `,
                     });
                 }
             })

@@ -51,7 +51,7 @@ class FruitController extends Controller
         try {
             // Validation rules
             $rules = [
-                'name' => 'required|min:3|max:255|unique:fruits',
+                'name' => 'required|min:3|max:255|unique:fruit',
                 'description' => 'required|min:3|max:1000',
                 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
             ];

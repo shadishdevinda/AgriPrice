@@ -63,8 +63,8 @@
 
     <div class="container">
         <div class="row justify-content-center mt-4">
-            <div class="col-md-10">
-                <div class="card border-0 shadow-lg">
+            <div class="col-md-12">
+                <div class="card">
                     <!-- Card Header -->
                     <div class="card-header bg-dark">
                         <h3 class="text-white mb-0">
@@ -191,6 +191,7 @@
                         icon: 'success',
                         title: 'Success!',
                         text: data.message,
+                        confirmButtonText: 'Okay',
                     }).then(() => {
                         // Reset the form
                         form.reset();

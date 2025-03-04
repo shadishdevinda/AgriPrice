@@ -11,20 +11,31 @@ use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Str;
 
-// TODO: modify the unique photo name with time() function
 class UserManageController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $query = User::where('user_type', 'system-user');
 
-        $users = User::where('user_type', 'system-user')->paginate(5);
-        $roles = Role::pluck('name', 'name')->all();
-        return view('pages.admin.userManagement.system_user.index', compact('users', 'roles'));
+        // Apply filter if user_id is selected
+        if ($request->has('user_id') && !empty($request->user_id)) {
+            $query->where('id', $request->user_id);
+        }
+
+        $users = $query->paginate(10);
+
+        // Fetch users for the dropdown (ID, Name, Email)
+        $userOptions = User::where('user_type', 'system-user')
+            ->get()
+            ->mapWithKeys(function ($user) {
+                return [$user->id => "{$user->id} - {$user->name} - {$user->email}"];
+            });
+
+        return view('pages.admin.userManagement.system_user.index', compact('users', 'userOptions'));
     }
-
 
     /**
      * Show the form for creating a new resource.
@@ -34,7 +45,6 @@ class UserManageController extends Controller
         $roles = Role::pluck('name', 'name')->all();
         return view('pages.admin.userManagement.system_user.create', compact('roles'));
     }
-
 
     /**
      * Store a newly created resource in storage.
@@ -98,6 +108,12 @@ class UserManageController extends Controller
 
             Log::info('User created.', ['user_id' => $user->id]);
 
+            // Return a success response
+            return response()->json([
+                'success' => true,
+                'message' => 'User created successfully.',
+                'user_id' => $user->id,
+            ], 200);
         } catch (\Illuminate\Validation\ValidationException $e) {
             Log::error('Validation failed.', ['errors' => $e->validator->errors()->all()]);
 
@@ -234,7 +250,8 @@ class UserManageController extends Controller
 
             // Validate the request data
             $validated = $request->validate([
-                'permission' => 'required',
+                'permission' => 'nullable|array', // Allow empty array (no permissions selected)
+                'permission.*' => 'string|exists:permissions,name', // Ensure each permission exists
             ]);
 
             // Log validated data
@@ -244,14 +261,17 @@ class UserManageController extends Controller
             $user = User::findOrFail($userID);
 
             // Sync permissions
-            $user->syncPermissions($validated['permission']);
+            $user->syncPermissions($validated['permission'] ?? []); // Use empty array if no permissions are selected
 
-            Log::info('Permissions given to user successfully.', ['user_id' => $user->id]);
+            Log::info('Permissions synced for user successfully.', [
+                'user_id' => $user->id,
+                'permissions' => $validated['permission'] ?? []
+            ]);
 
             // Return success response
             return response()->json([
                 'success' => true,
-                'message' => 'Permissions given to user successfully.',
+                'message' => 'Permissions updated successfully.',
             ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
             // Log validation exception errors
@@ -286,6 +306,17 @@ class UserManageController extends Controller
             // Find the user by ID
             $user = User::findOrFail($id);
             Log::info('User found', ['user' => $user]);
+
+            // Delete the user's profile photo if it exists
+            if ($user->profile_photo_path) {
+                $photoPath = 'public/storage/profile-photos/' . basename($user->profile_photo_path);
+                if (file_exists($photoPath)) {
+                    unlink($photoPath); // Delete the file
+                    Log::info('User profile photo deleted.', ['profile_photo_path' => $photoPath]);
+                } else {
+                    Log::warning('Profile photo not found at path:', ['profile_photo_path' => $photoPath]);
+                }
+            }
 
             // Delete the user
             $user->delete();

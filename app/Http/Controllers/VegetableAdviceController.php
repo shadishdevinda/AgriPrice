@@ -68,32 +68,54 @@ class VegetableAdviceController extends Controller
 
         Log::info('Validation successful.', ['validated_data' => $validated]);
 
-        // Initialize the vegetable advice object
-        $vegetableAdvice = new VegetableAdvice();
-        $vegetableAdvice->description = $request->description;
+        try {
+            // Initialize the vegetable advice object
+            $vegetableAdvice = new VegetableAdvice();
+            $vegetableAdvice->description = $request->description;
 
-        // Save the vegetable advice in the database
-        $vegetableAdvice->save();
+            // Manually set the created_at and updated_at timestamps
+            $vegetableAdvice->created_at = now(); // Current timestamp
+            $vegetableAdvice->updated_at = now(); // Current timestamp
 
-        // Attach the selected vegetables to the advice
-        foreach ($request->vegetables as $vegetableName) {
-            // Find the vegetable by name
-            $vegetable = Vegetable::where('name', $vegetableName)->first();
+            // Save the vegetable advice in the database
+            $vegetableAdvice->save();
 
-            if ($vegetable) {
-                // Create a record in the vegetable_has_advice table
-                VegetableHasAdvice::create([
-                    'advice_id' => $vegetableAdvice->id,
-                    'vegetable_id' => $vegetable->id,
-                ]);
+            // Attach the selected vegetables to the advice
+            foreach ($request->vegetables as $vegetableName) {
+                // Find the vegetable by name
+                $vegetable = Vegetable::where('name', $vegetableName)->first();
+
+                if ($vegetable) {
+                    // Create a record in the vegetable_has_advice table
+                    VegetableHasAdvice::create([
+                        'advice_id' => $vegetableAdvice->id,
+                        'vegetable_id' => $vegetable->id,
+                        'created_at' => now(), // Set created_at timestamp
+                        'updated_at' => now(), // Set updated_at timestamp
+                    ]);
+                }
             }
-        }
 
-        // Return a JSON response
-        return response()->json([
-            'success' => true,
-            'message' => 'Vegetable Advice added successfully!',
-        ]);
+            // Return a JSON response
+            return response()->json([
+                'success' => true,
+                'message' => 'Vegetable Advice added successfully!',
+                'data' => $vegetableAdvice, // Optionally include the created advice object
+            ]);
+        } catch (\Exception $e) {
+            // Log the error
+            Log::error('Error storing vegetable advice:', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+
+            // Return JSON response for error
+            return response()->json([
+                'success' => false,
+                'message' => 'An error occurred while adding the vegetable advice.',
+                'error' => $e->getMessage(),
+            ], 500); // 500 Internal Server Error
+        }
     }
 
     /**
@@ -142,18 +164,39 @@ class VegetableAdviceController extends Controller
             ], 422); // 422 Unprocessable Entity
         }
 
-        // Update description
-        $vegetableAdvice->description = $request->description;
-        $vegetableAdvice->save();
+        try {
+            // Update description
+            $vegetableAdvice->description = $request->description;
 
-        // Sync the associated vegetables
-        $vegetableAdvice->vegetables()->sync($request->vegetables);
+            // Explicitly update the updated_at column
+            $vegetableAdvice->updated_at = now(); // Manually set the updated_at timestamp
 
-        // Return JSON response for success
-        return response()->json([
-            'success' => true,
-            'message' => 'Vegetable advice updated successfully!',
-        ]);
+            // Save the vegetable advice in the database
+            $vegetableAdvice->save();
+
+            // Sync the associated vegetables
+            $vegetableAdvice->vegetables()->sync($request->vegetables);
+
+            // Return JSON response for success
+            return response()->json([
+                'success' => true,
+                'message' => 'Vegetable advice updated successfully!',
+                'data' => $vegetableAdvice, // Optionally include the updated advice object
+            ]);
+        } catch (\Exception $e) {
+            // Log the error
+            Log::error('Error updating vegetable advice:', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+
+            // Return JSON response for error
+            return response()->json([
+                'success' => false,
+                'message' => 'An error occurred while updating the vegetable advice.',
+                'error' => $e->getMessage(),
+            ], 500); // 500 Internal Server Error
+        }
     }
 
     /**
