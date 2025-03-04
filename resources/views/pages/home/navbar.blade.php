@@ -27,7 +27,7 @@
                 </li>
 
                 <li><a class="nav-link" href="{{ route('vegetables.index') }}">Vegetables Prices</a></li>
-                <li><a class="nav-link" href="fruits-prices.html">Fruits Prices</a></li>
+                <li><a class="nav-link" href="{{ route('fruits.index') }}">Fruits Prices</a></li>
                 <li><a class="nav-link" href="crops-advices.html">Crops Advices</a></li>
             </ul>
 
