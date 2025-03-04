@@ -27,17 +27,15 @@
     <div class="container">
         <div class="row justify-content-center mt-4">
 
-            <!-- Card for Fruit Table -->
             <div class="col-md-12">
                 <div class="card">
-                    {{-- Card header --}}
-                    <div class="card-header bg-dark">
-                        <h3 class="text-white"><i class="fas fa-apple-alt" style="margin-right: 10px;"></i>Fruits
-                            <a href="{{ route('fruit.create') }}"
-                                class="btn btn-dark float-end border border-white d-flex align-items-center gap-2 justify-content-end">
-                                <i class="fas fa-seedling"></i> <span>Create</span>
-                            </a>
-                        </h3>
+                    <!-- Card Header -->
+                    <div class="card-header bg-dark d-flex justify-content-between align-items-center">
+                        <h3 class="text-white mb-0"><i class="fas fa-apple-alt" style="margin-right: 10px;"></i>Fruit Management</h3>
+                        <a href="{{ route('fruit.create') }}"
+                            class="btn btn-dark float-end border border-white d-flex align-items-center gap-2 justify-content-end">
+                            <i class="fas fa-seedling"></i> <span>Add Fruit</span>
+                        </a>
                     </div>
 
                     <!-- Filter Section -->

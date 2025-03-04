@@ -28,8 +28,9 @@
                     <!-- Card Header -->
                     <div class="card-header bg-dark d-flex justify-content-between align-items-center">
                         <h3 class="text-white mb-0"><i class="fas fa-building" style="margin-right: 10px;"></i>Economic Center Management</h3>
-                        <a href="{{ route('economic-centers.create') }}" class="btn btn-light border border-white">
-                            <i class="fas fa-plus"></i> Create Economic Center
+                        <a href="{{ route('economic-centers.create') }}"
+                            class="btn btn-dark float-end border border-white d-flex align-items-center gap-2 justify-content-end">
+                            <i class="fas fa-seedling"></i> <span>Add Economic Center</span>
                         </a>
                     </div>
 

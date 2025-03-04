@@ -13,9 +13,11 @@
                 <div class="card">
                     <!-- Card Header -->
                     <div class="card-header bg-dark d-flex justify-content-between align-items-center">
-                        <h3 class="text-white mb-0"><i class="fas fa-carrot" style="margin-right: 10px;"></i>Vegetable Advice</h3>
-                        <a href="{{ route('vegetable_advice.create') }}" class="btn btn-light border border-white">
-                            <i class="fas fa-plus"></i> Create
+                        <h3 class="text-white mb-0"><i class="fas fa-carrot" style="margin-right: 10px;"></i>Vegetable
+                            Advice</h3>
+                        <a href="{{ route('vegetable_advice.create') }}"
+                            class="btn btn-dark float-end border border-white d-flex align-items-center gap-2 justify-content-end">
+                            <i class="fas fa-seedling"></i> <span>Add Vegetable Advice</span>
                         </a>
                     </div>
 
