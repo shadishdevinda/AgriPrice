@@ -168,8 +168,8 @@
                                                 <tr>
                                                     <th>Image</th>
                                                     <th>Name</th>
-                                                    <th>Wholesale Price(Rs.)</th>
-                                                    <th>Retail Price(Rs.)</th>
+                                                    <th>Wholesale Price(1kg-Rs.)</th>
+                                                    <th>Retail Price(1kg-Rs.)</th>
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
