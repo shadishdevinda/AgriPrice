@@ -69,4 +69,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function economicCenter()
+    {
+        return $this->belongsTo(EconomicCenter::class, 'center_id', 'id');
+    }
 }

@@ -18,6 +18,7 @@ class UserManageController extends Controller
      */
     public function index(Request $request)
     {
+        // Initialize the query for system users
         $query = User::where('user_type', 'system-user');
 
         // Apply filter if user_id is selected
@@ -25,6 +26,10 @@ class UserManageController extends Controller
             $query->where('id', $request->user_id);
         }
 
+        // Sort users by created_at in descending order (newest first)
+        $query->orderBy('created_at', 'DESC');
+
+        // Fetch filtered users and paginate
         $users = $query->paginate(10);
 
         // Fetch users for the dropdown (ID, Name, Email)
@@ -34,6 +39,7 @@ class UserManageController extends Controller
                 return [$user->id => "{$user->id} - {$user->name} - {$user->email}"];
             });
 
+        // Return the view with data
         return view('pages.admin.userManagement.system_user.index', compact('users', 'userOptions'));
     }
 

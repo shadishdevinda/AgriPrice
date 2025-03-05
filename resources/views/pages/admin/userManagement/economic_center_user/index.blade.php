@@ -21,99 +21,126 @@
     <x-slot name="title">Economic Center User Management</x-slot>
 
     <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card mt-3">
-                    <div class="card-header">
-                        <h5 class="card-title">Economic Center User Management
-                            <a href="{{ route('economic-center-user.create') }}" class="btn btn-primary float-end me-2">
-                                Add User
-                            </a>
-                        </h5>
+        <div class="row justify-content-center mt-4">
+            <div class="col-lg-12 ms-3 me-3">
+
+                <div class="card">
+                    <!-- Card Header -->
+                    <div class="card-header bg-dark d-flex justify-content-between align-items-center">
+                        <h3 class="text-white mb-0"><i class="fas fa-user-shield"
+                                style="margin-right: 10px;"></i>Economic Center User Management</h3>
+                        <a href="{{ route('economic-center-user.create') }}"
+                            class="btn btn-dark float-end border border-white d-flex align-items-center gap-2 justify-content-end">
+                            <i class="fas fa-plus"></i> <span>Add Economic Center User</span>
+                        </a>
                     </div>
-                    <table class="table table-bordered table-striped mt-3" id="usersTable">
-                        <thead>
-                            <tr style="text-align: center;">
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th width="30%">Email</th>
-                                <td><b>Photo</b></th>
-                                <th>Roles</th>
-                                <th width="30%">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($users as $user)
+
+                    <!-- Filter Section -->
+                    <div class="card-body bg-light">
+                        <form action="{{ route('economic-center-user.index') }}" method="GET">
+                            <div class="input-group">
+                                <select name="user_id" id="users" class="form-select select2"
+                                    onchange="this.form.submit()">
+                                    <option value="">Select a user's ID/Name/Email to filter</option>
+                                    @foreach ($userOptions as $id => $details)
+                                        <option value="{{ $id }}"
+                                            {{ request('user_id') == $id ? 'selected' : '' }}>
+                                            {{ $details }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+
+                    {{-- Card body - Displaying economic center users --}}
+                    <div class="card-body">
+                        <table class="table table-bordered table-striped">
+                            <thead style="text-align: center;">
                                 <tr style="text-align: center;">
-                                    <td>{{ $user->id }}</td>
-                                    <td>{{ $user->name }}</td>
-                                    <td>{{ $user->email }}</td>
-                                    <td class="center-image">
-                                        @if ($user->profile_photo_path)
-                                            <img src="{{ asset('storage/' . $user->profile_photo_path) }}"
-                                                alt="Profile Photo" class="rounded-circle" width="50"
-                                                height="50">
-                                        @else
-                                            <img src="{{ asset('images/default-user/user.png') }}" alt="Default Photo"
-                                                class="rounded-circle" width="50" height="50">
-                                        @endif
-                                    </td>
-                                    <td>
-                                        @if (!empty($user->getRoleNames()))
-                                            @foreach ($user->getRoleNames() as $role)
-                                                <span class="badge bg-success">{{ $role }}</span>
-                                            @endforeach
-                                        @endif
-                                    </td>
-                                    <td>
-                                        <div class="d-flex justify-content-end gap-2">
-                                            <!-- Edit Button -->
-                                            <a href="{{ route('economic-center-user.edit', $user->id) }}"
-                                                class="btn btn-warning"
-                                                style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
-                                                <i class="fas fa-edit">Edit
-                                            </a>
-
-                                            <!-- Delete Button -->
-                                            <button type="button" class="btn btn-danger"
-                                                style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
-                                                data-bs-toggle="modal" data-bs-target="#deleteUserModal"
-                                                data-id="{{ $user->id }}" data-name="{{ $user->name }}"
-                                                data-role="{{ $user->getRoleNames()->implode(', ') }}">
-                                                <i class="fas fa-trash">Delete
-                                            </button>
-
-                                            <!-- Assign Permission Buttons -->
-                                            <a href="{{ route('economic.center.users.permissions', $user->id) }}"
-                                                class="btn btn-info"
-                                                style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
-                                                Assign Permission
-                                            </a>
-                                        </div>
-
-                                        <!-- Hidden delete form -->
-                                        <form id="delete-system-user-delete-form{{ $user->id }}"
-                                            action="{{ route('users.destroy', $user->id) }}"
-                                            method="POST" style="display: none;">
-                                            @csrf
-                                            @method('DELETE')
-                                        </form>
-                                    </td>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th width="30%">Email</th>
+                                    <td><b>Photo</b></th>
+                                    <th>Roles</th>
+                                    <th width="30%">Actions</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                    {{-- Pagination --}}
-                    <div class="d-flex justify-content-end mt-3">
-                        {{ $users->links() }}
+                            </thead>
+                            <tbody>
+                                @if ($users->isNotEmpty())
+                                    @foreach ($users as $user)
+                                        <tr style="text-align: center;">
+                                            <td>{{ $user->id }}</td>
+                                            <td>{{ $user->name }}</td>
+                                            <td>{{ $user->email }}</td>
+                                            <td class="center-image">
+                                                @if ($user->profile_photo_path)
+                                                    <img src="{{ asset('storage/' . $user->profile_photo_path) }}"
+                                                        alt="Profile Photo" class="rounded-circle" width="50"
+                                                        height="50">
+                                                @else
+                                                    <img src="{{ asset('images/default-user/user.png') }}"
+                                                        alt="Default Photo" class="rounded-circle" width="50"
+                                                        height="50">
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if (!empty($user->getRoleNames()))
+                                                    @foreach ($user->getRoleNames() as $role)
+                                                        <span class="badge bg-success">{{ $role }}</span>
+                                                    @endforeach
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <div class="d-flex justify-content-end gap-2">
+                                                    <!-- Edit Button -->
+                                                    <a href="{{ route('economic-center-user.edit', $user->id) }}"
+                                                        class="btn btn-warning"
+                                                        style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
+                                                        <i class="fas fa-edit"></i> <span>Edit</span>
+                                                    </a>
+
+                                                    <!-- Assign Permission Buttons -->
+                                                    <a href="{{ route('economic.center.users.permissions', $user->id) }}"
+                                                        class="btn btn-info"
+                                                        style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
+                                                        <i class="fas fa-user"></i> <span>Assign Permission</span>
+                                                    </a>
+
+                                                    <!-- Delete Button -->
+                                                    <button type="button"
+                                                        class="btn btn-danger btn-sm d-flex align-items-center gap-1"
+                                                        style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
+                                                        onclick="confirmDelete({{ $user->id }}, '{{ $user->name }}', '{{ $user->getRoleNames()->implode(', ') }}', '{{ $user->economicCenter->center_name ?? 'N/A' }}')">
+                                                        <i class="fas fa-trash"></i> <span>Delete</span>
+                                                    </button>
+                                                </div>
+
+                                                <!-- Hidden delete form -->
+                                                <form id="delete-economic-center-user-delete-form{{ $user->id }}"
+                                                    action="{{ route('economic-center-user.destroy', $user->id) }}"
+                                                    method="POST" style="display: none;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @else
+                                    <tr>
+                                        <td colspan="3" class="text-center">No users found</td>
+                                    </tr>
+                                @endif
+                            </tbody>
+                        </table>
+                        {{-- Pagination --}}
+                        <div class="d-flex justify-content-end mt-3">
+                            {{ $users->appends(request()->query())->links() }}
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-
-    <!-- Delete User Modal -->
-    @include('pages.admin.userManagement.economic_center_user.delete')
 </x-admin-layout>
 
 {{-- Bootstrap CDN --}}
@@ -121,79 +148,94 @@
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
 </script>
 
+<!-- SweetAlert2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 {{-- Select2 CDN --}}
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <script>
-    // JavaScript to dynamically populate the modal with user data
-    var deleteUserModal = document.getElementById('deleteUserModal');
-    deleteUserModal.addEventListener('show.bs.modal', function(event) {
-        var button = event.relatedTarget; // Button that triggered the modal
-        var id = button.getAttribute('data-id'); // Get the user ID
-        var name = button.getAttribute('data-name'); // Get the user name
-        var role = button.getAttribute('data-role'); // Get the user role(s)
-
-        // Set the user name and role(s) in the modal
-        document.getElementById('userName').textContent = name;
-        document.getElementById('userRole').textContent = role;
-
-        // Update the modal's delete button action with user ID
-        document.getElementById('confirmDeleteButton').setAttribute('data-id', id);
-
-        // Update the form's hidden fields
-        var form = document.getElementById('deleteUserForm');
-        form.querySelector('input[name="user_id"]').value = id;
-        form.querySelector('input[name="user_roles"]').value = role;
+    // Initialize select2 on the users select input
+    $(document).ready(function() {
+        $('#users').select2({
+            placeholder: "Select a user's ID/Name/Email",
+            allowClear: true,
+        });
     });
 
     // Function to handle user deletion
-    function deleteUser() {
-        var userId = document.getElementById('confirmDeleteButton').getAttribute('data-id');
-        var form = document.getElementById('deleteUserForm');
+    function confirmDelete(userId, userName, userRole, userECenter) {
+        Swal.fire({
+            title: 'Are you sure?',
+            html: `You are about to delete the user: <br>User's Economic Center Name: <strong>${userECenter}</strong><br>User Name: <strong>${userName}</strong><br>Role: <strong>${userRole}</strong><br>This action cannot be undone.`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                deleteUser(userId);
+            }
+        });
+    }
+
+    function deleteUser(userId) {
+        const url = `/economic-center-user/${userId}`; // Use the correct route structure
 
         // Show loading spinner
         Swal.fire({
             title: 'Deleting...',
-            text: 'Please wait while we process your request.',
+            text: 'Please wait while we delete the system user.',
             allowOutsideClick: false,
             didOpen: () => {
                 Swal.showLoading();
             }
         });
 
-        fetch(form.action, {
-                method: 'DELETE',
+        fetch(url, {
+                method: 'POST',
                 headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                    'Content-Type': 'application/json'
-                }
+                    'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    _method: 'DELETE' // Simulate DELETE request
+                })
             })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Success!',
-                        text: data.message,
-                    }).then(() => {
-                        $('#deleteUserModal').modal('hide'); // Close the modal
-                        location.reload(); // Reload the page
-                    });
+                    // Store success message in localStorage
+                    localStorage.setItem('deleteSuccess', 'The user has been deleted successfully.');
+
+                    // Reload the page
+                    window.location.reload();
                 } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error!',
-                        text: data.message,
-                    });
+                    Swal.fire('Error!', data.message || 'An error occurred while deleting the user.', 'error');
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'An unexpected error occurred. Please try again.',
-                });
+                Swal.fire('Error!', 'An unexpected error occurred while deleting the user.', 'error');
             });
     }
+
+    // Show success message after page reload
+    document.addEventListener('DOMContentLoaded', function() {
+        const successMessage = localStorage.getItem('deleteSuccess');
+        if (successMessage) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Deleted!',
+                text: successMessage,
+                confirmButtonText: 'Okay'
+            });
+
+            // Remove the success message from localStorage after showing it
+            localStorage.removeItem('deleteSuccess');
+        }
+    });
 </script>
