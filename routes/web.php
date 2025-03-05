@@ -24,6 +24,12 @@ Route::get('/vegetables/{id}', [HomeController::class, 'vegetableDetails'])->nam
 Route::get('/fruits', [HomeController::class, 'fruitIndex'])->name('fruits.index');
 Route::get('/fruits/{id}', [HomeController::class, 'fruitDetails'])->name('fruits.details');
 
+
+// Login route
+Route::post('/login', [LoginController::class, 'login'])->name('login');
+
+Route::get('/dashboard', [DashboardController::class, 'navigate'])->name('dashboard');
+
 // Login route
 Route::post('/login', [LoginController::class, 'login'])->name('login');
 
@@ -64,6 +70,7 @@ Route::put('roles/{roleId}/permissions', [RoleController::class, 'givePermission
 Route::prefix('system')->group(function () {
     Route::resource('users', UserManageController::class);
 });
+
 Route::get('system-users/{user}/permissions', [UserManageController::class, 'userPermissions'])->name('system.users.permissions');
 Route::put('system-users/{user}/permissions', [UserManageController::class, 'givePermissions'])->name('system.users.give-permissions');
 
