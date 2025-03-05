@@ -16,5 +16,15 @@ class CenterHasVegetables extends Model
         'vegetable_id',
         'vegetable_wholesale_price',
         'vegetable_retail_price',
+        'created_at',
+        'updated_at'
     ];
+
+    public function center() {
+        return $this->belongsTo(EconomicCenter::class, 'center_id', 'id');
+    }
+
+    public function vegetable() {
+        return $this->belongsTo(Vegetable::class);
+    }
 }
