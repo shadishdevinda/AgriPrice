@@ -1,22 +1,46 @@
 {{-- Bootstrap CDN --}}
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
 <x-admin-layout>
     <x-slot name="title">Role Management</x-slot>
-    <div class="container mt-3">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card mt-3">
-                    <div class="card-header">
-                        <h5 class="card-title">Roles
-                            <!-- Button to trigger modal -->
-                            <button type="button" class="btn btn-primary float-end" data-bs-toggle="modal"
-                                data-bs-target="#createRoleModal">
-                                Create Role
-                            </button>
-                        </h5>
+
+    <div class="container">
+        <div class="row justify-content-center mt-4">
+            <div class="col-lg-12 ms-3 me-3">
+
+                <div class="card">
+                    <!-- Card Header -->
+                    <div class="card-header bg-dark d-flex justify-content-between align-items-center">
+                        <h3 class="text-white mb-0"><i class="fas fa-user-shield" style="margin-right: 10px;"></i>Roles
+                            Management</h3>
+                        <button type="button"
+                            class="btn btn-dark float-end border border-white d-flex align-items-center gap-2 justify-content-end"
+                            data-bs-toggle="modal" data-bs-target="#createRoleModal">
+                            <i class="fas fa-plus"></i> <span>Add New Role</span>
+                        </button>
                     </div>
+
+                    <!-- Filter Section -->
+                    <div class="card-body bg-light">
+                        <form action="{{ route('roles.index') }}" method="GET">
+                            <div class="input-group">
+                                <select name="role_id" id="roles" class="form-select select2"
+                                    onchange="this.form.submit()">
+                                    <option value="">Search a role to filter</option>
+                                    @foreach ($roles as $id => $name)
+                                        <option value="{{ $id }}"
+                                            {{ request('role_id') == $id ? 'selected' : '' }}>
+                                            {{ $name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+
                     <div class="card-body">
                         <table class="table table-bordered table-striped mt-3">
                             <thead>
@@ -27,62 +51,77 @@ integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEw
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($roles as $role)
-                                    <tr style="text-align: center;">
-                                        <td>{{ $role->id }}</td>
-                                        <td>{{ $role->name }}</td>
-                                        <td style="display: flex; justify-content: center; gap: 5%;">
-                                            <!-- Edit Button -->
-                                            <button type="button" class="btn btn-warning"
-                                                style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
-                                                data-bs-toggle="modal" data-bs-target="#editRoleModal"
-                                                data-id="{{ $role->id }}" data-name="{{ $role->name }}">
-                                                Edit
-                                            </button>
+                                @if ($roleList->isNotEmpty())
+                                    @foreach ($roleList as $role)
+                                        <tr style="text-align: center;">
+                                            <td>{{ $role->id }}</td>
+                                            <td>{{ $role->name }}</td>
+                                            <td style="display: flex; justify-content: center; gap: 5%;">
+                                                <!-- Edit Button -->
+                                                <button type="button" class="btn btn-warning"
+                                                    style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
+                                                    data-bs-toggle="modal" data-bs-target="#editRoleModal"
+                                                    data-id="{{ $role->id }}" data-name="{{ $role->name }}">
+                                                    <i class="fas fa-edit"></i> <span>Edit</span>
+                                                </button>
 
-                                            <!-- Delete Button -->
-                                            <button type="button" class="btn btn-danger"
-                                                style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
-                                                data-bs-toggle="modal" data-bs-target="#deleteRoleModal"
-                                                data-id="{{ $role->id }}" data-name="{{ $role->name }}">
-                                                Delete
-                                            </button>
+                                                <!-- Add / Edit Permission Button -->
+                                                <button type="button" class="btn btn-success"
+                                                    style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
+                                                    data-bs-toggle="modal" data-bs-target="#givePermissionModal"
+                                                    data-id="{{ $role->id }}" data-name="{{ $role->name }}">
+                                                    <i class="fas fa-plus"></i> <span>Add / Edit Permission</span>
+                                                </button>
 
-                                            <!-- Add / Edit Permission Button -->
-                                            <button type="button" class="btn btn-success"
-                                                style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
-                                                data-bs-toggle="modal" data-bs-target="#givePermissionModal"
-                                                data-id="{{ $role->id }}" data-name="{{ $role->name }}">
-                                                Add / Edit Permission
-                                            </button>
-                                        </td>
+                                                <!-- Delete Button -->
+                                                <button type="button" class="btn btn-danger"
+                                                    style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
+                                                    data-bs-toggle="modal" data-bs-target="#deleteRoleModal"
+                                                    data-id="{{ $role->id }}" data-name="{{ $role->name }}">
+                                                    <i class="fas fa-trash"></i> <span>Delete</span>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @else
+                                    <tr>
+                                        <td colspan="5" class="text-center">No roles found</td>
                                     </tr>
-                                @endforeach
+                                @endif
                             </tbody>
                         </table>
+
+                        {{-- Pagination --}}
+                        <div class="d-flex justify-content-end mt-3">
+                            {{ $roleList->links() }}
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- Include the Create Role Modal -->
-        @include('pages.admin.roles-permissions.roles.create')
+    <!-- Include the Create Role Modal -->
+    @include('pages.admin.roles-permissions.roles.create')
 
-        {{-- Include the Edit Role Modal --}}
-        @include('pages.admin.roles-permissions.roles.edit')
+    {{-- Include the Edit Role Modal --}}
+    @include('pages.admin.roles-permissions.roles.edit')
 
-        {{-- Include the Delete Role Modal --}}
-        @include('pages.admin.roles-permissions.roles.delete')
+    {{-- Include the Delete Role Modal --}}
+    @include('pages.admin.roles-permissions.roles.delete')
 
-        {{-- Include the Give permissions to Role --}}
-        @include('pages.admin.roles-permissions.roles.give-permissions')
+    {{-- Include the Give permissions to Role --}}
+    @include('pages.admin.roles-permissions.roles.give-permissions')
 
 </x-admin-layout>
 
 {{-- Bootstrap CDN --}}
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
 </script>
+
+{{-- Select2 CDN --}}
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <script>
     // JavaScript to dynamically populate the modal with role data
@@ -131,5 +170,13 @@ integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIe
         // Set the form action to the give-permissions route for the specific role
         var form = document.getElementById('givePermissionForm');
         form.action = "{{ route('roles.give-permissions', ':id') }}".replace(':id', roleId);
+    });
+
+    // Initialize select2 on the permissions select input
+    $(document).ready(function() {
+        $('#roles').select2({
+            placeholder: "Search a role to filter",
+            allowClear: true
+        });
     });
 </script>

@@ -27,7 +27,7 @@ class EconomicCenterController extends Controller
         });
 
         // Base query for economic centers
-        $query = EconomicCenter::query();
+        $query = EconomicCenter::orderBy('created_at', 'DESC');
 
         // Apply filter if economicCenter_id is provided
         if ($request->has('economicCenter_id') && $request->economicCenter_id) {
