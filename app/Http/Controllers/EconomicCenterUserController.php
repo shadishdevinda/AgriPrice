@@ -18,12 +18,31 @@ class EconomicCenterUserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::where('user_type', 'market-user')->paginate(10);
-        $roles = Role::pluck('name', 'name')->all();
-        return view('pages.admin.userManagement.economic_center_user.index', compact('users', 'roles'));
+        // Initialize the query for market users
+        $query = User::where('user_type', 'market-user');
 
+        // Apply filter if user_id is selected
+        if ($request->has('user_id') && !empty($request->user_id)) {
+            $query->where('id', $request->user_id);
+        }
+
+        // Sort users by created_at in descending order (newest first)
+        $query->orderBy('created_at', 'DESC');
+
+        // Fetch filtered users with their economic center and paginate
+        $users = $query->with('economicCenter')->paginate(10);
+
+        // Fetch users for the dropdown (ID, Name, Email)
+        $userOptions = User::where('user_type', 'market-user')
+            ->get()
+            ->mapWithKeys(function ($user) {
+                return [$user->id => "{$user->id} - {$user->name} - {$user->email}"];
+            });
+
+        // Return the view with data
+        return view('pages.admin.userManagement.economic_center_user.index', compact('users', 'userOptions'));
     }
 
     /**

@@ -2,30 +2,78 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
+<!-- FontAwesome for icons -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+{{-- Select2 CDN --}}
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
+{{-- SweetAlert2 CDN --}}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+{{-- Custom styles --}}
+<style>
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 1.5rem;
+    }
+
+    .btn-custom {
+        background-color: #065744;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+    }
+
+    .btn-custom:hover {
+        background-color: #065744;
+        color: white;
+    }
+
+    .photo-preview {
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 8px;
+        margin-top: 1rem;
+        display: none;
+    }
+
+    .btn-remove {
+        margin-top: 1rem;
+        display: none;
+    }
+</style>
 
 <x-admin-layout>
 
     <x-slot name="title">Economic Center User Management</x-slot>
 
     <div class="container">
-        <div class="row">
+        <div class="row justify-content-center mt-4">
             <div class="col-md-12">
+                <div class="card">
 
-                <div class="card mt-3">
-                    <div class="card-header">
-                        <h5 class="card-title">Edit Economic Center User
-                            <a href="{{ route('economic-center-user.index') }}" class="btn btn-primary float-end me-2">
-                                Back
-                            </a>
-                        </h5>
+                    <!-- Card Header -->
+                    <div class="card-header bg-dark">
+                        <h3 class="text-white mb-0">
+                            <i class="fas fa-pencil"></i></i> Update Economic Center User
+                        </h3>
+                        <a href="{{ route('economic-center-user.index') }}" class="btn btn-light">
+                            <i class="fas fa-arrow-left"></i> Back
+                        </a>
                     </div>
+
+                    {{-- Card body --}}
                     <div class="card-body">
                         <form action="{{ route('economic-center-user.update', $user->id) }}" method="POST"
                             id="editEconomicCenterUserForm">
                             @csrf
                             @method('PUT')
+
+                            {{-- User type, Name and Email --}}
                             <div class="row mb-3">
                                 <div class="col-md-2">
                                     <label for="user_type" class="form-label">Choose</label>
@@ -72,7 +120,6 @@
                                 </div>
                             </div>
 
-
                             {{-- Password and Confirm Password --}}
                             <div class="row mb-3">
                                 <div class="col-md-6">
@@ -109,7 +156,8 @@
 
                                     {{-- Display existing profile photo if available --}}
                                     @if ($user->profile_photo_path)
-                                        <img id="photoPreview" src="{{ asset('storage/' . $user->profile_photo_path) }}"
+                                        <img id="photoPreview"
+                                            src="{{ asset('storage/' . $user->profile_photo_path) }}"
                                             alt="Profile Photo" class="mt-2"
                                             style="width: 100px; height: 100px; object-fit: cover;">
                                     @else
@@ -130,7 +178,14 @@
                                 </div>
                             </div>
 
-                            <button type="submit" class="btn btn-primary float-end">Update</button>
+                            <!-- Submit Button -->
+                            <div class="row">
+                                <div class="col-md-12 d-flex justify-content-end">
+                                    <button type="submit" class="btn btn-custom">
+                                        <i class="fas fa-save"></i> Update User
+                                    </button>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>
