@@ -15,4 +15,12 @@ class CenterHasFruits extends Model
         'created_at',
         'updated_at'
     ];
+
+    public function center() {
+        return $this->belongsTo(EconomicCenter::class, 'center_id', 'id');
+    }
+
+    public function fruit() {
+        return $this->belongsTo(Fruit::class);
+    }
 }

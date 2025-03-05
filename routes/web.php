@@ -20,7 +20,7 @@ use App\Http\Controllers\EconomicCenterController;
 // Home page
 Route::get('/', [HomeController::class, 'welcome'])->name('home');
 Route::get('/vegetables', [HomeController::class, 'vegetableIndex'])->name('vegetables.index');
-Route::get('/vegetable/{id}', [HomeController::class, 'vegetableDetails'])->name('vegetables.details');
+Route::get('/vegetables/{id}', [HomeController::class, 'vegetableDetails'])->name('vegetables.details');
 Route::get('/fruits', [HomeController::class, 'fruitIndex'])->name('fruits.index');
 Route::get('/fruits/{id}', [HomeController::class, 'fruitDetails'])->name('fruits.details');
 
