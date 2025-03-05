@@ -10,10 +10,27 @@ class PermissionController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $permissions = Permission::get();
-        return view('pages.admin.roles-permissions.permissions.index', compact('permissions'));
+        // Fetch all permissions for the dropdown
+        $permissions = Permission::pluck('name', 'id')->all();
+
+        // Initialize the query for permissions
+        $query = Permission::orderBy('created_at', 'DESC');
+
+        // Filter by selected permission (if a permission is selected)
+        if ($request->has('permission_id') && $request->permission_id) {
+            $query->where('id', $request->permission_id);
+        }
+
+        // Fetch the filtered permissions with pagination
+        $permissionsList = $query->paginate(10); // 10 items per page
+
+        // Pass the data to the view
+        return view('pages.admin.roles-permissions.permissions.index', [
+            'permissions' => $permissions, // For the dropdown filter
+            'permissionsList' => $permissionsList, // For displaying the filtered list
+        ]);
     }
 
     /**

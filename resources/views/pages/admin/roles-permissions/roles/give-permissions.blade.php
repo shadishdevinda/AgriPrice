@@ -10,10 +10,11 @@
                 @csrf
                 @method('PUT')
                 <div class="modal-body">
-                    <div class="form-group mb-3">
-                        <label for="role_name">Role Name</label>
+                    <div class="form-group mb-3 d-flex align-items-center">
+                        <label for="role_name" class="me-2 flex-shrink-0">Role Name</label>
                         <x-input type="text" class="form-control" id="role_name" name="role_name" readonly />
                     </div>
+
                     <div class="form-group mb-3">
                         <label for="permissions">Permissions</label>
                         <div class="row">
@@ -21,9 +22,9 @@
                                 <div class="col-md-2">
                                     <div class="form-check">
                                         <input class="form-check-input"
-                                                type="checkbox" name="permission[]"
-                                                value="{{ $permission->name }}"
-                                                id="permission{{ $permission->id }}"
+                                               type="checkbox" name="permission[]"
+                                               value="{{ $permission->name }}"
+                                               id="permission{{ $permission->id }}"
                                                {{ $role->hasPermissionTo($permission->name) ? 'checked' : '' }}>
                                         <label class="form-check-label" for="permission{{ $permission->id }}">
                                             {{ $permission->name }}
@@ -44,6 +45,62 @@
 </div>
 
 <script>
+    // Function to fetch and populate permissions
+    function fetchPermissions(roleId) {
+        fetch(`/roles/${roleId}/permissions`)
+            .then(response => response.json())
+            .then(data => {
+                const permissionsContainer = document.getElementById('permissionsContainer');
+                permissionsContainer.innerHTML = ''; // Clear existing content
+
+                data.permissions.forEach(permission => {
+                    const permissionDiv = document.createElement('div');
+                    permissionDiv.className = 'col-md-2';
+
+                    const formCheck = document.createElement('div');
+                    formCheck.className = 'form-check';
+
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.className = 'form-check-input';
+                    checkbox.name = 'permission[]';
+                    checkbox.value = permission.name;
+                    checkbox.id = `permission${permission.id}`;
+                    checkbox.checked = permission.assigned; // Pre-select if assigned
+
+                    const label = document.createElement('label');
+                    label.className = 'form-check-label';
+                    label.htmlFor = `permission${permission.id}`;
+                    label.textContent = permission.name;
+
+                    formCheck.appendChild(checkbox);
+                    formCheck.appendChild(label);
+                    permissionDiv.appendChild(formCheck);
+                    permissionsContainer.appendChild(permissionDiv);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching permissions:', error);
+            });
+    }
+
+    // Event listener for modal show
+    document.getElementById('givePermissionModal').addEventListener('show.bs.modal', function (event) {
+        const button = event.relatedTarget; // Button that triggered the modal
+        const roleId = button.getAttribute('data-role-id'); // Extract role ID
+        const roleName = button.getAttribute('data-role-name'); // Extract role name
+
+        // Set role name in the modal
+        document.getElementById('role_name').value = roleName;
+
+        // Fetch and populate permissions
+        fetchPermissions(roleId);
+
+        // Update form action URL
+        document.getElementById('givePermissionForm').action = `/roles/${roleId}/permissions`;
+    });
+
+    // Handle form submission
     document.getElementById('givePermissionForm').addEventListener('submit', function (e) {
         e.preventDefault(); // Prevent form from submitting normally
 
@@ -65,7 +122,8 @@
             method: 'POST',
             body: formData,
             headers: {
-                'X-Requested-With': 'XMLHttpRequest'
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json',
             },
         })
         .then(response => response.json())
@@ -75,8 +133,9 @@
                     icon: 'success',
                     title: 'Success!',
                     text: data.message,
+                    confirmButtonText: 'Okay',
                 }).then(() => {
-                    window.location.reload(); // Reload the page to reflect changes
+                    // Write something when user click confirmButtonText......
                 });
             } else {
                 // Handle validation errors

@@ -49,33 +49,54 @@
                 method: 'POST',
                 body: formData,
                 headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json', // Ensure the response is JSON
                 },
             })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Success!',
-                        text: data.message,
-                    }).then(() => {
-                        window.location.reload(); // Reload the page to reflect changes
-                    });
+                    // Set a flag in localStorage to indicate a successful submission
+                    localStorage.setItem('permissionDeleted', 'true');
+
+                    // Reload the page
+                    window.location.reload();
                 } else {
+                    // Handle validation errors
                     Swal.fire({
                         icon: 'error',
-                        title: 'Error!',
-                        text: data.message,
+                        title: 'Validation Error',
+                        html: `
+                        <ul>
+                            ${data.errors.map(error => `<li>${error}</li>`).join('')}
+                        </ul>
+                    `,
                     });
                 }
             })
             .catch(error => {
+                // Handle unexpected errors
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
                     text: 'An unexpected error occurred. Please try again.',
                 });
             });
+    });
+
+    // Check for the flag after the page reloads
+    window.addEventListener('load', function() {
+        if (localStorage.getItem('permissionDeleted') === 'true') {
+            // Remove the flag
+            localStorage.removeItem('permissionDeleted');
+
+            // Show success alert
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: 'Permission deleted successfully.',
+                confirmButtonText: 'Okay',
+            });
+        }
     });
 </script>

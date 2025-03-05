@@ -13,11 +13,29 @@ class RoleController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $roles = Role::get();
+        // Fetch all roles for the dropdown
+        $roles = Role::pluck('name', 'id');
+
+        // Initialize the query for roles
+        $query = Role::orderBy('created_at', 'DESC');
+
+        // Filter by selected role (id a role is selected)
+        if ($request->has('role_id') && $request->role_id) {
+            $query->where('id', $request->role_id);
+        }
+
+        // Fetch the filtered roles with pagination
+        $roleList = $query->paginate(10);
+
         $permissions = Permission::get();
-        return view('pages.admin.roles-permissions.roles.index', compact('roles', 'permissions'));
+
+        return view('pages.admin.roles-permissions.roles.index', [
+            'roles' => $roles, // For the dropdown filter
+            'roleList' => $roleList, // For displaying the filtered list
+            'permissions' => $permissions,
+        ]);
     }
 
     /**
@@ -93,7 +111,8 @@ class RoleController extends Controller
     public function givePermissions(Request $request, $roleId)
     {
         $request->validate([
-            'permission' => 'required',
+            'permission' => 'array', // Ensure permissions is an array
+            'permission.*' => 'string|exists:permissions,name', // Ensure each permission exists
         ]);
 
         try {
