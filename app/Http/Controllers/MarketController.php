@@ -239,3 +239,4 @@ class MarketController extends Controller
         return view('pages.market.profile.show');
     }
 }
+
