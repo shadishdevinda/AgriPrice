@@ -18,11 +18,11 @@
                         Home
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="homeDropdown">
-                        <li><a class="dropdown-item" href="about.html">About</a></li>
-                        <li><a class="dropdown-item" href="services.html">Services</a></li>
+                        <li><a class="dropdown-item" href="#about">About</a></li>
+                        <li><a class="dropdown-item" href="#services">Services</a></li>
                         <li><a class="dropdown-item" href="project.html">Projects</a></li>
-                        <li><a class="dropdown-item" href="blog.html">Blog</a></li>
-                        <li><a class="dropdown-item" href="contact.html">Contact</a></li>
+                        <li><a class="dropdown-item" href="#blog">Blog</a></li>
+                        <li><a class="dropdown-item" href="#contact">Contact</a></li>
                     </ul>
                 </li>
 
