@@ -918,12 +918,12 @@
     @endif
 </head>
 
-<style>
+{{-- <style>
     .nav-item.dropdown:hover .dropdown-menu {
         display: block;
         margin-top: 0;
     }
-</style>
+</style> --}}
 
 <body class="font-sans antialiased">
 
@@ -986,7 +986,7 @@
     </div>
 
     <!-- Navbar -->
-    @include('pages.home.navbar')
+    @include('pages.home.navigation-menu')
 
     <section class="hero-wrap js-fullheight">
         <div class="overlay"></div>
@@ -996,7 +996,7 @@
                 data-scrollax-parent="true">
                 <div class="col-md-8 text-center ftco-animate">
                     <div class="mb-5">
-                        <span class="subheading">Welcome to Famrland</span>
+                        <span class="subheading">Welcome to AGRIPRICE</span>
                         <h1 class="mb-4">Agriculture is the Most Healthful</h1>
                         <p class="mb-4">Far far away, behind the word mountains, far from the countries Vokalia and
                             Consonantia, there live the blind texts. Separated they live in Bookmarksgrove.</p>
@@ -1023,7 +1023,7 @@
                     <div class="services">
                         <div class="p-4">
                             <div class="media-body">
-                                <h3 class="heading mb-3">Fresh <br>Vegetables</h3>
+                                <h3 class="heading mb-3">Vegetable <br>Prices</h3>
                                 <p>A small river named Duden flows by their place and supplies it with the necessary
                                     regelialia. It is a paradisematic country, in which roasted parts</p>
                             </div>
@@ -1039,7 +1039,7 @@
                     <div class="services">
                         <div class="p-4">
                             <div class="media-body">
-                                <h3 class="heading mb-3">Agricultural <br>Products</h3>
+                                <h3 class="heading mb-3">Fruit <br>Prices</h3>
                                 <p>A small river named Duden flows by their place and supplies it with the necessary
                                     regelialia. It is a paradisematic country, in which roasted parts</p>
                             </div>
@@ -1055,23 +1055,7 @@
                     <div class="services">
                         <div class="p-4">
                             <div class="media-body">
-                                <h3 class="heading mb-3">Organic <br>Products</h3>
-                                <p>A small river named Duden flows by their place and supplies it with the necessary
-                                    regelialia. It is a paradisematic country, in which roasted parts</p>
-                            </div>
-                        </div>
-                        <div class="img" style="background-image: url(images/services-3.jpg);">
-                            <a href="#"
-                                class="btn-custom d-flex align-items-center justify-content-center"><span
-                                    class="fa fa-chevron-right"></span></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 d-flex align-self-stretch ftco-animate">
-                    <div class="services">
-                        <div class="p-4">
-                            <div class="media-body">
-                                <h3 class="heading mb-3">Dairy <br>Products</h3>
+                                <h3 class="heading mb-3">Economic <br>Centers</h3>
                                 <p>A small river named Duden flows by their place and supplies it with the necessary
                                     regelialia. It is a paradisematic country, in which roasted parts</p>
                             </div>
@@ -1083,11 +1067,27 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-md-3 d-flex align-self-stretch ftco-animate">
+                    <div class="services">
+                        <div class="p-4">
+                            <div class="media-body">
+                                <h3 class="heading mb-3">Crop <br>Advices</h3>
+                                <p>A small river named Duden flows by their place and supplies it with the necessary
+                                    regelialia. It is a paradisematic country, in which roasted parts</p>
+                            </div>
+                        </div>
+                        <div class="img" style="background-image: url(images/services-3.jpg);">
+                            <a href="#"
+                                class="btn-custom d-flex align-items-center justify-content-center"><span
+                                    class="fa fa-chevron-right"></span></a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <section class="ftco-section ftco-no-pt ftco-no-pb ftco-about img">
+    {{-- <section class="ftco-section ftco-no-pt ftco-no-pb ftco-about img">
         <div class="container">
             <div class="row d-flex">
                 <div class="col-md-12 about-intro">
@@ -1146,7 +1146,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> --}}
 
     <section class="ftco-section ftco-counter img" id="section-counter"
         style="background-image: url(images/bg_2.jpg);">
@@ -1197,9 +1197,7 @@
         </div>
     </section>
 
-
-
-    <section class="ftco-section">
+    {{-- <section class="ftco-section">
         <div class="container">
             <div class="row justify-content-center pb-5">
                 <div class="col-md-12 heading-section text-center ftco-animate">
@@ -1256,9 +1254,9 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> --}}
 
-    <section class="video-image img" style="background-image: url(images/bg_3.jpg);">
+    {{-- <section class="video-image img" style="background-image: url(images/bg_3.jpg);">
         <div class="overlay-2"></div>
         <div class="overlay"></div>
         <div class="container">
@@ -1272,7 +1270,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> --}}
 
     <section class="ftco-section ftco-no-pt testimony-section">
         <div class="overlay"></div>
@@ -1558,7 +1556,7 @@
 
 
 
-    <section class="ftco-section bg-light">
+    {{-- <section class="ftco-section bg-light">
         <div class="container">
             <div class="row justify-content-center pb-4">
                 <div class="col-md-12 heading-section text-center ftco-animate">
@@ -1633,7 +1631,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> --}}
 
     <section class="ftco-intro img" style="background-image: url(images/bg_4.jpg);">
         <div class="overlay"></div>

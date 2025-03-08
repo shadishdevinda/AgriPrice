@@ -1,73 +1,65 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fruit Page</title>
+<!-- Custom CSS -->
+<style>
+    .card {
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        width: 100%;
+    }
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    .card img {
+        height: 180px;
+        object-fit: cover;
+    }
 
-    <!-- Custom CSS -->
-    <style>
-        .card {
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            width: 100%;
-        }
-        .card img {
-            height: 180px;
-            object-fit: cover;
-        }
+    /* Search bar styling */
+    .search-container {
+        position: relative;
+        max-width: 600px;
+        margin: auto;
+        width: 100%;
+    }
 
-        /* Search bar styling */
-        .search-container {
-            position: relative;
-            max-width: 600px;
-            margin: auto;
-            width: 100%;
-        }
+    /* Search dropdown styles */
+    .search-dropdown {
+        position: absolute;
+        width: 100%;
+        background: white;
+        border: 1px solid #ccc;
+        border-top: none;
+        border-radius: 0 0 10px 10px;
+        display: none;
+        z-index: 1000;
+        max-height: 250px;
+        overflow-y: auto;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
 
-        /* Search dropdown styles */
-        .search-dropdown {
-            position: absolute;
-            width: 100%;
-            background: white;
-            border: 1px solid #ccc;
-            border-top: none;
-            border-radius: 0 0 10px 10px;
-            display: none;
-            z-index: 1000;
-            max-height: 250px;
-            overflow-y: auto;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        .search-dropdown a {
-            display: block;
-            padding: 12px;
-            color: #333;
-            text-decoration: none;
-            font-size: 16px;
-            transition: background 0.3s ease-in-out;
-        }
-        .search-dropdown a:hover {
-            background: #f8f9fa;
-            color: #007bff;
-        }
-    </style>
-</head>
-<body>
-    @include('pages.home.navbar')
+    .search-dropdown a {
+        display: block;
+        padding: 12px;
+        color: #333;
+        text-decoration: none;
+        font-size: 16px;
+        transition: background 0.3s ease-in-out;
+    }
+
+    .search-dropdown a:hover {
+        background: #f8f9fa;
+        color: #007bff;
+    }
+</style>
+
+<x-home-layout>
+    <x-slot name="title">Fruit Price</x-slot>
 
     <div class="container">
         <br>
-
         <!-- Search Bar (Centered) -->
         <div class="row justify-content-center mb-4">
             <div class="col-md-6">
                 <div class="search-container">
-                    <input type="text" id="searchBar" class="form-control text-center" placeholder="Search for fruits...">
+                    <x-input type="text" id="searchBar" class="form-control text-center" placeholder="Search for fruits..."/>
                     <div id="searchResults" class="search-dropdown"></div>
                 </div>
             </div>
@@ -81,7 +73,8 @@
                         <div class="card w-100">
                             <img src="{{ asset('storage/' . $fruit->image) }}" class="card-img-top" alt="{{ $fruit->name }}">
                             <div class="card-body text-center">
-                                <h5 class="card-title">{{ $fruit->name }}</h5>
+                                <h5 class="card-title
+                                    ">{{ $fruit->name }}</h5>
                             </div>
                         </div>
                     </a>
@@ -89,15 +82,10 @@
             @endforeach
         </div>
     </div>
+</x-home-layout>
 
-    <!-- jQuery (Required for Search) -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- JavaScript for Search Function -->
-    <script>
+<!-- JavaScript for Search Function -->
+<script>
         $(document).ready(function(){
             var fruitList = [];
             $(".fruit-item").each(function() {
@@ -133,6 +121,4 @@
                 }
             });
         });
-    </script>
-</body>
-</html>
+</script>
