@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\DB;
 use App\Models\CenterHasVegetables;
 use App\Models\VegetableAdvice;
 use App\Models\FruitAdvice;
-
 use App\Models\VegetableHasAdvice; 
 use App\Models\FruitHasAdvice;
 
@@ -129,8 +128,6 @@ class HomeController extends Controller
         ));
     }
 
-
-
     public function fruitAdviceIndex()
     {
        $fruits = Fruit::all();
@@ -156,5 +153,4 @@ class HomeController extends Controller
         $vegetable = Vegetable::with('advice')->findOrFail($id);  
         return view('pages.home.advices.vegetable.show', compact('vegetable'));
     }
-
 }

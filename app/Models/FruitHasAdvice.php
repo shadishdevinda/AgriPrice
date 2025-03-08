@@ -42,6 +42,4 @@ class FruitHasAdvice extends Model
         return $this->belongsTo(Fruit::class, 'fruit_id');
     }
 
-    
-
 }

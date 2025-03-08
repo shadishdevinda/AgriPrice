@@ -19,5 +19,4 @@ class Fruit extends Model
     {
         return $this->belongsToMany(FruitAdvice::class, 'fruit_has_advice', 'fruit_id', 'advice_id');
     }
-
 }

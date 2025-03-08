@@ -21,5 +21,4 @@ class Vegetable extends Model
         return $this->belongsToMany(VegetableAdvice::class, 'vegetable_has_advice', 'vegetable_id', 'advice_id');
     }
 
-   
 }
