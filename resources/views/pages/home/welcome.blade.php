@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -1198,6 +1197,7 @@
     </section>
 
     {{-- <section class="ftco-section">
+
         <div class="container">
             <div class="row justify-content-center pb-5">
                 <div class="col-md-12 heading-section text-center ftco-animate">
@@ -1496,6 +1496,7 @@
                                         </ol>
                                     </div>
                                 </div>
+
                             </div>
 
                             <div class="card">
@@ -1545,6 +1546,7 @@
                                         </p>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>
