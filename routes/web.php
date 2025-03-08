@@ -25,6 +25,17 @@ Route::get('/fruits', [HomeController::class, 'fruitIndex'])->name('fruits.index
 Route::get('/fruits/{id}', [HomeController::class, 'fruitDetails'])->name('fruits.details');
 
 
+//  Fruit Advice Routes 
+Route::get('/fruits-advice', [HomeController::class, 'fruitAdviceIndex'])->name('advices.fruits.index');
+Route::get('/fruit-advice/fruit/{id}', [HomeController::class, 'fruitAdviceShow'])->name('advice.fruit.show');
+
+
+//  Vegetable Advice Routes 
+Route::get('/vegetables-advice', [HomeController::class, 'vegetableAdviceIndex'])->name('advices.vegetables.index');
+Route::get('/vegetable-advice/vegetable/{id}', [HomeController::class, 'vegetableAdviceShow'])->name('advice.vegetable.show');
+
+
+
 // Login route
 Route::post('/login', [LoginController::class, 'login'])->name('login');
 
@@ -100,3 +111,8 @@ Route::resource('/vegetable_advice', VegetableAdviceController::class);
 
 // fruit_advice Routes
 Route::resource('/fruit_advice', FruitAdviceController::class);
+
+
+
+
+

@@ -28,7 +28,15 @@
 
                 <li><a class="nav-link" href="{{ route('vegetables.index') }}">Vegetables Prices</a></li>
                 <li><a class="nav-link" href="{{ route('fruits.index') }}">Fruits Prices</a></li>
-                <li><a class="nav-link" href="crops-advices.html">Crops Advices</a></li>
+                <li class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" id="adviceDropdown" role="button" data-toggle="dropdown" aria-expanded="false">
+                        Crops Advice
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="adviceDropdown">
+                        <li><a href="{{ route('advices.fruits.index') }}">Fruit Advice</a></li>
+                        <li><a href="{{ route('advices.vegetables.index') }}"> Vegetable Advice</a></li>                       
+                    </ul>
+                </li>
             </ul>
 
             <!-- Authentication Links -->

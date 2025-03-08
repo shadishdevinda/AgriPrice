@@ -14,4 +14,10 @@ class Fruit extends Model
         'description',
         'image',
     ];
+
+    public function advice()
+    {
+        return $this->belongsToMany(FruitAdvice::class, 'fruit_has_advice', 'fruit_id', 'advice_id');
+    }
+
 }

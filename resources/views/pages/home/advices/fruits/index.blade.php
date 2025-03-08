@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vegetable Page</title>
+    <title>Fruit Advice Page</title>
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -71,8 +71,8 @@
             color: #28a745;
         }
 
-        /* Vegetable Cards Styling */
-        .vegetable-item {
+        /* Fruit Cards Styling */
+        .fruit-item {
             margin-bottom: 20px;
         }
 
@@ -128,8 +128,7 @@
     </style>
 </head>
 <body>
-    @include('pages.home.navbar')
-
+    
     <div class="container">
         <br>
 
@@ -137,27 +136,28 @@
         <div class="row justify-content-center mb-4">
             <div class="col-md-8">
                 <div class="search-container">
-                    <input type="text" id="searchBar" class="form-control" placeholder="Search for vegetables...">
+                    <input type="text" id="searchBar" class="form-control" placeholder="Search for Fruits...">
                     <div id="searchResults" class="search-dropdown"></div>
                 </div>
             </div>
         </div>
 
-        <!-- Vegetable Cards -->
-        <div class="row justify-content-start gx-3" id="vegetableList">
-            @foreach($vegetables as $vegetable)
-                <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4 d-flex align-items-stretch vegetable-item" data-name="{{ strtolower($vegetable->name) }}">
-                    <a href="{{ route('advice.vegetable.show', $vegetable->id) }}" class="text-decoration-none text-dark w-100">
-                        <div class="card w-100">
-                            <img src="{{ asset('storage/' . $vegetable->image) }}" class="card-img-top" alt="{{ $vegetable->name }}">
-                            <div class="card-body text-center">
-                                <h5 class="card-title">{{ $vegetable->name }}</h5>
-                            </div>
+       <!-- Fruit Cards -->
+       <div class="row justify-content-start gx-3" id="fruitList">
+          @foreach($fruits as $fruit)
+            <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4 d-flex align-items-stretch fruit-item" data-name="{{ strtolower($fruit->name) }}">
+                <a href="{{ route('advice.fruit.show', $fruit->id) }}" class="text-decoration-none text-dark w-100">
+                    <div class="card w-100">
+                        <img src="{{ asset('storage/' . $fruit->image) }}" class="card-img-top" alt="{{ $fruit->name }}">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">{{ $fruit->name }}</h5>
                         </div>
-                    </a>
-                </div>
-            @endforeach
-        </div>
+                    </div>
+                </a>
+            </div>
+          @endforeach
+       </div>
+
     </div>
 
     <!-- jQuery (Required for Search) -->
@@ -169,11 +169,11 @@
     <!-- JavaScript for Search Function -->
     <script>
         $(document).ready(function(){
-            var vegetableList = [];
-            $(".vegetable-item").each(function() {
+            var fruitList = [];
+            $(".fruit-item").each(function() {
                 var name = $(this).data("name");
                 var link = $(this).find("a").attr("href");
-                vegetableList.push({ name: name, link: link });
+                fruitList.push({ name: name, link: link });
             });
 
             $("#searchBar").on("keyup", function() {
@@ -182,7 +182,7 @@
                 results.empty();
 
                 if (value.length > 0) {
-                    var filtered = vegetableList.filter(item => item.name.includes(value));
+                    var filtered = fruitList.filter(item => item.name.includes(value));
                     if (filtered.length > 0) {
                         results.show();
                         filtered.forEach(item => {
