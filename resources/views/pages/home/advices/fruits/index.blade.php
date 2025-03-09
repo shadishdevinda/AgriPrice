@@ -1,12 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fruit Advice Page</title>
+<x-home-layout>
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <x-slot name="title">Fruit Advices</x-slot>
 
     <!-- Custom CSS -->
     <style>
@@ -16,8 +10,9 @@
             color: #333;
         }
 
-        .container {
-            padding: 20px;
+        /* Navigation Links */
+        .nav-links {
+            gap: 60px;
         }
 
         /* Search Bar Styling */
@@ -126,12 +121,9 @@
             }
         }
     </style>
-</head>
-<body>
-    
+
     <div class="container">
         <br>
-
         <!-- Search Bar (Centered) -->
         <div class="row justify-content-center mb-4">
             <div class="col-md-8">
@@ -142,67 +134,67 @@
             </div>
         </div>
 
-       <!-- Fruit Cards -->
-       <div class="row justify-content-start gx-3" id="fruitList">
-          @foreach($fruits as $fruit)
-            <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4 d-flex align-items-stretch fruit-item" data-name="{{ strtolower($fruit->name) }}">
-                <a href="{{ route('advice.fruit.show', $fruit->id) }}" class="text-decoration-none text-dark w-100">
-                    <div class="card w-100">
-                        <img src="{{ asset('storage/' . $fruit->image) }}" class="card-img-top" alt="{{ $fruit->name }}">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">{{ $fruit->name }}</h5>
+        <!-- Fruit Cards -->
+        <div class="row justify-content-start gx-3" id="fruitList">
+            @foreach ($fruits as $fruit)
+                <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4 d-flex align-items-stretch fruit-item"
+                    data-name="{{ strtolower($fruit->name) }}">
+                    <a href="{{ route('advice.fruit.show', $fruit->id) }}" class="text-decoration-none text-dark w-100">
+                        <div class="card w-100">
+                            <img src="{{ asset('storage/' . $fruit->image) }}" class="card-img-top"
+                                alt="{{ $fruit->name }}">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">{{ $fruit->name }}</h5>
+                                <p class="text-muted">Click for details</p>
+                            </div>
                         </div>
-                    </div>
-                </a>
-            </div>
-          @endforeach
-       </div>
-
+                    </a>
+                </div>
+            @endforeach
+        </div>
     </div>
+</x-home-layout>
 
-    <!-- jQuery (Required for Search) -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- JavaScript for Search Function -->
-    <script>
-        $(document).ready(function(){
-            var fruitList = [];
-            $(".fruit-item").each(function() {
-                var name = $(this).data("name");
-                var link = $(this).find("a").attr("href");
-                fruitList.push({ name: name, link: link });
+<!-- JavaScript for Search Function -->
+<script>
+    $(document).ready(function() {
+        var fruitList = [];
+        $(".fruit-item").each(function() {
+            var name = $(this).data("name");
+            var link = $(this).find("a").attr("href");
+            fruitList.push({
+                name: name,
+                link: link
             });
+        });
 
-            $("#searchBar").on("keyup", function() {
-                var value = $(this).val().toLowerCase();
-                var results = $("#searchResults");
-                results.empty();
+        $("#searchBar").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            var results = $("#searchResults");
+            results.empty();
 
-                if (value.length > 0) {
-                    var filtered = fruitList.filter(item => item.name.includes(value));
-                    if (filtered.length > 0) {
-                        results.show();
-                        filtered.forEach(item => {
-                            results.append(`<a href="${item.link}">${item.name}</a>`);
-                        });
-                    } else {
-                        results.hide();
-                    }
+            if (value.length > 0) {
+                var filtered = fruitList.filter(item => item.name.includes(value));
+                if (filtered.length > 0) {
+                    results.show();
+                    filtered.forEach(item => {
+                        results.append(`<a href="${item.link}">${item.name}</a>`);
+                    });
                 } else {
                     results.hide();
                 }
-            });
-
-            // Hide dropdown when clicking outside
-            $(document).click(function(event) {
-                if (!$(event.target).closest("#searchBar, #searchResults").length) {
-                    $("#searchResults").hide();
-                }
-            });
+            } else {
+                results.hide();
+            }
         });
-    </script>
-</body>
-</html>
+
+        // Hide dropdown when clicking outside
+        $(document).click(function(event) {
+            if (!$(event.target).closest("#searchBar, #searchResults").length) {
+                $("#searchResults").hide();
+            }
+        });
+    });
+</script>

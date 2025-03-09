@@ -17,7 +17,7 @@ use App\Http\Controllers\EconomicCenterUserController;
 use App\Http\Controllers\EconomicCenterController;
 
 
-// Home page
+// Home page Route
 Route::get('/', [HomeController::class, 'welcome'])->name('home');
 // Vegetable Price Routes
 Route::get('/vegetables', [HomeController::class, 'vegetableIndex'])->name('vegetables.index');
@@ -25,10 +25,10 @@ Route::get('/vegetables/{id}', [HomeController::class, 'vegetableDetails'])->nam
 // Fruit Price Routes
 Route::get('/fruits', [HomeController::class, 'fruitIndex'])->name('fruits.index');
 Route::get('/fruits/{id}', [HomeController::class, 'fruitDetails'])->name('fruits.details');
-//  Fruit Advice Routes 
+//  Fruit Advice Routes
 Route::get('/fruits-advice', [HomeController::class, 'fruitAdviceIndex'])->name('advices.fruits.index');
 Route::get('/fruit-advice/fruit/{id}', [HomeController::class, 'fruitAdviceShow'])->name('advice.fruit.show');
-//  Vegetable Advice Routes 
+//  Vegetable Advice Routes
 Route::get('/vegetables-advice', [HomeController::class, 'vegetableAdviceIndex'])->name('advices.vegetables.index');
 Route::get('/vegetable-advice/vegetable/{id}', [HomeController::class, 'vegetableAdviceShow'])->name('advice.vegetable.show');
 

@@ -917,12 +917,6 @@
     @endif
 </head>
 
-{{-- <style>
-    .nav-item.dropdown:hover .dropdown-menu {
-        display: block;
-        margin-top: 0;
-    }
-</style> --}}
 
 <body class="font-sans antialiased">
 
@@ -984,7 +978,6 @@
         </div>
     </div>
 
-    <!-- Navbar -->
     @include('pages.home.navigation-menu')
 
     <section class="hero-wrap js-fullheight">
@@ -1086,66 +1079,6 @@
         </div>
     </section>
 
-    {{-- <section class="ftco-section ftco-no-pt ftco-no-pb ftco-about img">
-        <div class="container">
-            <div class="row d-flex">
-                <div class="col-md-12 about-intro">
-                    <div class="row d-flex">
-                        <div class="col-md-6 d-flex align-items-stretch">
-                            <div class="img d-flex align-items-center align-self-stretch justify-content-center"
-                                style="background-image:url(images/about-1.jpg);">
-                                <div class="year-stablish text-center">
-                                    <div class="icon2"><span class="flaticon-calendar"></span></div>
-                                    <div class="text">
-                                        <strong class="number" data-number="42">0</strong>
-                                        <span>Year Of<br> Experienced</span>
-                                    </div>
-                                </div>
-                                <div class="img-2 d-flex align-items-center justify-content-center"
-                                    style="background-image:url(images/about-2.jpg);">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 pl-md-5 py-5">
-                            <div class="row justify-content-start pb-3">
-                                <div class="col-md-12 heading-section ftco-animate">
-                                    <span class="subheading">About Farmland</span>
-                                    <h2 class="mb-4">We're Leader In Agricultural Market</h2>
-                                    <p>Far far away, behind the word mountains, far from the countries Vokalia and
-                                        Consonantia, there live the blind texts. Separated they live in Bookmarksgrove
-                                        right at the coast of the Semantics, a large language ocean. A small river named
-                                        Duden flows by their place and supplies it with the necessary regelialia.</p>
-                                    <div class="row my-4">
-                                        <div class="col-md-6 ftco-animate">
-                                            <div class="services-2 d-flex align-items-center">
-                                                <div class="icon d-flex align-items-center justify-content-center">
-                                                    <span class="flaticon-agriculture"></span>
-                                                </div>
-                                                <div class="media-body">
-                                                    <h3 class="heading">Growing Fruits<br> and Vegetables</h3>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 ftco-animate">
-                                            <div class="services-2 d-flex align-items-center">
-                                                <div class="icon d-flex align-items-center justify-content-center">
-                                                    <span class="flaticon-agriculture-2"></span>
-                                                </div>
-                                                <div class="media-body">
-                                                    <h3 class="heading">Tips for Ripening<br> Fruits</h3>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <p><a href="#" class="btn btn-secondary">Learn More</a></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section> --}}
 
     <section class="ftco-section ftco-counter img" id="section-counter"
         style="background-image: url(images/bg_2.jpg);">
@@ -1196,81 +1129,6 @@
         </div>
     </section>
 
-    {{-- <section class="ftco-section">
-
-        <div class="container">
-            <div class="row justify-content-center pb-5">
-                <div class="col-md-12 heading-section text-center ftco-animate">
-                    <span class="subheading">Recent Work</span>
-                    <h2 class="mb-4">Explore Projects</h2>
-                </div>
-            </div>
-        </div>
-        <div class="container-fluid px-md-4">
-            <div class="row">
-                <div class="col-md-3 ftco-animate">
-                    <div class="project-wrap img d-flex align-items-end"
-                        style="background-image: url(images/work-1.jpg);">
-                        <div class="text">
-                            <h3><a href="portfolio-single.html">Organic Solution</a></h3>
-                            <a href="portfolio-single.html"
-                                class="icon d-flex align-items-center justify-content-center"><span
-                                    class="fa fa-chevron-right"></span></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 ftco-animate">
-                    <div class="project-wrap img d-flex align-items-end"
-                        style="background-image: url(images/work-2.jpg);">
-                        <div class="text">
-                            <h3><a href="portfolio-single.html">Harvest Innovation</a></h3>
-                            <a href="portfolio-single.html"
-                                class="icon d-flex align-items-center justify-content-center"><span
-                                    class="fa fa-chevron-right"></span></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 ftco-animate">
-                    <div class="project-wrap img d-flex align-items-end"
-                        style="background-image: url(images/work-3.jpg);">
-                        <div class="text">
-                            <h3><a href="portfolio-single.html">Farm System</a></h3>
-                            <a href="portfolio-single.html"
-                                class="icon d-flex align-items-center justify-content-center"><span
-                                    class="fa fa-chevron-right"></span></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 ftco-animate">
-                    <div class="project-wrap img d-flex align-items-end"
-                        style="background-image: url(images/work-4.jpg);">
-                        <div class="text">
-                            <h3><a href="portfolio-single.html">Agricultural Farming</a></h3>
-                            <a href="portfolio-single.html"
-                                class="icon d-flex align-items-center justify-content-center"><span
-                                    class="fa fa-chevron-right"></span></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section> --}}
-
-    {{-- <section class="video-image img" style="background-image: url(images/bg_3.jpg);">
-        <div class="overlay-2"></div>
-        <div class="overlay"></div>
-        <div class="container">
-            <div class="row justify-content-center align-items-center wrap-video">
-                <div class="col-md-6 text-center">
-                    <a href="https://vimeo.com/45830194"
-                        class="icon-video popup-vimeo d-flex align-items-center justify-content-center mb-4">
-                        <span class="fa fa-play"></span>
-                    </a>
-                    <h3>Watch Modern Agricultural Farming</h3>
-                </div>
-            </div>
-        </div>
-    </section> --}}
 
     <section class="ftco-section ftco-no-pt testimony-section">
         <div class="overlay"></div>
@@ -1554,86 +1412,6 @@
             </div>
         </div>
     </section>
-
-
-
-
-    {{-- <section class="ftco-section bg-light">
-        <div class="container">
-            <div class="row justify-content-center pb-4">
-                <div class="col-md-12 heading-section text-center ftco-animate">
-                    <span class="subheading">Our Blog</span>
-                    <h2 class="mb-4">Recent Post</h2>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4 ftco-animate">
-                    <div class="blog-entry">
-                        <a href="blog-single.html" class="block-20"
-                            style="background-image: url('images/image_1.jpg');">
-                        </a>
-                        <div class="text d-block text-center">
-                            <div class="meta">
-                                <p>
-                                    <a href="#"><span class="fa fa-calendar mr-2"></span>Sept. 23, 2020</a>
-                                    <a href="#"><span class="fa fa-user mr-2"></span>Admin</a>
-                                    <a href="#" class="meta-chat"><span class="fa fa-comment mr-2"></span>
-                                        3</a>
-                                </p>
-                            </div>
-                            <h3 class="heading"><a href="#">Organic Products For Healthy Living</a></h3>
-                            <p>Far far away, behind the word mountains, far from the countries Vokalia and
-                                Consonantia...</p>
-                            <p class="mb-0"><a href="#" class="btn-custom">Read more</a></p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-4 ftco-animate">
-                    <div class="blog-entry">
-                        <a href="blog-single.html" class="block-20"
-                            style="background-image: url('images/image_2.jpg');">
-                        </a>
-                        <div class="text d-block text-center">
-                            <div class="meta">
-                                <p>
-                                    <a href="#"><span class="fa fa-calendar mr-2"></span>Sept. 23, 2020</a>
-                                    <a href="#"><span class="fa fa-user mr-2"></span>Admin</a>
-                                    <a href="#" class="meta-chat"><span class="fa fa-comment mr-2"></span>
-                                        3</a>
-                                </p>
-                            </div>
-                            <h3 class="heading"><a href="#">Organic Products For Healthy Living</a></h3>
-                            <p>Far far away, behind the word mountains, far from the countries Vokalia and
-                                Consonantia...</p>
-                            <p class="mb-0"><a href="#" class="btn-custom">Read more</a></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 ftco-animate">
-                    <div class="blog-entry">
-                        <a href="blog-single.html" class="block-20"
-                            style="background-image: url('images/image_3.jpg');">
-                        </a>
-                        <div class="text d-block text-center">
-                            <div class="meta">
-                                <p>
-                                    <a href="#"><span class="fa fa-calendar mr-2"></span>Sept. 23, 2020</a>
-                                    <a href="#"><span class="fa fa-user mr-2"></span>Admin</a>
-                                    <a href="#" class="meta-chat"><span class="fa fa-comment mr-2"></span>
-                                        3</a>
-                                </p>
-                            </div>
-                            <h3 class="heading"><a href="#">Organic Products For Healthy Living</a></h3>
-                            <p>Far far away, behind the word mountains, far from the countries Vokalia and
-                                Consonantia...</p>
-                            <p class="mb-0"><a href="#" class="btn-custom">Read more</a></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section> --}}
 
     <section class="ftco-intro img" style="background-image: url(images/bg_4.jpg);">
         <div class="overlay"></div>

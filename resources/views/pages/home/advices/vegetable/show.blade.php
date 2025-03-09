@@ -1,135 +1,168 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fruit Advice Details</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+<x-home-layout>
+
     <style>
+        /* General Styles */
         body {
-            background-color: #f8f9fa;
-            font-family: 'Arial', sans-serif;
+            font-family: 'Poppins', sans-serif;
             color: #333;
         }
-        .container {
-            max-width: 800px;
-            margin: 50px auto;
-            padding: 30px;
-            background-color: #fff;
-            border-radius: 15px;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+
+        /* Navigation Links */
+        .nav-links {
+            gap: 60px;
         }
-        h2 {
-            color: #28a745;
-            font-weight: bold;
-            text-align: center;
-            margin-bottom: 30px;
-            font-size: 2.2rem;
-            text-transform: capitalize;
-        }
-        .card {
-            border: none;
-            border-radius: 15px;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+        /* Card Styles */
+        .vegetable-card {
+            background-color: #f9f9f9;
+            border-radius: 12px;
             overflow: hidden;
         }
-        .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+
+        /* Back Button */
+        .back-btn {
+            position: absolute;
+            /* Position the button absolutely within the card */
+            top: 15px;
+            /* Distance from the top */
+            right: 15px;
+            /* Distance from the right */
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+            z-index: 1;
+            /* Ensure the button stays above other elements */
         }
-        .card-img-top {
-            border-top-left-radius: 15px;
-            border-top-right-radius: 15px;
-            height: 350px;
-            object-fit: cover;
-            transition: transform 0.3s ease;
+
+        .back-btn:hover {
+            background-color: #45a049;
         }
-        .card-img-top:hover {
-            transform: scale(1.05);
+
+        .back-btn i {
+            margin-right: 5px;
         }
+
+        /* Vegetable Image Container */
+        .vegetable-image-container {
+            background-color: #f9f9f9;
+            display: flex;
+            /* Use Flexbox */
+            justify-content: center;
+            /* Center horizontally */
+            align-items: center;
+            /* Set a fixed height or adjust as needed */
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        /* Vegetable Image */
+        .vegetable-image {
+            max-width: 32%;
+            /* Adjust as needed */
+            max-height: auto;
+            /* Adjust as needed */
+            border-radius: 8px;
+            object-fit: contain;
+            /* Ensures the image maintains its aspect ratio */
+        }
+
+        /* Card Body */
         .card-body {
-            padding: 25px;
+            padding: 20px;
         }
+
         .card-title {
-            color: #28a745;
-            font-size: 1.8rem;
-            font-weight: bold;
+            font-size: 28px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-top: 15px;
             margin-bottom: 15px;
         }
-        .card-text {
+
+        .vegetable-description {
+            font-size: 16px;
+            line-height: 1.6;
             color: #555;
-            font-size: 1.1rem;
-            line-height: 1.7;
+            margin-bottom: 20px;
         }
-        h3 {
-            color: #28a745;
-            margin-top: 40px;
-            margin-bottom: 25px;
-            font-size: 1.8rem;
-            font-weight: bold;
+
+        /* Advice Section */
+        .advice-section {
+            margin-top: 20px;
         }
-        .list-group {
-            border-radius: 10px;
-            overflow: hidden;
+
+        .advice-heading {
+            font-size: 22px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 15px;
         }
-        .list-group-item {
-            border: none;
+
+        .advice-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .advice-item {
+            background-color: #f9f9f9;
+            padding: 12px 15px;
             margin-bottom: 10px;
-            border-radius: 10px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-            transition: background-color 0.3s ease, transform 0.3s ease;
-            padding: 15px 20px;
-            font-size: 1.1rem;
-            color: #444;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #333;
+            transition: background-color 0.3s ease;
         }
-        .list-group-item:hover {
-            background-color: #f1f1f1;
-            transform: translateX(10px);
+
+        .advice-item:hover {
+            background-color: #e0f7fa;
         }
-        .btn-primary {
-            background-color: #28a745;
-            border: none;
-            padding: 12px 25px;
-            font-size: 1.1rem;
-            border-radius: 10px;
-            transition: background-color 0.3s ease, transform 0.3s ease;
-            display: inline-block;
-            margin-top: 30px;
-        }
-        .btn-primary:hover {
-            background-color: #218838;
-            transform: translateY(-3px);
-        }
-        .btn-primary:focus {
-            box-shadow: none;
+
+        .no-advice {
+            color: #888;
+            font-style: italic;
         }
     </style>
-</head>
-<body>
 
-    <div class="container">
-        <h2 class="mb-4">{{ $vegetable->name }} - Advice</h2>
+    <x-slot name="title">{{ $vegetable->name ?? 'Vegetable' }}'s Details</x-slot>
 
-        <div class="card mb-4">
-            <img src="{{ asset('storage/' . $vegetable->image) }}" class="card-img-top" alt="{{ $vegetable->name }}">
+    <div class="container" style="max-width: auto; margin: 0 auto; margin-top: 30px;">
+        <!-- vegetable Card -->
+        <div class="card vegetable-card">
+            <!-- Back Button -->
+            <a href="{{ url()->previous() }}" class="back-btn">
+                <i class="fas fa-arrow-left"></i> Back
+            </a>
+
+            <h2 class="card-title" style="text-align: center">{{ $vegetable->name }}'s Advices</h2>
+
+            <!-- Centered Image -->
+            <div class="vegetable-image-container">
+                <img src="{{ asset('storage/' . $vegetable->image) }}" class="vegetable-image"
+                    alt="{{ $vegetable->name }}">
+            </div>
+
+            <!-- Card Body -->
             <div class="card-body">
-                <h5 class="card-title">{{ $vegetable->name }}</h5>
-                <p class="card-text">{{ $vegetable->description }}</p>
+                <!-- vegetable Description -->
+                <p class="card-text vegetable-description">{{ $vegetable->description }}</p>
+
+                <!-- Advice Section -->
+                <div class="advice-section">
+                    <h3 class="advice-heading">Advice</h3>
+                    <ul class="advice-list">
+                        @forelse($vegetable->advice as $advice)
+                            <li class="advice-item">{{ $advice->description }}</li>
+                        @empty
+                            <li class="advice-item no-advice">No advice available for this vegetable.</li>
+                        @endforelse
+                    </ul>
+                </div>
             </div>
         </div>
-
-        <h3>Advice</h3>
-        <ul class="list-group">
-            @forelse($vegetable->advice as $advice)
-                <li class="list-group-item">{{ $advice->description }}</li>
-            @empty
-                <li class="list-group-item">No advice available for this vegetable.</li>
-            @endforelse
-        </ul>
-
-        <a href="{{ url()->previous() }}" class="btn btn-primary mt-4">Back</a>
     </div>
 
-</body>
-</html>
+</x-home-layout>

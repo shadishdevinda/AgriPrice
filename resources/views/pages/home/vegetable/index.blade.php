@@ -1,58 +1,145 @@
-<!-- Custom CSS -->
-<style>
-    .card {
-        border-radius: 10px;
-        overflow: hidden;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        width: 100%;
-    }
-
-    .card img {
-        height: 180px;
-        object-fit: cover;
-    }
-
-    /* Search bar styling */
-    .search-container {
-        position: relative;
-        max-width: 600px;
-        margin: auto;
-        width: 100%;
-    }
-
-    /* Search dropdown styles */
-    .search-dropdown {
-        position: absolute;
-        width: 100%;
-        background: white;
-        border: 1px solid #ccc;
-        border-top: none;
-        border-radius: 0 0 10px 10px;
-        display: none;
-        z-index: 1000;
-        max-height: 250px;
-        overflow-y: auto;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .search-dropdown a {
-        display: block;
-        padding: 12px;
-        color: #333;
-        text-decoration: none;
-        font-size: 16px;
-        transition: background 0.3s ease-in-out;
-    }
-
-    .search-dropdown a:hover {
-        background: #f8f9fa;
-        color: #007bff;
-    }
-</style>
-
 <x-home-layout>
 
-    <x-slot name="title">Vegetable Pirce</x-slot>
+    <x-slot name="title">Vegetable Price</x-slot>
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Navigation Links */
+        .nav-links {
+            gap: 60px;
+        }
+
+        /* Search Bar Styling */
+        .search-container {
+            position: relative;
+            max-width: 600px;
+            margin: 0 auto 30px auto;
+            width: 100%;
+        }
+
+        #searchBar {
+            border-radius: 25px;
+            padding: 12px 20px;
+            font-size: 16px;
+            border: 2px solid #28a745;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            width: 100%;
+        }
+
+        #searchBar:focus {
+            border-color: #218838;
+            box-shadow: 0 0 8px rgba(40, 167, 69, 0.5);
+            outline: none;
+        }
+
+        /* Search Dropdown Styling */
+        .search-dropdown {
+            position: absolute;
+            width: 100%;
+            background: white;
+            border: 1px solid #ddd;
+            border-top: none;
+            border-radius: 0 0 10px 10px;
+            display: none;
+            z-index: 1000;
+            max-height: 250px;
+            overflow-y: auto;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-dropdown a {
+            display: block;
+            padding: 12px 20px;
+            color: #333;
+            text-decoration: none;
+            font-size: 16px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        .search-dropdown a:hover {
+            background: #f1f1f1;
+            color: #28a745;
+        }
+
+        /* Vegetable Cards Styling */
+        .fruit-item {
+            margin-bottom: 20px;
+        }
+
+        .card {
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background: #fff;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .card img {
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover img {
+            transform: scale(1.05);
+        }
+
+        .card-body {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #28a745;
+            margin-bottom: 0;
+        }
+
+        /* Responsive Grid */
+        @media (max-width: 768px) {
+            .col-lg-3 {
+                flex: 0 0 50%;
+                max-width: 50%;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .col-lg-3 {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+        }
+
+        /* Additional Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .vegetable-item {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+    </style>
 
     <div class="container">
         <br>
@@ -60,7 +147,7 @@
         <div class="row justify-content-center mb-4">
             <div class="col-md-6">
                 <div class="search-container">
-                    <x-input type="text" id="searchBar" class="form-control text-center"
+                    <x-input type="text" id="searchBar" class="form-control"
                         placeholder="Search for vegetables..." />
                     <div id="searchResults" class="search-dropdown"></div>
                 </div>
@@ -69,16 +156,14 @@
 
         <!-- Vegetable Cards -->
         <div class="row justify-content-start gx-3" id="vegetableList">
-            @foreach ($vegetables as $vegetable)
-                <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4 d-flex align-items-stretch vegetable-item"
-                    data-name="{{ strtolower($vegetable->name) }}">
-                    <a href="{{ route('vegetables.details', $vegetable->id) }}"
-                        class="text-decoration-none text-dark w-100">
+            @foreach($vegetables as $vegetable)
+                <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4 d-flex align-items-stretch vegetable-item" data-name="{{ strtolower($vegetable->name) }}">
+                    <a href="{{ route('vegetables.details', $vegetable->id) }}" class="text-decoration-none text-dark w-100">
                         <div class="card w-100">
-                            <img src="{{ asset('storage/' . $vegetable->image) }}" class="card-img-top"
-                                alt="{{ $vegetable->name }}">
+                            <img src="{{ asset('storage/' . $vegetable->image) }}" class="card-img-top" alt="{{ $vegetable->name }}">
                             <div class="card-body text-center">
                                 <h5 class="card-title">{{ $vegetable->name }}</h5>
+                                <p class="text-muted">Click for details</p>
                             </div>
                         </div>
                     </a>
@@ -87,46 +172,52 @@
         </div>
     </div>
 
-</x-home-layout>
-
-<!-- JavaScript for Search Function -->
-<script>
-    $(document).ready(function() {
-        var vegetableList = [];
-        $(".vegetable-item").each(function() {
-            var name = $(this).data("name");
-            var link = $(this).find("a").attr("href");
-            vegetableList.push({
-                name: name,
-                link: link
+    <script>
+        $(document).ready(function() {
+            var vegetableList = [];
+            $(".vegetable-item").each(function() {
+                var name = $(this).data("name");
+                var link = $(this).find("a").attr("href");
+                vegetableList.push({
+                    name: name,
+                    link: link
+                });
             });
-        });
 
-        $("#searchBar").on("keyup", function() {
-            var value = $(this).val().toLowerCase();
-            var results = $("#searchResults");
-            results.empty();
+            $("#searchBar").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                var results = $("#searchResults");
+                results.empty();
 
-            if (value.length > 0) {
-                var filtered = vegetableList.filter(item => item.name.includes(value));
-                if (filtered.length > 0) {
-                    results.show();
-                    filtered.forEach(item => {
-                        results.append(`<a href="${item.link}">${item.name}</a>`);
-                    });
+                if (value.length > 0) {
+                    var filtered = vegetableList.filter(item => item.name.includes(value));
+                    if (filtered.length > 0) {
+                        results.show();
+                        filtered.forEach(item => {
+                            results.append(`<a href="${item.link}" class="dropdown-item">${item.name}</a>`);
+                        });
+                    } else {
+                        results.hide();
+                    }
                 } else {
                     results.hide();
                 }
-            } else {
-                results.hide();
-            }
-        });
+            });
 
-        // Hide dropdown when clicking outside
-        $(document).click(function(event) {
-            if (!$(event.target).closest("#searchBar, #searchResults").length) {
-                $("#searchResults").hide();
-            }
+            // Hide dropdown when clicking outside
+            $(document).click(function(event) {
+                if (!$(event.target).closest("#searchBar, #searchResults").length) {
+                    $("#searchResults").hide();
+                }
+            });
+
+            // Smooth scrolling for better UX
+            $('a[href^="#"]').on('click', function(event) {
+                event.preventDefault();
+                $('html, body').animate({
+                    scrollTop: $($(this).attr('href')).offset().top
+                }, 500);
+            });
         });
-    });
-</script>
+    </script>
+</x-home-layout>
