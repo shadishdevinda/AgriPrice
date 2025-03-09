@@ -1,14 +1,13 @@
 <x-home-layout>
 
-    <x-slot name="title">Vegetable Price</x-slot>
+    <x-slot name="title">Fruit Advices</x-slot>
 
+    <!-- Custom CSS -->
     <style>
         body {
             background-color: #f8f9fa;
             font-family: 'Arial', sans-serif;
             color: #333;
-            margin: 0;
-            padding: 0;
         }
 
         /* Navigation Links */
@@ -30,7 +29,6 @@
             font-size: 16px;
             border: 2px solid #28a745;
             transition: border-color 0.3s ease, box-shadow 0.3s ease;
-            width: 100%;
         }
 
         #searchBar:focus {
@@ -68,7 +66,7 @@
             color: #28a745;
         }
 
-        /* Vegetable Cards Styling */
+        /* Fruit Cards Styling */
         .fruit-item {
             margin-bottom: 20px;
         }
@@ -79,7 +77,6 @@
             overflow: hidden;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            background: #fff;
         }
 
         .card:hover {
@@ -123,46 +120,31 @@
                 max-width: 100%;
             }
         }
-
-        /* Additional Animations */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .vegetable-item {
-            animation: fadeIn 0.5s ease-in-out;
-        }
     </style>
 
     <div class="container">
         <br>
         <!-- Search Bar (Centered) -->
         <div class="row justify-content-center mb-4">
-            <div class="col-md-6">
+            <div class="col-md-8">
                 <div class="search-container">
-                    <x-input type="text" id="searchBar" class="form-control"
-                        placeholder="Search for vegetables..." />
+                    <input type="text" id="searchBar" class="form-control" placeholder="Search for Fruits...">
                     <div id="searchResults" class="search-dropdown"></div>
                 </div>
             </div>
         </div>
 
-        <!-- Vegetable Cards -->
-        <div class="row justify-content-start gx-3" id="vegetableList">
-            @foreach($vegetables as $vegetable)
-                <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4 d-flex align-items-stretch vegetable-item" data-name="{{ strtolower($vegetable->name) }}">
-                    <a href="{{ route('vegetables.details', $vegetable->id) }}" class="text-decoration-none text-dark w-100">
+        <!-- Fruit Cards -->
+        <div class="row justify-content-start gx-3" id="fruitList">
+            @foreach ($fruits as $fruit)
+                <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4 d-flex align-items-stretch fruit-item"
+                    data-name="{{ strtolower($fruit->name) }}">
+                    <a href="{{ route('advice.fruit.show', $fruit->id) }}" class="text-decoration-none text-dark w-100">
                         <div class="card w-100">
-                            <img src="{{ asset('storage/' . $vegetable->image) }}" class="card-img-top" alt="{{ $vegetable->name }}">
+                            <img src="{{ asset('storage/' . $fruit->image) }}" class="card-img-top"
+                                alt="{{ $fruit->name }}">
                             <div class="card-body text-center">
-                                <h5 class="card-title">{{ $vegetable->name }}</h5>
+                                <h5 class="card-title">{{ $fruit->name }}</h5>
                                 <p class="text-muted">Click for details</p>
                             </div>
                         </div>
@@ -171,53 +153,48 @@
             @endforeach
         </div>
     </div>
+</x-home-layout>
 
-    <script>
-        $(document).ready(function() {
-            var vegetableList = [];
-            $(".vegetable-item").each(function() {
-                var name = $(this).data("name");
-                var link = $(this).find("a").attr("href");
-                vegetableList.push({
-                    name: name,
-                    link: link
-                });
+
+
+<!-- JavaScript for Search Function -->
+<script>
+    $(document).ready(function() {
+        var fruitList = [];
+        $(".fruit-item").each(function() {
+            var name = $(this).data("name");
+            var link = $(this).find("a").attr("href");
+            fruitList.push({
+                name: name,
+                link: link
             });
+        });
 
-            $("#searchBar").on("keyup", function() {
-                var value = $(this).val().toLowerCase();
-                var results = $("#searchResults");
-                results.empty();
+        $("#searchBar").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            var results = $("#searchResults");
+            results.empty();
 
-                if (value.length > 0) {
-                    var filtered = vegetableList.filter(item => item.name.includes(value));
-                    if (filtered.length > 0) {
-                        results.show();
-                        filtered.forEach(item => {
-                            results.append(`<a href="${item.link}" class="dropdown-item">${item.name}</a>`);
-                        });
-                    } else {
-                        results.hide();
-                    }
+            if (value.length > 0) {
+                var filtered = fruitList.filter(item => item.name.includes(value));
+                if (filtered.length > 0) {
+                    results.show();
+                    filtered.forEach(item => {
+                        results.append(`<a href="${item.link}">${item.name}</a>`);
+                    });
                 } else {
                     results.hide();
                 }
-            });
-
-            // Hide dropdown when clicking outside
-            $(document).click(function(event) {
-                if (!$(event.target).closest("#searchBar, #searchResults").length) {
-                    $("#searchResults").hide();
-                }
-            });
-
-            // Smooth scrolling for better UX
-            $('a[href^="#"]').on('click', function(event) {
-                event.preventDefault();
-                $('html, body').animate({
-                    scrollTop: $($(this).attr('href')).offset().top
-                }, 500);
-            });
+            } else {
+                results.hide();
+            }
         });
-    </script>
-</x-home-layout>
+
+        // Hide dropdown when clicking outside
+        $(document).click(function(event) {
+            if (!$(event.target).closest("#searchBar, #searchResults").length) {
+                $("#searchResults").hide();
+            }
+        });
+    });
+</script>
