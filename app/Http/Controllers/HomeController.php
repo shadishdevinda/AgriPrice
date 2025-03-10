@@ -9,12 +9,24 @@ use Illuminate\Http\Request;
 use App\Models\CenterHasFruits;
 use Illuminate\Support\Facades\DB;
 use App\Models\CenterHasVegetables;
+use App\Models\EconomicCenter;
+use App\Models\FruitHasAdvice;
+use App\Models\VegetableHasAdvice;
 
 class HomeController extends Controller
 {
     public function welcome()
     {
-        return view('pages.home.welcome');
+        // Fetch counts from the database
+        $vegetableCount = Vegetable::count();
+        $fruitCount = Fruit::count();
+        $economicCenterCount = EconomicCenter::count();
+        $cropAdviceCount = FruitHasAdvice::count() + VegetableHasAdvice::count();
+
+        // Calculate the total of fruits and vegetables
+        $totalProduceCount = $vegetableCount + $fruitCount;
+
+        return view('pages.home.welcome', compact('vegetableCount', 'fruitCount', 'economicCenterCount', 'cropAdviceCount', 'totalProduceCount'));
     }
 
     // Vegetable Index

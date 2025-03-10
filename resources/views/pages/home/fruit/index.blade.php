@@ -1,53 +1,117 @@
 <!-- Custom CSS -->
 <style>
-    .card {
-        border-radius: 10px;
-        overflow: hidden;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        width: 100%;
-    }
+     .container {
+            /* padding: 20px; */
+        }
 
-    .card img {
-        height: 180px;
-        object-fit: cover;
-    }
+        /* Search Bar Styling */
+        .search-container {
+            position: relative;
+            max-width: 600px;
+            margin: 0 auto 30px auto;
+            width: 100%;
+        }
 
-    /* Search bar styling */
-    .search-container {
-        position: relative;
-        max-width: 600px;
-        margin: auto;
-        width: 100%;
-    }
+        #searchBar {
+            border-radius: 25px;
+            padding: 12px 20px;
+            font-size: 16px;
+            border: 2px solid #28a745;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
 
-    /* Search dropdown styles */
-    .search-dropdown {
-        position: absolute;
-        width: 100%;
-        background: white;
-        border: 1px solid #ccc;
-        border-top: none;
-        border-radius: 0 0 10px 10px;
-        display: none;
-        z-index: 1000;
-        max-height: 250px;
-        overflow-y: auto;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
+        #searchBar:focus {
+            border-color: #218838;
+            box-shadow: 0 0 8px rgba(40, 167, 69, 0.5);
+            outline: none;
+        }
 
-    .search-dropdown a {
-        display: block;
-        padding: 12px;
-        color: #333;
-        text-decoration: none;
-        font-size: 16px;
-        transition: background 0.3s ease-in-out;
-    }
+        /* Search Dropdown Styling */
+        .search-dropdown {
+            position: absolute;
+            width: 100%;
+            background: white;
+            border: 1px solid #ddd;
+            border-top: none;
+            border-radius: 0 0 10px 10px;
+            display: none;
+            z-index: 1000;
+            max-height: 250px;
+            overflow-y: auto;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
 
-    .search-dropdown a:hover {
-        background: #f8f9fa;
-        color: #007bff;
-    }
+        .search-dropdown a {
+            display: block;
+            padding: 12px 20px;
+            color: #333;
+            text-decoration: none;
+            font-size: 16px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        .search-dropdown a:hover {
+            background: #f1f1f1;
+            color: #28a745;
+        }
+
+        /* Fruit Cards Styling */
+        .fruit-item {
+            margin-bottom: 20px;
+        }
+
+        .card {
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .card img {
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover img {
+            transform: scale(1.05);
+        }
+
+        .card-body {
+            padding: 20px;
+            text-align: center;
+            font-family: 'Arial', sans-serif;
+            color: #333;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #28a745;
+            margin-bottom: 0;
+        }
+
+        /* Responsive Grid */
+        @media (max-width: 768px) {
+            .col-lg-3 {
+                flex: 0 0 50%;
+                max-width: 50%;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .col-lg-3 {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+        }
+
 </style>
 
 <x-home-layout>
