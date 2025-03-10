@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Vegetable;
-use App\Models\Fruit;
-use App\Models\EconomicCenter;
-use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Fruit;
+use App\Models\Vegetable;
+use App\Models\EconomicCenter;
 use Spatie\Permission\Models\Role;
 
 
@@ -37,4 +36,5 @@ class AdminController extends Controller
     {
         return view('pages.admin.profile.show');
     }
+
 }
