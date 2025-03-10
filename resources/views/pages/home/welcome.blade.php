@@ -917,12 +917,6 @@
     @endif
 </head>
 
-{{-- <style>
-    .nav-item.dropdown:hover .dropdown-menu {
-        display: block;
-        margin-top: 0;
-    }
-</style> --}}
 
 <body class="font-sans antialiased">
 
@@ -984,7 +978,6 @@
         </div>
     </div>
 
-    <!-- Navbar -->
     @include('pages.home.navigation-menu')
 
     <section class="hero-wrap js-fullheight">

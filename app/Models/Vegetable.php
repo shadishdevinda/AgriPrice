@@ -15,4 +15,10 @@ class Vegetable extends Model
         'description',
         'image',
     ];
+
+    public function advice()
+    {
+        return $this->belongsToMany(VegetableAdvice::class, 'vegetable_has_advice', 'vegetable_id', 'advice_id');
+    }
+
 }

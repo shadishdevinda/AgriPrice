@@ -35,7 +35,7 @@
 
     <x-slot name="title">Economic Center Dashboard</x-slot>
 
-    {{-- Dashboard header part --}}
+    {{-- Dashboard page header part --}}
     <x-slot name="header">
         <div class="container">
             <div class="d-flex justify-content-between align-items-center">
@@ -448,3 +448,4 @@
         });
     });
 </script>
+

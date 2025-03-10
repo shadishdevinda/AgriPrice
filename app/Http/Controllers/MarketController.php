@@ -2,14 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Fruit;
 use App\Models\Vegetable;
 use Illuminate\Http\Request;
+use App\Models\MarketRequest;
 use App\Models\EconomicCenter;
 use App\Models\CenterHasFruits;
 use App\Models\CenterHasVegetables;
 use Illuminate\Support\Facades\Log;
+use App\Models\MarketRequestMessage;
 use Illuminate\Support\Facades\Auth;
+use App\Models\AdminContactNotification;
+use Illuminate\Support\Facades\Notification;
 
 class MarketController extends Controller
 {
@@ -73,7 +78,7 @@ class MarketController extends Controller
                     'vegetablesList' => $vegetablesList,
                     'vegetablePrices' => $vegetablePrices,
                 ])->render(),
-                'fruitList' => view('pages.market.dashboard.fruit-table',[
+                'fruitList' => view('pages.market.dashboard.fruit-table', [
                     'fruitList' => $fruitList,
                     'fruitPrices' => $fruitPrices,
                 ])->render(),
@@ -237,5 +242,22 @@ class MarketController extends Controller
     public function marketProfile()
     {
         return view('pages.market.profile.show');
+    }
+
+    public function adminContactIndex()
+    {
+        // Get the authenticated user
+        $user = Auth::user();
+
+        // Fetch the economic center details for the market user
+        $economicCenter = null;
+        if ($user && $user->user_type === 'market-user') {
+            $economicCenter = EconomicCenter::find($user->center_id);
+        }
+
+        return view('pages.market.admin-contact.index', [
+            'economicCenter' => $economicCenter,
+            'user' => $user,
+        ]);
     }
 }

@@ -13,6 +13,7 @@ use App\Models\EconomicCenter;
 use App\Models\FruitHasAdvice;
 use App\Models\VegetableHasAdvice;
 
+
 class HomeController extends Controller
 {
     public function welcome()
@@ -133,5 +134,31 @@ class HomeController extends Controller
         return view('pages.home.fruit.details', compact(
             'fruit', 'centerhasfruit', 'dates', 'centers', 'latestDate', 'selectedDate', 'isCenterFiltered'
         ));
+    }
+
+    public function fruitAdviceIndex()
+    {
+       $fruits = Fruit::all();
+       return view('pages.home.advices.fruits.index', compact('fruits'));
+    }
+
+    public function fruitAdviceShow($id)
+    {
+        $fruit = Fruit::with('advice')->findOrFail($id);
+        return view('pages.home.advices.fruits.show', compact('fruit'));
+    }
+
+
+    public function vegetableAdviceIndex()
+    {
+        $vegetables = Vegetable::all();
+        return view('pages.home.advices.vegetable.index', compact('vegetables'));
+    }
+
+
+    public function vegetableAdviceShow($id)
+    {
+        $vegetable = Vegetable::with('advice')->findOrFail($id);
+        return view('pages.home.advices.vegetable.show', compact('vegetable'));
     }
 }

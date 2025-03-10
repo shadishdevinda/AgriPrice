@@ -1,7 +1,17 @@
-<!-- Custom CSS -->
-<style>
-     .container {
-            /* padding: 20px; */
+<x-home-layout>
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Navigation Links */
+        .nav-links {
+            gap: 60px;
         }
 
         /* Search Bar Styling */
@@ -18,6 +28,7 @@
             font-size: 16px;
             border: 2px solid #28a745;
             transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            width: 100%;
         }
 
         #searchBar:focus {
@@ -66,6 +77,7 @@
             overflow: hidden;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background: #fff;
         }
 
         .card:hover {
@@ -86,12 +98,10 @@
         .card-body {
             padding: 20px;
             text-align: center;
-            font-family: 'Arial', sans-serif;
-            color: #333;
         }
 
         .card-title {
-            font-size: 16px;
+            font-size: 1.25rem;
             font-weight: bold;
             color: #28a745;
             margin-bottom: 0;
@@ -112,9 +122,24 @@
             }
         }
 
-</style>
+        /* Additional Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
 
-<x-home-layout>
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fruit-item {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+    </style>
+
     <x-slot name="title">Fruit Price</x-slot>
 
     <div class="container">
@@ -123,7 +148,8 @@
         <div class="row justify-content-center mb-4">
             <div class="col-md-6">
                 <div class="search-container">
-                    <x-input type="text" id="searchBar" class="form-control text-center" placeholder="Search for fruits..."/>
+                    <x-input type="text" id="searchBar" class="form-control"
+                        placeholder="Search for fruits..." />
                     <div id="searchResults" class="search-dropdown"></div>
                 </div>
             </div>
@@ -131,14 +157,16 @@
 
         <!-- Fruit Cards -->
         <div class="row justify-content-start gx-3" id="fruitList">
-            @foreach($fruits as $fruit)
-                <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4 d-flex align-items-stretch fruit-item" data-name="{{ strtolower($fruit->name) }}">
+            @foreach ($fruits as $fruit)
+                <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4 d-flex align-items-stretch fruit-item"
+                    data-name="{{ strtolower($fruit->name) }}">
                     <a href="{{ route('fruits.details', $fruit->id) }}" class="text-decoration-none text-dark w-100">
                         <div class="card w-100">
-                            <img src="{{ asset('storage/' . $fruit->image) }}" class="card-img-top" alt="{{ $fruit->name }}">
+                            <img src="{{ asset('storage/' . $fruit->image) }}" class="card-img-top"
+                                alt="{{ $fruit->name }}">
                             <div class="card-body text-center">
-                                <h5 class="card-title
-                                    ">{{ $fruit->name }}</h5>
+                                <h5 class="card-title">{{ $fruit->name }}</h5>
+                                <p class="text-muted">Click for details</p>
                             </div>
                         </div>
                     </a>
@@ -146,16 +174,18 @@
             @endforeach
         </div>
     </div>
-</x-home-layout>
 
-<!-- JavaScript for Search Function -->
-<script>
-        $(document).ready(function(){
+    <!-- JavaScript for Search Function -->
+    <script>
+        $(document).ready(function() {
             var fruitList = [];
             $(".fruit-item").each(function() {
                 var name = $(this).data("name");
                 var link = $(this).find("a").attr("href");
-                fruitList.push({ name: name, link: link });
+                fruitList.push({
+                    name: name,
+                    link: link
+                });
             });
 
             $("#searchBar").on("keyup", function() {
@@ -185,4 +215,5 @@
                 }
             });
         });
-</script>
+    </script>
+</x-home-layout>
