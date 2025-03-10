@@ -62,6 +62,7 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/market/dashboard', [MarketController::class, 'index'])->name('market.dashboard');
+    Route::get('/market/admin-contact', [MarketController::class, 'adminContactIndex'])->name('market.admin.contact');
     Route::put('/market/vegetable/{id}', [MarketController::class, 'vegetableUpdate'])->name('market.vegetable.update');
     Route::put('/market/fruit/{id}', [MarketController::class, 'fruitUpdate'])->name('market.fruit.update');
     Route::get('/market/profile', [MarketController::class, 'marketProfile'])->name('market.profile');
