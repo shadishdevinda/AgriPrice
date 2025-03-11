@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Permission;
 
-// TODO: modify the unique photo name with time() function
 class EconomicCenterUserController extends Controller
 {
     /**
@@ -50,9 +49,11 @@ class EconomicCenterUserController extends Controller
      */
     public function create()
     {
-        $roles = Role::pluck('name', 'name')->all();
+        // Fetch only the 'market-user' role for the first dropdown
+        $marketUserRole = Role::where('name', 'market-user')->pluck('name', 'name')->all();
+        $roles = Role::whereNotIn('name', ['system-user', 'market-user'])->pluck('name', 'name')->all();
         $economicCenters = EconomicCenter::pluck('center_name', 'id')->all();
-        return view('pages.admin.userManagement.economic_center_user.create', compact('roles', 'economicCenters'));
+        return view('pages.admin.userManagement.economic_center_user.create', compact('roles', 'marketUserRole', 'economicCenters'));
     }
 
     /**
