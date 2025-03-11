@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row d-flex align-items-start align-items-center px-3 px-md-0">
             <div class="col-md-4 d-flex mb-2 mb-md-0">
-                <a class="navbar-brand d-flex align-items-center" href="index.html">
+                <a class="navbar-brand d-flex align-items-center" href="{{ route('home') }}">
                     <span class="flaticon flaticon-agriculture"></span>
                     <span class="ml-2">AgriPrice <small>Agriculture Farming</small></span>
                 </a>

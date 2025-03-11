@@ -6,7 +6,7 @@
             data-scrollax-parent="true">
             <div class="col-md-8 text-center ftco-animate">
                 <div class="mb-5">
-                    <span class="subheading">Welcome to Famrland</span>
+                    <span class="subheading">Welcome to AGRIPRICE</span>
                     <h1 class="mb-4">Agriculture is the Most Healthful</h1>
                     <p class="mb-4">Far far away, behind the word mountains, far from the countries Vokalia and
                         Consonantia, there live the blind texts. Separated they live in Bookmarksgrove.</p>
@@ -25,3 +25,4 @@
         </div>
     </div>
 </section>
+
