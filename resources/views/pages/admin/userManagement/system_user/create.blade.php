@@ -74,14 +74,15 @@
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="user_type" class="form-label">User Type</label>
-                                    <select name="user_type" class="form-select" id="user_type"
-                                        aria-describedby="user_typeHelp" required>
+                                    <select name="user_type" class="form-select" id="user_type" aria-describedby="user_typeHelp" required>
                                         <option value="" selected disabled>Select User Type</option>
-                                        <option value="system-user">System User</option>
+                                        @foreach ($systemUserRole as $key => $value)
+                                            <option value="{{ $key }}">{{ $value }}</option>
+                                        @endforeach
                                     </select>
-                                    <small id="user_typeHelp" class="form-text text-muted">Select the user
-                                        type.</small>
+                                    <small id="user_typeHelp" class="form-text text-muted">Select the user type.</small>
                                 </div>
+
                                 <div class="col-md-6">
                                     <label for="username" class="form-label">Name</label>
                                     <x-input type="text" name="username" class="form-control" id="username"

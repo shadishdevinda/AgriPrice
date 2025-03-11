@@ -48,8 +48,13 @@ class UserManageController extends Controller
      */
     public function create()
     {
-        $roles = Role::pluck('name', 'name')->all();
-        return view('pages.admin.userManagement.system_user.create', compact('roles'));
+        // Fetch only the 'system-user' role for the first dropdown
+        $systemUserRole = Role::where('name', 'system-user')->pluck('name', 'name')->all();
+
+        // Fetch all roles except 'system-user' and 'market-user' for the second dropdown
+        $roles = Role::whereNotIn('name', ['system-user', 'market-user'])->pluck('name', 'name')->all();
+
+        return view('pages.admin.userManagement.system_user.create', compact('systemUserRole', 'roles'));
     }
 
     /**
