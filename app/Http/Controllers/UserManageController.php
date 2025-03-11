@@ -147,9 +147,12 @@ class UserManageController extends Controller
      */
     public function edit(User $user)
     {
-        $roles = Role::pluck('name')->toArray(); // Get an array of role names
+        // Fetch all roles except 'system-user' and 'market-user' for the second dropdown
+        $roles = Role::whereNotIn('name', ['system-user', 'market-user', 'market-admin'])->pluck('name', 'name')->all();
+        // Fetch only the 'system-user' role for the first dropdown
+        $systemUserRole = Role::where('name', 'system-user')->pluck('name', 'name')->all();
         $userRoles = $user->roles ? $user->roles->pluck('name')->toArray() : []; // Handle null cases
-        return view('pages.admin.userManagement.system_user.edit', compact('user', 'roles', 'userRoles'));
+        return view('pages.admin.userManagement.system_user.edit', compact('user', 'systemUserRole', 'roles', 'userRoles'));
     }
 
     /**
