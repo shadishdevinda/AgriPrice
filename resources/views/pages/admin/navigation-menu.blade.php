@@ -5,7 +5,7 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('market.dashboard') }}">
+                    <a href="{{ route('admin.dashboard') }}">
                         <x-application-mark class="block h-9 w-auto" />
                     </a>
                 </div>
@@ -145,6 +145,7 @@
                         </div>
                     </div>
 
+                    {{-- Economic Center --}}
                     <x-nav-link class="text-white" href="{{ route('economic-centers.index') }}" :active="request()->routeIs('economic-centers.index')">
                         {{ __('Economic Center Management') }}
                     </x-nav-link>

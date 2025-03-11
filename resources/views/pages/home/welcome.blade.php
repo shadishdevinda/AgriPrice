@@ -24,65 +24,28 @@
     <link rel="stylesheet" href="{{ asset('/css/welcome.css') }}">
 
 </head>
-
-<style>
-    .nav-item.dropdown:hover .dropdown-menu {
-        display: block;
-        margin-top: 0;
-    }
-</style>
-
 <body class="font-sans antialiased">
-
     {{-- Page 1st bar --}}
     @include('pages.home.header.firstBar')
-
     {{-- Page 2nd bar --}}
     @include('pages.home.header.secondBar')
-
-    <!-- Navbar -->
-    @include('pages.home.navbar')
-
-    <!-- hero section -->
+    {{-- Navigation menu --}}
+    @include('pages.home.navigation-menu')
+    {{-- Hero section --}}
     @include('pages.home.header.hero')
-
-    <!-- hero section -->
-    @include('pages.home.homeBody.services')
-
-    <!-- adout section -->
-    @include('pages.home.about.dashboard')
-    
-    <!-- calculations section -->
+    {{-- Services-menu --}}
+    @include('pages.home.services_category.services')
+    {{-- Calculations --}}
     @include('pages.home.homeBody.calculations')
-
-    <!-- Recent Work section -->
-    @include('pages.home.homeBody.recentWork')
-
-    <!-- Video Slide section -->
-    @include('pages.home.homeBody.videoSlide')
-
-    <!-- Testimonial section -->
-    @include('pages.home.homeBody.testimonial')
-   
-
+    {{-- About section --}}
+    @include('pages.home.about.aboutSection')
     <hr style="margin: 0;">
-
-   <!-- Contact section -->
-   @include('pages.home.contact.dashboard')
-
-   <!-- blogs section -->
-   @include('pages.home.blogs.dashboard')
-
-   <!-- newsletter section -->
-   @include('pages.home.homeBody.newsletter')
-
-   <!-- footerSection section -->
-   @include('pages.home.footer.footerSection')
-
-
-
-   
-
+    {{-- Contact section --}}
+    @include('pages.home.contact.contactSection')
+    {{-- newsletter section --}}
+    @include('pages.home.homeBody.newsletter')
+    {{-- footerSection section --}}
+    @include('pages.home.footer.footerSection')
     <!-- loader -->
     <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px">
             <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4"

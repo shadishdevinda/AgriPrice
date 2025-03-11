@@ -16,6 +16,10 @@
                     <x-nav-link class="text-white hove:text:black" href="{{ route('market.dashboard') }}" :active="request()->routeIs('market.dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+
+                    <x-nav-link class="text-white hove:text:black" href="{{ route('market.admin.contact') }}" :active="request()->routeIs('market.admin.contact')">
+                        {{ __('Admin contact') }}
+                    </x-nav-link>
                 </div>
             </div>
 
