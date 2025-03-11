@@ -24,5 +24,17 @@ class RoleSeeder extends Seeder
             'name' => 'market-user',
             'guard_name' => 'web',
         ]);
+
+        // Create the 'system-admin' role
+        Role::create([
+            'name' => 'system-admin',
+            'guard_name' => 'web',
+        ]);
+
+        // Create the 'market-admin' role
+        Role::create([
+            'name' => 'market-admin',
+            'guard_name' => 'web',
+        ]);
     }
 }

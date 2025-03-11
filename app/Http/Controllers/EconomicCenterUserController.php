@@ -145,9 +145,11 @@ class EconomicCenterUserController extends Controller
      */
     public function edit(User $user)
     {
-        $roles = Role::pluck('name')->toArray(); // Get an array of role names
+        $roles = Role::whereNotIn('name', ['system-user', 'market-user', 'system-admin'])->pluck('name', 'name')->all();
+        // Fetch only the 'market-user' role for the first dropdown
+        $marketUserRole = Role::where('name', 'market-user')->pluck('name', 'name')->all();
         $userRoles = $user->roles ? $user->roles->pluck('name')->toArray() : []; // Handle null cases
-        return view('pages.admin.userManagement.economic_center_user.edit', compact('user', 'roles', 'userRoles'));
+        return view('pages.admin.userManagement.economic_center_user.edit', compact('user', 'marketUserRole', 'roles', 'userRoles'));
     }
 
     /**
