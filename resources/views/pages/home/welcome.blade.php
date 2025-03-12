@@ -25,10 +25,6 @@
 
 </head>
 <body class="font-sans antialiased">
-    {{-- Page 1st bar --}}
-    @include('pages.home.header.firstBar')
-    {{-- Page 2nd bar --}}
-    @include('pages.home.header.secondBar')
     {{-- Navigation menu --}}
     @include('pages.home.navigation-menu')
     {{-- Hero section --}}
@@ -42,8 +38,6 @@
     <hr style="margin: 0;">
     {{-- Contact section --}}
     @include('pages.home.contact.contactSection')
-    {{-- newsletter section --}}
-    @include('pages.home.homeBody.newsletter')
     {{-- footerSection section --}}
     @include('pages.home.footer.footerSection')
     <!-- loader -->

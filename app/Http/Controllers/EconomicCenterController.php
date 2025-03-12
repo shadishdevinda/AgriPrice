@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
-// TODO: modify the unique photo name with time() function
 class EconomicCenterController extends Controller
 {
     /**
@@ -39,8 +38,6 @@ class EconomicCenterController extends Controller
 
         return view('pages.admin.economicCenter.index', compact('economicCenters', 'userOptions'));
     }
-
-
 
     /**
      * Show the form for creating a new resource.
@@ -197,8 +194,10 @@ class EconomicCenterController extends Controller
 
     public function assignUserPage(EconomicCenter $economicCenter)
     {
-        $roles = Role::pluck('name', 'name')->all();
-        return view('pages.admin.economicCenter.assignUser', compact('economicCenter', 'roles'));
+        $roles = Role::whereNotIn('name', ['system-user', 'market-user'])->pluck('name', 'name')->all();
+        // Fetch only the 'market-user' role for the first dropdown
+        $marketUserRole = Role::where('name', 'market-user')->pluck('name', 'name')->all();
+        return view('pages.admin.economicCenter.assignUser', compact('economicCenter', 'marketUserRole', 'roles'));
     }
 
     public function assignUser(Request $request)
