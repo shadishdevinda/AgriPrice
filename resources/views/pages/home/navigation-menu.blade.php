@@ -215,6 +215,7 @@
         transition: transform 0.3s ease, opacity 0.3s ease;
     }
 
+
     /* Media Queries for Responsive Design */
     @media (max-width: 768px) {
         .nav-links, .auth-links {
@@ -246,16 +247,24 @@
     }
 </style>
 
+<link rel="stylesheet" href="{{ asset('css/style.css') }}">
+<link rel="stylesheet" href="{{ asset('css/flaticon.css') }}">
+
 <nav>
     <!-- Primary Navigation Menu -->
     <div class="container">
         <div class="nav-wrapper">
             <!-- Logo -->
+            
             <div class="logo shrink-0 flex items-center">
-                <a href="{{ route('market.dashboard') }}">
-                    <x-application-mark class="block h-9 w-auto" />
-                </a>
+                @if(!request()->is('/'))
+                    <a class="navbar-brand d-flex align-items-center" href="{{ route('home') }}">
+                        <span class="flaticon flaticon-agriculture"></span>
+                        <span class="ml-2">AgriPrice <small>Agriculture Farming</small></span>
+                    </a>
+                @endif
             </div>
+            
 
             <!-- Hamburger Menu Icon (Mobile Only) -->
             <div class="hamburger" onclick="toggleMobileNav()">
@@ -266,7 +275,15 @@
 
             <!-- Navigation Links -->
             <div class="nav-links">
-                <a href="{{ route('home') }}" class="nav-link">{{ __('Home') }}</a>
+                <!-- Home Navigation Links -->
+                <div class="dropdown">
+                    <a href="{{ route('home') }}" class="dropdown-toggle">{{ __('Home') }}</a>
+                    <div class="dropdown-menu">
+                        <a href="#services" class="dropdown-item">{{ __('Services') }}</a>
+                        <a href="#contact" class="dropdown-item">{{ __('Contact Us') }}</a>
+                        <a href="#about" class="dropdown-item">{{ __('About') }}</a>
+                    </div>
+                </div>
                 <a href="{{ route('vegetables.index') }}" class="nav-link">{{ __('Vegetables Prices') }}</a>
                 <a href="{{ route('fruits.index') }}" class="nav-link">{{ __('Fruits Prices') }}</a>
 
