@@ -29,6 +29,7 @@ class DatabaseSeeder extends Seeder
             VegetableSeeder::class,
             VegetableAdviceSeeder::class,
             FruitAdviceSeeder::class,
+            RoleSeeder::class,
         ]);
     }
 }

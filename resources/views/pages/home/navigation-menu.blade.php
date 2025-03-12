@@ -247,24 +247,16 @@
     }
 </style>
 
-<link rel="stylesheet" href="{{ asset('css/style.css') }}">
-<link rel="stylesheet" href="{{ asset('css/flaticon.css') }}">
-
 <nav>
     <!-- Primary Navigation Menu -->
     <div class="container">
         <div class="nav-wrapper">
             <!-- Logo -->
-            
-            <div class="logo shrink-0 flex items-center">
-                @if(!request()->is('/'))
-                    <a class="navbar-brand d-flex align-items-center" href="{{ route('home') }}">
-                        <span class="flaticon flaticon-agriculture"></span>
-                        <span class="ml-2">AgriPrice <small>Agriculture Farming</small></span>
-                    </a>
-                @endif
+            <div class="shrink-0 flex items-center">
+                <a href="{{ route('home') }}">
+                    <x-application-mark class="block h-9 w-auto" />
+                </a>
             </div>
-            
 
             <!-- Hamburger Menu Icon (Mobile Only) -->
             <div class="hamburger" onclick="toggleMobileNav()">

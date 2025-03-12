@@ -213,8 +213,20 @@
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
                             @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
-                                <button class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
+                                {{-- <button class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
                                     <img class="size-8 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
+                                </button> --}}
+
+                                <button class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
+                                    @if (Auth::user()->profile_photo_url)
+                                        <!-- If the user has a profile photo, display it -->
+                                        <img class="size-8 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
+                                    @else
+                                        <!-- If the user doesn't have a profile photo, display a default image or placeholder -->
+                                        <div class="size-8 rounded-full bg-gray-200 flex items-center justify-center">
+                                            <span class="text-gray-600 text-sm">{{ substr(Auth::user()->name, 0, 1) }}</span>
+                                        </div>
+                                    @endif
                                 </button>
                             @else
                                 <span class="inline-flex rounded-md">
