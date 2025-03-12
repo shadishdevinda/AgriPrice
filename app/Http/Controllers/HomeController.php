@@ -18,14 +18,14 @@ class HomeController extends Controller
         return view('pages.home.welcome');
     }
 
-    // Vegetable Index
+    // Vegetable Price Index
     public function vegetableIndex()
     {
         $vegetables = Vegetable::all(); // Fetch all vegetables from the database
         return view('pages.home.vegetable.index', compact('vegetables'));
     }
 
-    // Fruit Index
+    // Fruit Price Index
     public function fruitIndex()
     {
         $fruits = Fruit::all(); // Fetch all fruits from the database
