@@ -22,7 +22,7 @@
             </ul>
         </div>
     @endif
-                <form action="" method="POST">
+                <form action="#" method="POST">
                     @csrf
                     <div class="">
                         <div class="form-group">

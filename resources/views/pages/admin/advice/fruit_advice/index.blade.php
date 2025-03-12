@@ -60,7 +60,7 @@
                                         <tr>
                                             <td>{{ $fruitAdvice->id }}</td>
                                             <td class="description-column">
-                                                {{ Str::limit($fruitAdvice->description, 50, '...') }}
+                                                {!! Str::limit(strip_tags($fruitAdvice->description), 50, '...') !!}
                                             </td>
                                             <td>
                                                 <div class="d-flex justify-content-end gap-2">
