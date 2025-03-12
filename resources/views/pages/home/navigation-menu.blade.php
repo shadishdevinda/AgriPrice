@@ -210,7 +210,7 @@
     }
 
     .mobile-link:hover {
-        background-color: #3a7d5f;
+        background-color: #ffffff;
         /* Slightly lighter green on hover */
     }
 
