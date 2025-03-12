@@ -111,9 +111,9 @@
 
         <div class="row mt-3">
             <div class="col-md-12">
-                <div class="card">
+                <div class="card bg-dark">
                     <div class="card-header">
-                        <h5 class="card-title">System User Management</h5>
+                        <h5 class="card-title text-white" >System User Management</h5>
                     </div>
                     <table class="table table-bordered table-striped mt-3" id="usersTable">
                         <thead>

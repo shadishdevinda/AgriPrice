@@ -17,6 +17,7 @@ use App\Http\Controllers\EconomicCenterUserController;
 use App\Http\Controllers\EconomicCenterController;
 
 
+
 // Home page Route
 Route::get('/', [HomeController::class, 'welcome'])->name('home');
 // Vegetable Price Routes
@@ -109,4 +110,6 @@ Route::resource('/vegetable_advice', VegetableAdviceController::class);
 
 // fruit_advice Routes
 Route::resource('/fruit_advice', FruitAdviceController::class);
+
+
 
