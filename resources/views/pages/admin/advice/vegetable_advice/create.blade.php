@@ -10,7 +10,11 @@
 {{-- SweetAlert2 CDN --}}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-{{-- Custom styles --}}
+{{-- Quill Editor CDN --}}
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+
+
 <style>
     .card-header {
         display: flex;
@@ -45,8 +49,20 @@
         background-color: #065744;
         color: white;
     }
-</style>
 
+    /* Quill Editor Container */
+    #editor {
+        height: 300px;
+        margin-bottom: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+    }
+
+    /* Hide the original textarea */
+    #description {
+        display: none;
+    }
+</style>
 
 <x-admin-layout>
     <x-slot name="title">Vegetable Advice</x-slot>
@@ -58,7 +74,7 @@
                     <!-- Card Header -->
                     <div class="card-header bg-dark">
                         <h3 class="text-white mb-0">
-                           <i class="fas fa-plus-circle"></i> Create Vegetable Advice
+                            <i class="fas fa-plus-circle"></i> Create Vegetable Advice
                         </h3>
                         <a href="{{ route('vegetable_advice.index') }}" class="btn btn-light">
                             <i class="fas fa-arrow-left"></i> Back
@@ -87,10 +103,19 @@
                                 </div>
                             </div>
 
-                            {{-- Description --}}
+                            {{-- Quill Editor --}}
                             <div class="row mb-4">
                                 <div class="col-md-12">
-                                    <label for="description" class="form-label fw-bold">Advice Description</label>
+                                    <label for="editor" class="form-label fw-bold">Advice Description</label>
+                                    <!-- Quill Editor -->
+                                    <div id="editor"></div>
+                                </div>
+                            </div>
+
+                            {{-- Hidden Textarea for Description --}}
+                            <div class="row mb-4">
+                                <div class="col-md-12">
+                                    <!-- Hidden textarea to store the HTML content -->
                                     <textarea class="form-control" name="description" id="description" rows="6" required
                                         placeholder="Enter detailed advice for the selected vegetables...">{{ old('description') }}</textarea>
                                 </div>
@@ -120,6 +145,38 @@
 {{-- Select2 CDN --}}
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
+{{-- Quill Initialization --}}
+<script>
+    // Initialize Quill Editor
+    const quill = new Quill('#editor', {
+        theme: 'snow', // Use the Snow theme
+        modules: {
+            toolbar: [
+                ['bold', 'italic', 'underline', 'strike'], // Text formatting
+                [{
+                    'header': 1
+                }, {
+                    'header': 2
+                }], // Headers
+                [{
+                    'list': 'ordered'
+                }, {
+                    'list': 'bullet'
+                }], // Lists
+                ['link', 'image'], // Links and images
+                ['clean'] // Remove formatting
+            ]
+        },
+        placeholder: 'Write your advice here...',
+    });
+
+    // Sync Quill content to the hidden textarea
+    quill.on('text-change', function() {
+        const htmlContent = quill.root.innerHTML; // Get HTML content
+        document.getElementById('description').value = htmlContent; // Update textarea
+    });
+</script>
+
 {{-- Custom js script --}}
 <script>
     $(document).ready(function() {
@@ -132,6 +189,10 @@
         // Handle form submission
         $('#adviceForm').on('submit', function(e) {
             e.preventDefault(); // Prevent the default form submission
+
+            // Update the hidden textarea with the latest editor content
+            const htmlContent = quill.root.innerHTML;
+            document.getElementById('description').value = htmlContent;
 
             // Show loading alert
             Swal.fire({
@@ -169,6 +230,7 @@
                             $('#adviceForm')[0].reset();
                             $('#vegetables').val(null).trigger(
                             'change'); // Reset Select2
+                            quill.root.innerHTML = ''; // Clear Quill editor
                         });
                     }
                 },
