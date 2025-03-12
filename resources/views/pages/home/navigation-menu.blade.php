@@ -280,6 +280,17 @@
                 </div>
             </div>
 
+<!-- Add this to your navigation menu or header -->
+<div class="language-switcher">
+    <form action="{{ route('language.switch') }}" method="POST">
+        @csrf
+        <select name="locale" onchange="this.form.submit()">
+            <option value="en" {{ session('locale') == 'en' ? 'selected' : '' }}>English</option>
+            <option value="si" {{ session('locale') == 'si' ? 'selected' : '' }}>සිංහල</option>
+        </select>
+    </form>
+</div>
+
             <!-- Authentication Links -->
             <div class="auth-links">
                 @if (Route::has('login'))

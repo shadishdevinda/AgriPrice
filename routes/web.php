@@ -15,7 +15,9 @@ use App\Http\Controllers\FruitAdviceController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EconomicCenterUserController;
 use App\Http\Controllers\EconomicCenterController;
+use App\Http\Controllers\LanguageController;
 
+Route::post('/language-switch', [LanguageController::class, 'switch'])->name('language.switch');
 
 // Home page Route
 Route::get('/', [HomeController::class, 'welcome'])->name('home');

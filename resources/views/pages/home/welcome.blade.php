@@ -919,6 +919,11 @@
 
 
 <body class="font-sans antialiased">
+    @php
+    if (session()->has('locale')) {
+        app()->setLocale(session('locale'));
+    }
+    @endphp
 
     @include('pages.home.navigation-menu')
 
@@ -930,12 +935,13 @@
                 data-scrollax-parent="true">
                 <div class="col-md-8 text-center ftco-animate">
                     <div class="mb-5">
-                        <span class="subheading">Welcome to AGRIPRICE</span>
-                        <h1 class="mb-4">Agriculture is the Most Healthful</h1>
-                        <p class="mb-4">Far far away, behind the word mountains, far from the countries Vokalia and
-                            Consonantia, there live the blind texts. Separated they live in Bookmarksgrove.</p>
-                        <p><a href="#" class="btn btn-primary">Our Services</a> <a href="#"
-                                class="btn btn-secondary">Request A Quote</a></p>
+                        <span class="subheading">{{ __('messages.welcome') }}</span>
+                        <h1 class="mb-4">{{ __('messages.agriculture_healthful') }}</h1>
+                        <p class="mb-4">{{ __('messages.description') }}</p>
+                        <p>
+                            <a href="#" class="btn btn-primary">{{ __('messages.our_services') }}</a>
+                            <a href="#" class="btn btn-secondary">{{ __('messages.request_quote') }}</a>
+                        </p>
                     </div>
                 </div>
             </div>
@@ -957,15 +963,14 @@
                     <div class="services">
                         <div class="p-4">
                             <div class="media-body">
-                                <h3 class="heading mb-3">Vegetable <br>Prices</h3>
-                                <p>A small river named Duden flows by their place and supplies it with the necessary
-                                    regelialia. It is a paradisematic country, in which roasted parts</p>
+                                <h3 class="heading mb-3">{{ __('messages.vegetable_prices') }}</h3>
+                                <p>{{ __('messages.vegetable_description') }}</p>
                             </div>
                         </div>
                         <div class="img" style="background-image: url(images/services-1.jpg);">
-                            <a href="#"
-                                class="btn-custom d-flex align-items-center justify-content-center"><span
-                                    class="fa fa-chevron-right"></span></a>
+                            <a href="#" class="btn-custom d-flex align-items-center justify-content-center">
+                                <span class="fa fa-chevron-right"></span>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -973,15 +978,14 @@
                     <div class="services">
                         <div class="p-4">
                             <div class="media-body">
-                                <h3 class="heading mb-3">Fruit <br>Prices</h3>
-                                <p>A small river named Duden flows by their place and supplies it with the necessary
-                                    regelialia. It is a paradisematic country, in which roasted parts</p>
+                                <h3 class="heading mb-3">{{ __('messages.fruit_prices') }}</h3>
+                                <p>{{ __('messages.fruit_description') }}</p>
                             </div>
                         </div>
                         <div class="img" style="background-image: url(images/services-2.jpg);">
-                            <a href="#"
-                                class="btn-custom d-flex align-items-center justify-content-center"><span
-                                    class="fa fa-chevron-right"></span></a>
+                            <a href="#" class="btn-custom d-flex align-items-center justify-content-center">
+                                <span class="fa fa-chevron-right"></span>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -989,15 +993,14 @@
                     <div class="services">
                         <div class="p-4">
                             <div class="media-body">
-                                <h3 class="heading mb-3">Economic <br>Centers</h3>
-                                <p>A small river named Duden flows by their place and supplies it with the necessary
-                                    regelialia. It is a paradisematic country, in which roasted parts</p>
+                                <h3 class="heading mb-3">{{ __('messages.economic_centers') }}</h3>
+                                <p>{{ __('messages.economic_description') }}</p>
                             </div>
                         </div>
                         <div class="img" style="background-image: url(images/services-4.jpg);">
-                            <a href="#"
-                                class="btn-custom d-flex align-items-center justify-content-center"><span
-                                    class="fa fa-chevron-right"></span></a>
+                            <a href="#" class="btn-custom d-flex align-items-center justify-content-center">
+                                <span class="fa fa-chevron-right"></span>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -1005,15 +1008,14 @@
                     <div class="services">
                         <div class="p-4">
                             <div class="media-body">
-                                <h3 class="heading mb-3">Crop <br>Advices</h3>
-                                <p>A small river named Duden flows by their place and supplies it with the necessary
-                                    regelialia. It is a paradisematic country, in which roasted parts</p>
+                                <h3 class="heading mb-3">{{ __('messages.crop_advices') }}</h3>
+                                <p>{{ __('messages.crop_description') }}</p>
                             </div>
                         </div>
                         <div class="img" style="background-image: url(images/services-3.jpg);">
-                            <a href="#"
-                                class="btn-custom d-flex align-items-center justify-content-center"><span
-                                    class="fa fa-chevron-right"></span></a>
+                            <a href="#" class="btn-custom d-flex align-items-center justify-content-center">
+                                <span class="fa fa-chevron-right"></span>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -1021,74 +1023,74 @@
         </div>
     </section>
 
-<section class="ftco-section ftco-counter img" id="section-counter"
-    style="background-image: url(images/bg_2.jpg);">
-    <div class="overlay"></div>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6 col-lg-3 d-flex counter-wrap ftco-animate">
-                <div class="block-18 mb-xl-0 mb-2 d-flex align-items-center">
-                    <div class="icon d-flex align-items-center justify-content-center">
-                        <span class="flaticon-agriculture-1"></span>
-                    </div>
-                    <div class="text pl-3">
-                        <strong class="number" data-number="{{ $vegetableCount }}">0</strong>
-                        <span>Vegetables</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-3 d-flex counter-wrap ftco-animate">
-                <div class="block-18 mb-xl-0 mb-2 d-flex align-items-center">
-                    <div class="icon d-flex align-items-center justify-content-center">
-                        <span class="flaticon-agriculture"></span>
-                    </div>
-                    <div class="text pl-3">
-                        <strong class="number" data-number="{{ $fruitCount }}">0</strong>
-                        <span>Fruits</span>
+    <section class="ftco-section ftco-counter img" id="section-counter"
+        style="background-image: url(images/bg_2.jpg);">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-lg-3 d-flex counter-wrap ftco-animate">
+                    <div class="block-18 mb-xl-0 mb-2 d-flex align-items-center">
+                        <div class="icon d-flex align-items-center justify-content-center">
+                            <span class="flaticon-agriculture-1"></span>
+                        </div>
+                        <div class="text pl-3">
+                            <strong class="number" data-number="{{ $vegetableCount }}">0</strong>
+                            <span>{{ __('messages.vegetables') }}</span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-6 col-lg-3 d-flex counter-wrap ftco-animate">
-                <div class="block-18 mb-xl-0 mb-2 d-flex align-items-center">
-                    <div class="icon d-flex align-items-center justify-content-center">
-                        <span class="flaticon-agriculture-2"></span>
-                    </div>
-                    <div class="text pl-3">
-                        <strong class="number" data-number="{{ $economicCenterCount }}">0</strong>
-                        <span>Economic Centers</span>
+                <div class="col-md-6 col-lg-3 d-flex counter-wrap ftco-animate">
+                    <div class="block-18 mb-xl-0 mb-2 d-flex align-items-center">
+                        <div class="icon d-flex align-items-center justify-content-center">
+                            <span class="flaticon-agriculture"></span>
+                        </div>
+                        <div class="text pl-3">
+                            <strong class="number" data-number="{{ $fruitCount }}">0</strong>
+                            <span>{{ __('messages.fruits') }}</span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-6 col-lg-3 d-flex counter-wrap ftco-animate">
-                <div class="block-18 mb-xl-0 mb-2 d-flex align-items-center">
-                    <div class="icon d-flex align-items-center justify-content-center">
-                        <span class="flaticon-approve"></span>
+                <div class="col-md-6 col-lg-3 d-flex counter-wrap ftco-animate">
+                    <div class="block-18 mb-xl-0 mb-2 d-flex align-items-center">
+                        <div class="icon d-flex align-items-center justify-content-center">
+                            <span class="flaticon-agriculture-2"></span>
+                        </div>
+                        <div class="text pl-3">
+                            <strong class="number" data-number="{{ $economicCenterCount }}">0</strong>
+                            <span>{{ __('messages.economic_centers') }}</span>
+                        </div>
                     </div>
-                    <div class="text pl-3">
-                        <strong class="number" data-number="{{ $cropAdviceCount }}">0</strong>
-                        <span>Crop Advises</span>
+                </div>
+                <div class="col-md-6 col-lg-3 d-flex counter-wrap ftco-animate">
+                    <div class="block-18 mb-xl-0 mb-2 d-flex align-items-center">
+                        <div class="icon d-flex align-items-center justify-content-center">
+                            <span class="flaticon-approve"></span>
+                        </div>
+                        <div class="text pl-3">
+                            <strong class="number" data-number="{{ $cropAdviceCount }}">0</strong>
+                            <span>{{ __('messages.crop_advices') }}</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
     <section class="ftco-section ftco-no-pt testimony-section">
         <div class="overlay"></div>
         <div class="container">
             <div class="row">
                 <div class="col-md-6 heading-section pr-md-5 pt-5 mt-md-5 mb-5 mb-md-0">
-                    <span class="subheading">Testimonial</span>
-                    <h2 class="mb-4">What Are Cutomers Says About</h2>
-                    <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It
-                        is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
+                    <span class="subheading">{{ __('messages.testimonial') }}</span>
+                    <h2 class="mb-4">{{ __('messages.what_customers_say') }}</h2>
+                    <p>{{ __('messages.testimonial_description') }}</p>
                     <div class="block-18 d-flex align-items-center">
-                        <div class="icon d-flex align-items-center justify-content-center"><span
-                                class="flaticon-agriculture"></span></div>
+                        <div class="icon d-flex align-items-center justify-content-center">
+                            <span class="flaticon-agriculture"></span>
+                        </div>
                         <div class="text pl-3">
                             <strong class="number" data-number="{{ $totalProduceCount }}">0</strong>
-                            <span>Total Products</span>
+                            <span>{{ __('messages.total_products') }}</span>
                         </div>
                     </div>
                 </div>
@@ -1098,17 +1100,12 @@
                             <div class="testimony-wrap">
                                 <div class="text">
                                     <span class="fa">"</span>
-                                    <p class="mb-4">Far far away, behind the word mountains, far from the countries
-                                        Vokalia and Consonantia, there live the blind texts. A small river named Duden
-                                        flows by their place and supplies it with the necessary regelialia. It is a
-                                        paradisematic country, in which roasted parts of sentences fly into your mouth.
-                                    </p>
+                                    <p class="mb-4">{{ __('messages.testimonial_1') }}</p>
                                     <div class="d-flex align-items-center">
-                                        <div class="user-img" style="background-image: url(images/person_1.jpg)">
-                                        </div>
+                                        <div class="user-img" style="background-image: url(images/person_1.jpg);"></div>
                                         <div class="pl-3">
-                                            <p class="name">Roger Scott</p>
-                                            <span class="position">Marketing Manager</span>
+                                            <p class="name">{{ __('messages.customer_1_name') }}</p>
+                                            <span class="position">{{ __('messages.customer_1_position') }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -1117,79 +1114,18 @@
                         <div class="item">
                             <div class="testimony-wrap">
                                 <div class="text">
-                                    <p class="mb-4">Far far away, behind the word mountains, far from the countries
-                                        Vokalia and Consonantia, there live the blind texts. A small river named Duden
-                                        flows by their place and supplies it with the necessary regelialia. It is a
-                                        paradisematic country, in which roasted parts of sentences fly into your mouth.
-                                    </p>
+                                    <p class="mb-4">{{ __('messages.testimonial_2') }}</p>
                                     <div class="d-flex align-items-center">
-                                        <div class="user-img" style="background-image: url(images/person_2.jpg)">
-                                        </div>
+                                        <div class="user-img" style="background-image: url(images/person_2.jpg);"></div>
                                         <div class="pl-3">
-                                            <p class="name">Roger Scott</p>
-                                            <span class="position">Marketing Manager</span>
+                                            <p class="name">{{ __('messages.customer_2_name') }}</p>
+                                            <span class="position">{{ __('messages.customer_2_position') }}</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="item">
-                            <div class="testimony-wrap">
-                                <div class="text">
-                                    <p class="mb-4">Far far away, behind the word mountains, far from the countries
-                                        Vokalia and Consonantia, there live the blind texts. A small river named Duden
-                                        flows by their place and supplies it with the necessary regelialia. It is a
-                                        paradisematic country, in which roasted parts of sentences fly into your mouth.
-                                    </p>
-                                    <div class="d-flex align-items-center">
-                                        <div class="user-img" style="background-image: url(images/person_3.jpg)">
-                                        </div>
-                                        <div class="pl-3">
-                                            <p class="name">Roger Scott</p>
-                                            <span class="position">Marketing Manager</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="testimony-wrap">
-                                <div class="text">
-                                    <p class="mb-4">Far far away, behind the word mountains, far from the countries
-                                        Vokalia and Consonantia, there live the blind texts. A small river named Duden
-                                        flows by their place and supplies it with the necessary regelialia. It is a
-                                        paradisematic country, in which roasted parts of sentences fly into your mouth.
-                                    </p>
-                                    <div class="d-flex align-items-center">
-                                        <div class="user-img" style="background-image: url(images/person_1.jpg)">
-                                        </div>
-                                        <div class="pl-3">
-                                            <p class="name">Roger Scott</p>
-                                            <span class="position">Marketing Manager</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="testimony-wrap">
-                                <div class="text">
-                                    <p class="mb-4">Far far away, behind the word mountains, far from the countries
-                                        Vokalia and Consonantia, there live the blind texts. A small river named Duden
-                                        flows by their place and supplies it with the necessary regelialia. It is a
-                                        paradisematic country, in which roasted parts of sentences fly into your mouth.
-                                    </p>
-                                    <div class="d-flex align-items-center">
-                                        <div class="user-img" style="background-image: url(images/person_2.jpg)">
-                                        </div>
-                                        <div class="pl-3">
-                                            <p class="name">Roger Scott</p>
-                                            <span class="position">Marketing Manager</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <!-- Add more testimonial items as needed -->
                     </div>
                 </div>
             </div>
@@ -1201,8 +1137,8 @@
             <div class="row mb-5 justify-content-between">
                 <div class="col-sm-12 col-md">
                     <div class="ftco-footer-widget mb-4">
-                        <h2 class="ftco-heading-2 logo"><a href="#">AGRIPRICE</a></h2>
-                        <p>Far far away, behind the word mountains, far from the countries.</p>
+                        <h2 class="ftco-heading-2 logo"><a href="#">{{ __('messages.agriprice') }}</a></h2>
+                        <p>{{ __('messages.footer_description') }}</p>
                         <ul class="ftco-footer-social list-unstyled mt-2">
                             <li class="ftco-animate"><a href="#"><span class="fa fa-twitter"></span></a></li>
                             <li class="ftco-animate"><a href="#"><span class="fa fa-facebook"></span></a></li>
@@ -1212,15 +1148,14 @@
                 </div>
                 <div class="col-sm-12 col-md-4">
                     <div class="ftco-footer-widget mb-4 ml-md-4">
-                        <h2 class="ftco-heading-2">Explore</h2>
+                        <h2 class="ftco-heading-2">{{ __('messages.explore') }}</h2>
                         <div class="block-21 mb-4 d-flex">
                             <a class="img mr-4 rounded" style="background-image: url(images/image_1.jpg);"></a>
                             <div class="text">
-                                <h3 class="heading"><a href="#">Organic Products For Healthy Living</a></h3>
+                                <h3 class="heading"><a href="#">{{ __('messages.organic_products') }}</a></h3>
                                 <div class="meta">
-                                    <div><a href="#"><span class="fa fa-calendar"></span> Oct. 06, 2020</a>
-                                    </div>
-                                    <div><a href="#"><span class="fa fa-user"></span> Admin</a></div>
+                                    <div><a href="#"><span class="fa fa-calendar"></span> {{ __('messages.date') }}</a></div>
+                                    <div><a href="#"><span class="fa fa-user"></span> {{ __('messages.admin') }}</a></div>
                                     <div><a href="#"><span class="fa fa-comment"></span> 19</a></div>
                                 </div>
                             </div>
@@ -1228,11 +1163,10 @@
                         <div class="block-21 mb-4 d-flex">
                             <a class="img mr-4 rounded" style="background-image: url(images/image_2.jpg);"></a>
                             <div class="text">
-                                <h3 class="heading"><a href="#">Organic Products For Healthy Living</a></h3>
+                                <h3 class="heading"><a href="#">{{ __('messages.organic_products') }}</a></h3>
                                 <div class="meta">
-                                    <div><a href="#"><span class="fa fa-calendar"></span> Oct. 06, 2020</a>
-                                    </div>
-                                    <div><a href="#"><span class="fa fa-user"></span> Admin</a></div>
+                                    <div><a href="#"><span class="fa fa-calendar"></span> {{ __('messages.date') }}</a></div>
+                                    <div><a href="#"><span class="fa fa-user"></span> {{ __('messages.admin') }}</a></div>
                                     <div><a href="#"><span class="fa fa-comment"></span> 19</a></div>
                                 </div>
                             </div>
@@ -1241,29 +1175,24 @@
                 </div>
                 <div class="col-sm-12 col-md-2">
                     <div class="ftco-footer-widget mb-4">
-                        <h2 class="ftco-heading-2">Explore</h2>
+                        <h2 class="ftco-heading-2">{{ __('messages.explore') }}</h2>
                         <ul class="list-unstyled">
-                            <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>About</a></li>
-                            <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Contact</a></li>
-                            <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Projects</a></li>
-                            <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Services</a></li>
-                            <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Blog</a></li>
+                            <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>{{ __('messages.about') }}</a></li>
+                            <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>{{ __('messages.contact') }}</a></li>
+                            <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>{{ __('messages.projects') }}</a></li>
+                            <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>{{ __('messages.services') }}</a></li>
+                            <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>{{ __('messages.blog') }}</a></li>
                         </ul>
                     </div>
                 </div>
                 <div class="col-sm-12 col-md">
                     <div class="ftco-footer-widget mb-4">
-                        <h2 class="ftco-heading-2">Have a Questions?</h2>
+                        <h2 class="ftco-heading-2">{{ __('messages.have_questions') }}</h2>
                         <div class="block-23 mb-3">
                             <ul>
-                                <li><span class="icon fa fa-map marker"></span><span class="text">203 Fake St.
-                                        Mountain View, San Francisco, California, USA</span></li>
-                                <li><a href="#"><span class="icon fa fa-phone"></span><span class="text">+2
-                                            392 3929 210</span></a></li>
-                                <li><a href="#"><span class="icon fa fa-paper-plane pr-4"></span><span
-                                            class="text"><span class="__cf_email__"
-                                                data-cfemail="d4bdbab2bb94adbba1a6b0bbb9b5bdbafab7bbb9">[email &nbsp;protected]</span></span></a>
-                                </li>
+                                <li><span class="icon fa fa-map marker"></span><span class="text">{{ __('messages.address') }}</span></li>
+                                <li><a href="#"><span class="icon fa fa-phone"></span><span class="text">{{ __('messages.phone') }}</span></a></li>
+                                <li><a href="#"><span class="icon fa fa-paper-plane pr-4"></span><span class="text">{{ __('messages.email') }}</span></a></li>
                             </ul>
                         </div>
                     </div>
@@ -1274,7 +1203,6 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
-
                         <p class="mb-0" style="color: rgba(255,255,255,.5);">Copyright ©
                             <script data-cfasync="false" src="js/email-decode.min.js"></script>
                             <script>
@@ -1288,15 +1216,6 @@
             </div>
         </div>
     </footer>
-
-    <!-- loader -->
-    <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px">
-            <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4"
-                stroke="#eeeeee"></circle>
-            <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4"
-                stroke-miterlimit="10" stroke="#F96D00"></circle>
-        </svg>
-    </div>
 
     <script src="js/jquery.min.js"></script>
     <script src="js/jquery-migrate-3.0.1.min.js"></script>
