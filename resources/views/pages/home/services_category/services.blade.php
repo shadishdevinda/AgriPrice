@@ -11,7 +11,7 @@
                         </div>
                     </div>
                     <div class="img" style="background-image: url(images/services-1.jpg);">
-                        <a href="#"
+                        <a href="{{ route('vegetables.index') }}"
                             class="btn-custom d-flex align-items-center justify-content-center"><span
                                 class="fa fa-chevron-right"></span></a>
                     </div>
@@ -27,7 +27,7 @@
                         </div>
                     </div>
                     <div class="img" style="background-image: url(images/services-2.jpg);">
-                        <a href="#"
+                        <a href="{{ route('fruits.index') }}"
                             class="btn-custom d-flex align-items-center justify-content-center"><span
                                 class="fa fa-chevron-right"></span></a>
                     </div>
