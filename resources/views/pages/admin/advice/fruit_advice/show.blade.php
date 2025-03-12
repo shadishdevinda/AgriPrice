@@ -49,13 +49,6 @@
 
                     <!-- Card Body -->
                     <div class="card-body">
-                        <!-- Description -->
-                        <div class="mb-4">
-                            <label class="form-label fw-bold">Description</label>
-                            <div class="p-3 bg-light rounded">
-                                <p class="mb-0">{!! $fruitAdvice->description !!}</p>
-                            </div>
-                        </div>
 
                         <!-- Associated Fruits -->
                         <div class="mb-4">
@@ -74,10 +67,18 @@
                                 @endif
                             </div>
                         </div>
+
+                        <!-- Description -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Description</label>
+                            <div class="p-3 bg-light rounded">
+                                <p class="mb-0">{!! $fruitAdvice->description !!}</p>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </x-admin-layout>
-

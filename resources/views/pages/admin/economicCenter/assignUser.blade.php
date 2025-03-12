@@ -88,7 +88,9 @@
                                     <select name="user_type" class="form-select" id="user_type"
                                         aria-describedby="user_typeHelp" required>
                                         <option value="" selected disabled>Select User Type</option>
-                                        <option value="market-user">Market User</option>
+                                        @foreach ($marketUserRole as $key => $value)
+                                            <option value="{{ $key }}">{{ $value }}</option>
+                                        @endforeach
                                     </select>
                                     <small id="user_typeHelp" class="form-text text-muted">Select the user type.</small>
                                 </div>

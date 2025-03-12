@@ -8,9 +8,11 @@
 
     /* Navigation Bar Styles */
     nav {
-        background-color: #065744; /* Dark green background */
+        background-color: #065744;
+        /* Dark green background */
         padding: 10px 0;
-        border-bottom: 2px solid #3a7d5f; /* Slightly lighter green border */
+        border-bottom: 2px solid #3a7d5f;
+        /* Slightly lighter green border */
     }
 
     .container {
@@ -38,12 +40,14 @@
     }
 
     .logo img {
-        height: 40px; /* Adjust logo size */
+        height: 40px;
+        /* Adjust logo size */
         transition: transform 0.3s ease;
     }
 
     .logo img:hover {
-        transform: scale(1.1); /* Slight zoom effect on hover */
+        transform: scale(1.1);
+        /* Slight zoom effect on hover */
     }
 
     /* Navigation Links */
@@ -62,7 +66,8 @@
     }
 
     .nav-link:hover {
-        color: #ffd700; /* Gold color on hover */
+        color: #ffd700;
+        /* Gold color on hover */
     }
 
     /* Dropdown Menu */
@@ -81,7 +86,8 @@
     }
 
     .dropdown-toggle:hover {
-        color: #ffd700; /* Gold color on hover */
+        color: #ffd700;
+        /* Gold color on hover */
     }
 
     .dropdown-menu {
@@ -103,14 +109,16 @@
     .dropdown-item {
         display: block;
         padding: 10px 15px;
-        color: #065744; /* Dark green text */
+        color: #065744;
+        /* Dark green text */
         text-decoration: none;
         font-size: 14px;
         transition: background-color 0.3s ease;
     }
 
     .dropdown-item:hover {
-        background-color: #f0f0f0; /* Light gray background on hover */
+        background-color: #f0f0f0;
+        /* Light gray background on hover */
     }
 
     /* Authentication Links */
@@ -129,7 +137,8 @@
     }
 
     .auth-link:hover {
-        color: #ffd700; /* Gold color on hover */
+        color: #ffd700;
+        /* Gold color on hover */
     }
 
     /* User Dropdown */
@@ -148,7 +157,8 @@
     }
 
     .user-toggle:hover {
-        color: #ffd700; /* Gold color on hover */
+        color: #ffd700;
+        /* Gold color on hover */
     }
 
     .user-menu {
@@ -170,20 +180,23 @@
     .user-item {
         display: block;
         padding: 10px 15px;
-        color: #065744; /* Dark green text */
+        color: #065744;
+        /* Dark green text */
         text-decoration: none;
         font-size: 14px;
         transition: background-color 0.3s ease;
     }
 
     .user-item:hover {
-        background-color: #f0f0f0; /* Light gray background on hover */
+        background-color: #f0f0f0;
+        /* Light gray background on hover */
     }
 
     /* Responsive Navigation Menu */
     .mobile-nav {
         display: none;
-        background-color: #065744; /* Dark green background */
+        background-color: #065744;
+        /* Dark green background */
         padding: 10px 0;
     }
 
@@ -197,7 +210,8 @@
     }
 
     .mobile-link:hover {
-        background-color: #3a7d5f; /* Slightly lighter green on hover */
+        background-color: #3a7d5f;
+        /* Slightly lighter green on hover */
     }
 
     /* Hamburger Menu Icon */
@@ -215,9 +229,12 @@
         transition: transform 0.3s ease, opacity 0.3s ease;
     }
 
+
     /* Media Queries for Responsive Design */
     @media (max-width: 768px) {
-        .nav-links, .auth-links {
+
+        .nav-links,
+        .auth-links {
             display: none;
         }
 
@@ -251,8 +268,8 @@
     <div class="container">
         <div class="nav-wrapper">
             <!-- Logo -->
-            <div class="logo shrink-0 flex items-center">
-                <a href="{{ route('market.dashboard') }}">
+            <div class="shrink-0 flex items-center">
+                <a href="{{ route('home') }}">
                     <x-application-mark class="block h-9 w-auto" />
                 </a>
             </div>
@@ -274,8 +291,10 @@
                 <div class="dropdown">
                     <button class="dropdown-toggle">{{ __('Crops Advices') }}</button>
                     <div class="dropdown-menu">
-                        <a href="{{ route('advices.vegetables.index') }}" class="dropdown-item">{{ __('Vegetable Advices') }}</a>
-                        <a href="{{ route('advices.fruits.index') }}" class="dropdown-item">{{ __('Fruit Advices') }}</a>
+                        <a href="{{ route('advices.vegetables.index') }}"
+                            class="dropdown-item">{{ __('Vegetable Advices') }}</a>
+                        <a href="{{ route('advices.fruits.index') }}"
+                            class="dropdown-item">{{ __('Fruit Advices') }}</a>
                     </div>
                 </div>
             </div>

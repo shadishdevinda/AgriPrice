@@ -82,6 +82,8 @@
                                             <option value="{{ $centerId }}">{{ $centerName }}</option>
                                         @endforeach
                                     </select>
+                                    <small id="economicCenter_typeHelp" class="form-text text-muted">Select the Economic
+                                        Center.</small>
                                 </div>
 
                                 <div class="col-md-6">
@@ -89,7 +91,9 @@
                                     <select name="user_type" class="form-select" id="user_type"
                                         aria-describedby="user_typeHelp" required>
                                         <option value="" selected disabled>Select User Type</option>
-                                        <option value="market-user">Market User</option>
+                                        @foreach ($marketUserRole as $key => $value)
+                                            <option value="{{ $key }}">{{ $value }}</option>
+                                        @endforeach
                                     </select>
                                     <small id="user_typeHelp" class="form-text text-muted">Select the user type.</small>
                                 </div>
@@ -165,10 +169,11 @@
                                 <div class="col-md-12">
                                     <div class="col-md-6">
                                         <label for="profile_photo">Profile Photo</label>
-                                        <input type="file" id="profile_photo" name="profile_photo" class="form-control"
-                                            accept="image/*">
+                                        <input type="file" id="profile_photo" name="profile_photo"
+                                            class="form-control" accept="image/*">
 
-                                        <img id="photoPreview" src="#" alt="Profile Photo Preview" class="mt-2"
+                                        <img id="photoPreview" src="#" alt="Profile Photo Preview"
+                                            class="mt-2"
                                             style="display: none; width: 100px; height: 100px; object-fit: cover;">
 
                                         <button type="button" class="btn btn-secondary mt-2" id="removePhoto"
@@ -176,7 +181,8 @@
                                             Remove Selected Photo
                                         </button>
                                     </div>
-                                    <small id="profile_photoHelp" class="form-text text-muted">Upload the profile photo of the user.</small>
+                                    <small id="profile_photoHelp" class="form-text text-muted">Upload the profile
+                                        photo of the user.</small>
                                 </div>
                             </div>
 
@@ -205,6 +211,21 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <script>
+    // Initialize select2 on the roles and economic center select input
+    $(document).ready(function() {
+        $('#economicCenters').select2({
+            placeholder: "Select economic center",
+            allowClear: true
+        });
+    });
+
+    $(document).ready(function() {
+        $('#roles').select2({
+            placeholder: "Select roles",
+            allowClear: true
+        });
+    });
+
     // Preview profile photo
     document.getElementById('profile_photo').addEventListener('change', function(event) {
         const reader = new FileReader();
@@ -290,7 +311,7 @@
                         const economicCenterField = document.getElementById('economicCenters');
                         if (economicCenterField) {
                             $(economicCenterField).val(null).trigger(
-                            'change'); // Clear selected value
+                                'change'); // Clear selected value
                         }
                     });
                 } else {
@@ -314,18 +335,5 @@
                     text: error.message || 'An unexpected error occurred.',
                 });
             });
-    });
-
-    // Initialize select2 on the roles and economic center select input
-    $(document).ready(function() {
-        $('#roles').select2({
-            placeholder: "Select roles",
-            allowClear: true
-        });
-
-        $('#economicCenters').select2({
-            placeholder: "Select economic center",
-            allowClear: true
-        });
     });
 </script>

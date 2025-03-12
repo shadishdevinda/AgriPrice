@@ -49,13 +49,6 @@
 
                     <!-- Card Body -->
                     <div class="card-body">
-                        <!-- Description -->
-                        <div class="mb-4">
-                            <label class="form-label fw-bold">Description</label>
-                            <div class="p-3 bg-light rounded">
-                                <p class="mb-0">{!! $vegetableAdvice->description !!}</p>
-                            </div>
-                        </div>
 
                         <!-- Associated Vegetables -->
                         <div class="mb-4">
@@ -72,6 +65,14 @@
                                 @else
                                     <p class="mb-0 text-muted">No vegetables associated with this advice.</p>
                                 @endif
+                            </div>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Description</label>
+                            <div class="p-3 bg-light rounded">
+                                <p class="mb-0">{!! $vegetableAdvice->description !!}</p>
                             </div>
                         </div>
                     </div>

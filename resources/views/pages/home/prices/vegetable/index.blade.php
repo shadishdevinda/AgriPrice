@@ -171,53 +171,60 @@
             @endforeach
         </div>
     </div>
+</x-home-layout>
 
-    <script>
-        $(document).ready(function() {
-            var vegetableList = [];
-            $(".vegetable-item").each(function() {
-                var name = $(this).data("name");
-                var link = $(this).find("a").attr("href");
-                vegetableList.push({
-                    name: name,
-                    link: link
-                });
+
+<!-- jQuery (Required for Search) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        var vegetableList = [];
+        $(".vegetable-item").each(function() {
+            var name = $(this).data("name");
+            var link = $(this).find("a").attr("href");
+            vegetableList.push({
+                name: name,
+                link: link
             });
+        });
 
-            $("#searchBar").on("keyup", function() {
-                var value = $(this).val().toLowerCase();
-                var results = $("#searchResults");
-                results.empty();
+        $("#searchBar").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            var results = $("#searchResults");
+            results.empty();
 
-                if (value.length > 0) {
-                    var filtered = vegetableList.filter(item => item.name.includes(value));
-                    if (filtered.length > 0) {
-                        results.show();
-                        filtered.forEach(item => {
-                            results.append(`<a href="${item.link}" class="dropdown-item">${item.name}</a>`);
-                        });
-                    } else {
-                        results.hide();
-                    }
+            if (value.length > 0) {
+                var filtered = vegetableList.filter(item => item.name.includes(value));
+                if (filtered.length > 0) {
+                    results.show();
+                    filtered.forEach(item => {
+                        results.append(`<a href="${item.link}" class="dropdown-item">${item.name}</a>`);
+                    });
                 } else {
                     results.hide();
                 }
-            });
-
-            // Hide dropdown when clicking outside
-            $(document).click(function(event) {
-                if (!$(event.target).closest("#searchBar, #searchResults").length) {
-                    $("#searchResults").hide();
-                }
-            });
-
-            // Smooth scrolling for better UX
-            $('a[href^="#"]').on('click', function(event) {
-                event.preventDefault();
-                $('html, body').animate({
-                    scrollTop: $($(this).attr('href')).offset().top
-                }, 500);
-            });
+            } else {
+                results.hide();
+            }
         });
-    </script>
-</x-home-layout>
+
+        // Hide dropdown when clicking outside
+        $(document).click(function(event) {
+            if (!$(event.target).closest("#searchBar, #searchResults").length) {
+                $("#searchResults").hide();
+            }
+        });
+
+        // Smooth scrolling for better UX
+        $('a[href^="#"]').on('click', function(event) {
+            event.preventDefault();
+            $('html, body').animate({
+                scrollTop: $($(this).attr('href')).offset().top
+            }, 500);
+        });
+    });
+</script>

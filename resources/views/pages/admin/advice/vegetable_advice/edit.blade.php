@@ -4,12 +4,15 @@
 
 <!-- FontAwesome for icons -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-
 {{-- Select2 CDN --}}
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
 {{-- SweetAlert2 CDN --}}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+{{-- Quill Editor CDN --}}
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 
 {{-- Custom styles --}}
 <style>
@@ -67,10 +70,15 @@
         border-color: #065744;
         box-shadow: 0 0 5px rgba(6, 87, 68, 0.5);
     }
+
+    /* Hide the original textarea */
+    #description {
+        display: none;
+    }
 </style>
 
 <x-admin-layout>
-    <x-slot name="title">Vegetable Advice</x-slot>
+    <x-slot name="title">Edit Vegetable Advice</x-slot>
 
     <div class="container">
         <div class="row justify-content-center mt-4">
@@ -92,13 +100,6 @@
                             action="{{ route('vegetable_advice.update', $vegetableAdvice->id) }}" method="POST">
                             @method('put')
                             @csrf
-                            <!-- Description -->
-                            <div class="mb-4">
-                                <label for="description" class="form-label fw-bold">Description</label>
-                                <textarea class="form-control" name="description" id="description" rows="6" required
-                                    placeholder="Enter detailed advice for the selected vegetables...">{{ old('description', $vegetableAdvice->description) }}</textarea>
-                            </div>
-
                             <!-- Vegetable Selection -->
                             <div class="mb-4">
                                 <label for="vegetables" class="form-label fw-bold">Associated Vegetables</label>
@@ -112,9 +113,29 @@
                                 </select>
                             </div>
 
+                            {{-- Quill Editor --}}
+                            <div class="row mb-4">
+                                <div class="col-md-12">
+                                    <label for="editor" class="form-label fw-bold">Advice Description</label>
+                                    <!-- Quill Editor -->
+                                    <div id="editor">
+                                        {!! old('description', $vegetableAdvice->description) !!}
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{-- Hidden Textarea for Description --}}
+                            <div class="row mb-4">
+                                <div class="col-md-12">
+                                    <!-- Hidden textarea to store the HTML content -->
+                                    <textarea class="form-control" name="description" id="description" rows="6" required
+                                        placeholder="Enter detailed advice for the selected vegetables...">{{ old('description') }}</textarea>
+                                </div>
+                            </div>
+
                             <!-- Submit Button -->
                             <div class="d-flex justify-content-end">
-                                <button type="submit" class="btn btn-custom">
+                                <button type="submit" class="btn btn-custom" style="margin-top: 30px;">
                                     <i class="fas fa-save"></i> Update Advice
                                 </button>
                             </div>
@@ -137,6 +158,35 @@
 {{-- Custom js script --}}
 <script>
     $(document).ready(function() {
+        // Initialize Quill Editor
+        const quill = new Quill('#editor', {
+            theme: 'snow', // Use the Snow theme
+            modules: {
+                toolbar: [
+                    ['bold', 'italic', 'underline', 'strike'], // Text formatting
+                    [{
+                        'header': 1
+                    }, {
+                        'header': 2
+                    }], // Headers
+                    [{
+                        'list': 'ordered'
+                    }, {
+                        'list': 'bullet'
+                    }], // Lists
+                    ['link', 'image'], // Links and images
+                    ['clean'] // Remove formatting
+                ]
+            },
+            placeholder: 'Write your advice here...',
+        });
+
+        // Sync Quill content to the hidden textarea
+        quill.on('text-change', function() {
+            const htmlContent = quill.root.innerHTML; // Get HTML content
+            document.getElementById('description').value = htmlContent; // Update textarea
+        });
+
         // Initialize Select2
         $('.select2').select2({
             placeholder: 'Select vegetables',

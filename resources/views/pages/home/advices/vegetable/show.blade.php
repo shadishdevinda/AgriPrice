@@ -117,10 +117,6 @@
             transition: background-color 0.3s ease;
         }
 
-        .advice-item:hover {
-            background-color: #e0f7fa;
-        }
-
         .no-advice {
             color: #888;
             font-style: italic;
@@ -155,7 +151,7 @@
                     <h3 class="advice-heading">Advice</h3>
                     <ul class="advice-list">
                         @forelse($vegetable->advice as $advice)
-                            <li class="advice-item">{{ $advice->description }}</li>
+                            <li class="advice-item">{!! $advice->description !!}</li>
                         @empty
                             <li class="advice-item no-advice">No advice available for this vegetable.</li>
                         @endforelse
