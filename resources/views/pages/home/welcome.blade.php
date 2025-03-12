@@ -42,8 +42,6 @@
     <hr style="margin: 0;">
     {{-- Contact section --}}
     @include('pages.home.contact.contactSection')
-    {{-- newsletter section --}}
-    @include('pages.home.homeBody.newsletter')
     {{-- footerSection section --}}
     @include('pages.home.footer.footerSection')
     <!-- loader -->
