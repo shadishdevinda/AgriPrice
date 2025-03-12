@@ -1,4 +1,7 @@
-<div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
+<div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0"
+    style="background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.535),
+    rgba(60, 22, 7, 0.324)),url('/images/login-background.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;
+    min-height: 100vh;">
     <div>
         {{ $logo }}
     </div>
