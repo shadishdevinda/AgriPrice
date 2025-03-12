@@ -4,41 +4,43 @@
             <div class="col-lg-6 mb-5 md-md-0 heading-section">
                 <span class="subheading">Request Quote</span>
                 <h2 class="mb-5">Request An Estimate</h2>
-                <form action="#" class="appointment-form ftco-animate">
+
+                <!-- Display success message -->
+        @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    <!-- Display validation errors -->
+    @if($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+                <form action="{{ route('contact.submit') }}" method="POST">
+                    @csrf
                     <div class="">
                         <div class="form-group">
-                            <input type="text" class="form-control" placeholder="First Name">
+                            <input type="text" class="form-control" placeholder="Name" id="name" required>
                         </div>
                         <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Last Name">
+                            <input type="email" class="form-control" placeholder="Email" id="email" required>
                         </div>
                         <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Phone">
+                            <input type="phone_nuber" class="form-control" placeholder="Phone" id="Phone" required>
                         </div>
                     </div>
                     <div class="">
                         <div class="form-group">
-                            <div class="form-field">
-                                <div class="select-wrap">
-                                    <div class="icon"><span class="fa fa-chevron-down"></span></div>
-                                    <select name="" id="" class="form-control">
-                                        <option value="">Select Your Services</option>
-                                        <option value="">Organic Solution</option>
-                                        <option value="">Harvest Innovation</option>
-                                        <option value="">Farm System</option>
-                                        <option value="">Agriculture Farming</option>
-                                        <option value="">Other Services</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="">
-                        <div class="form-group">
-                            <textarea name="" id="" cols="30" rows="4" class="form-control" placeholder="Message"></textarea>
+                            <textarea name="message" id="" cols="30" rows="4" class="form-control" placeholder="Message" id="message" required></textarea>
                         </div>
                         <div class="form-group">
-                            <input type="submit" value="Request A Quote" class="btn btn-primary py-3 px-4">
+                            <button type="submit" class="btn btn-primary py-3 px-4"  value="Request A Quote">Submit</button>
                         </div>
                     </div>
                 </form>
