@@ -25,10 +25,6 @@
 
 </head>
 <body class="font-sans antialiased">
-    {{-- Page 1st bar --}}
-    @include('pages.home.header.firstBar')
-    {{-- Page 2nd bar --}}
-    @include('pages.home.header.secondBar')
     {{-- Navigation menu --}}
     @include('pages.home.navigation-menu')
     {{-- Hero section --}}
