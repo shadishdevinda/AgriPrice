@@ -113,7 +113,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-title">System User Management</h5>
+                        <h5 class="card-title text-black">System User Management</h5>
                     </div>
                     <table class="table table-bordered table-striped mt-3" id="usersTable">
                         <thead>

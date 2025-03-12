@@ -55,7 +55,7 @@
                                         <tr>
                                             <td>{{ $vegetableAdvice->id }}</td>
                                             <td class="description-column">
-                                                {{ Str::limit($vegetableAdvice->description, 50, '...') }}
+                                                {!! Str::limit(strip_tags($vegetableAdvice->description), 50, '...') !!}
                                             </td>
                                             <td>
                                                 <div class="d-flex justify-content-end gap-2">
