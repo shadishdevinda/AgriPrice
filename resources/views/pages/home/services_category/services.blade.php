@@ -1,14 +1,12 @@
 <section class="ftco-section ftco-services ftco-no-pt" id="services">
     <div class="container">
         <div class="row">
-
-            {{-- Vegetable Prices --}}
             <div class="col-md-3 d-flex align-self-stretch ftco-animate">
                 <div class="services">
                     <div class="p-4">
                         <div class="media-body">
                             <h3 class="heading mb-3">Vegetable <br>Prices</h3>
-                            <p class="mb-2">Stay updated with the latest market prices for fresh vegetables. Get real-time data on price trends,
+                            <p>Stay updated with the latest market prices for fresh vegetables. Get real-time data on price trends, 
                                 seasonal fluctuations,and local wholesale rates to make informed buying or selling decisions.</p>
                         </div>
                     </div>
@@ -19,14 +17,12 @@
                     </div>
                 </div>
             </div>
-
-            {{-- Fruit Prices --}}
             <div class="col-md-3 d-flex align-self-stretch ftco-animate">
                 <div class="services">
                     <div class="p-4">
                         <div class="media-body">
                             <h3 class="heading mb-3">Fruit <br>Prices</h3>
-                            <p style="margin-bottom: 30px;">Track the current prices of fruits in the market. Whether you're a farmer, trader, or consumer, access up-to-date
+                            <p>Track the current prices of fruits in the market. Whether you're a farmer, trader, or consumer, access up-to-date 
                                 pricing details, market trends, and forecasts to optimize your purchasing or sales strategy.</p>
                         </div>
                     </div>
@@ -37,16 +33,14 @@
                     </div>
                 </div>
             </div>
-
-            {{-- Economic Centers --}}
             <div class="col-md-3 d-flex align-self-stretch ftco-animate">
                 <div class="services">
                     <div class="p-4">
                         <div class="media-body">
                             <h3 class="heading mb-3">Economic <br>Centers</h3>
-                            <p class="mb-2">Discover key economic hubs that influence agricultural trade. Learn about major distribution points,
+                            <p>Discover key economic hubs that influence agricultural trade. Learn about major distribution points, 
                                 trading centers, and financial trends affecting the agricultural sector to make strategic business moves.</p>
-                        </div>
+                        </div>git femtch origin
                     </div>
                     <div class="img" style="background-image: url(images/services-4.jpg);">
                         <a href="#"
@@ -55,14 +49,12 @@
                     </div>
                 </div>
             </div>
-
-            {{-- Crop Advices --}}
             <div class="col-md-3 d-flex align-self-stretch ftco-animate">
                 <div class="services">
                     <div class="p-4">
                         <div class="media-body">
                             <h3 class="heading mb-3">Crop <br>Advices</h3>
-                            <p class="mb-2">Get expert guidance on crop cultivation, pest management, and best farming practices. Receive insights on soil health,
+                            <p>Get expert guidance on crop cultivation, pest management, and best farming practices. Receive insights on soil health,
                                  weather conditions, and sustainable farming techniques to improve yield and profitability.</p>
                         </div>
                     </div>
