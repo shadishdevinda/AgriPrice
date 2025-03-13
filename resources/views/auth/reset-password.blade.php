@@ -5,6 +5,12 @@
             <x-authentication-card-logo />
         </x-slot>
 
+        <x-slot name="heading">
+            <h1 id="login-heading" class="text-2xl text-white font-bold">
+                Reset The Password
+            </h1>
+        </x-slot>
+
         <x-validation-errors class="mb-4" />
 
         <form method="POST" action="{{ route('password.update') }}">
