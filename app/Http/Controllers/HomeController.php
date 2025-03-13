@@ -5,17 +5,31 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\Fruit;
 use App\Models\Vegetable;
+use App\Models\FruitAdvice;
+use App\Models\VegetableAdvice;
 use Illuminate\Http\Request;
 use App\Models\CenterHasFruits;
 use Illuminate\Support\Facades\DB;
 use App\Models\CenterHasVegetables;
+use App\Models\EconomicCenter;
+use App\Models\FruitHasAdvice;
+use App\Models\VegetableHasAdvice;
 
 class HomeController extends Controller
 {
     // Render the welcome page
     public function welcome()
     {
-        return view('pages.home.welcome');
+        // Fetch counts from the database
+        $vegetableCount = Vegetable::count();
+        $fruitCount = Fruit::count();
+        $economicCenterCount = EconomicCenter::count();
+        $cropAdviceCount = FruitHasAdvice::count() + VegetableHasAdvice::count();
+
+        // Calculate the total of fruits and vegetables
+        $totalProduceCount = $vegetableCount + $fruitCount;
+
+        return view('pages.home.welcome', compact('vegetableCount', 'fruitCount', 'economicCenterCount', 'cropAdviceCount', 'totalProduceCount'));
     }
 
     // Display the vegetable price index (list of all vegetables)
@@ -173,4 +187,5 @@ class HomeController extends Controller
         // Return the view with the vegetable and its advice
         return view('pages.home.advices.vegetable.show', compact('vegetable'));
     }
+
 }

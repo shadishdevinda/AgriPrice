@@ -110,8 +110,8 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="footer-widget">
-                    <h2 class="footer-logo"><a href="#">Farmland</a></h2>
-                    <p>Far far away, behind the word mountains, far from the countries.</p>
+                    <h2 class="footer-logo"><a href="#">AgriPrice</a></h2>
+                    <p>An efficient life with A bountiful harvest</p>
                     <div class="footer-social">
                         <a href="#"><span class="fa fa-twitter"></span></a>
                         <a href="#"><span class="fa fa-facebook"></span></a>
@@ -123,14 +123,12 @@
                 <div class="footer-widget">
                     <h2 class="ftco-heading-2">Explore</h2>
                     <ul class="list-unstyled">
-                        <li><a href="{{ route('home') }}"><span class="fa fa-chevron-right mr-2"></span>Home</a></li>
-                        <li><a href="#services"><span class="fa fa-chevron-right mr-2"></span>Services</a></li>
-                        <li><a href="#contact"><span class="fa fa-chevron-right mr-2"></span>Contact Us</a></li>
-                        <li><a href="#about"><span class="fa fa-chevron-right mr-2"></span>About</a></li>
+                        <li><a href="#header-section"><span class="fa fa-chevron-right mr-2"></span>Home</a></li>
+                        <li><a href="#services-section"><span class="fa fa-chevron-right mr-2"></span>Services</a></li>
+                        <li><a href="#footer-section"><span class="fa fa-chevron-right mr-2"></span>Contact Us</a></li>
+                        <li><a href="#about-section"><span class="fa fa-chevron-right mr-2"></span>About</a></li>
                         <li><a href="{{ route('vegetables.index') }}"><span class="fa fa-chevron-right mr-2"></span>Vegetables Prices</a></li>
                         <li><a href="{{ route('fruits.index') }}"><span class="fa fa-chevron-right mr-2"></span>Fruits Prices</a></li>
-                        <li><a href="{{ route('advices.vegetables.index') }}"><span class="fa fa-chevron-right mr-2"></span>Vegetable Advices</a></li>
-                        <li><a href="{{ route('advices.fruits.index') }}"><span class="fa fa-chevron-right mr-2"></span>Fruit Advices</a></li>
                     </ul>
                 </div>
             </div>
@@ -138,9 +136,9 @@
                 <div class="footer-widget">
                     <h2 class="ftco-heading-2">Contact Us</h2>
                     <ul class="footer-contact">
-                        <li><span class="fa fa-map marker"></span>203 Fake St. Mountain View, San Francisco, California, USA</li>
-                        <li><a href="#"><span class="fa fa-phone"></span>+2 392 3929 210</a></li>
-                        <li><a href="#"><span class="fa fa-paper-plane"></span><span class="__cf_email__" data-cfemail="d4bdbab2bb94adbba1a6b0bbb9b5bdbafab7bbb9">[email&#160;protected]</span></a></li>
+                        <li><span class="fa fa-map marker"></span>203, Denike Street, Rikillagaskada, Kandy</li>
+                        <li><a href="#"><span class="fa fa-phone"></span>+94 36 22 22 303</a></li>
+                        <li><a href="#"><span class="fa fa-paper-plane"></span>agriprice@gmail.com</a></li>
                     </ul>
                 </div>
             </div>

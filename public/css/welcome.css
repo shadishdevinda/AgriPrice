@@ -49,7 +49,7 @@
             h5,
             h6 {
                 font-size: inherit;
-                font-weight: inherit
+                font-weight: inherit;
             }
 
             a {
@@ -885,4 +885,3 @@
                     --tw-ring-color: rgb(255 255 255 / var(--tw-ring-opacity))
                 }
             }
-      

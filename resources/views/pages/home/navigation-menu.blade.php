@@ -262,6 +262,47 @@
         }
     }
 </style>
+<style>
+    /* Language Switcher */
+.language-switcher {
+    position: relative;
+    display: inline-block;
+}
+
+.language-switcher select {
+    background: none;
+    border: 1px solid #065744;
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 5px 15px;
+    cursor: pointer;
+    transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+.language-switcher select:hover {
+    color: #ffd700;
+    background-color: #065744; /* Dark green background on hover */
+}
+
+.language-switcher option {
+    color: #065744;
+    background-color: white;
+    font-size: 14px;
+}
+
+.language-switcher select:focus {
+    outline: none;
+    border-color: #ffd700; /* Gold color for focus */
+}
+
+/* Optional: If you want to adjust the select dropdown arrow */
+.language-switcher select::-ms-expand {
+    display: none;
+}
+
+</style>
+
 
 <nav>
     <!-- Primary Navigation Menu -->
@@ -283,21 +324,33 @@
 
             <!-- Navigation Links -->
             <div class="nav-links">
-                <a href="{{ route('home') }}" class="nav-link">{{ __('Home') }}</a>
-                <a href="{{ route('vegetables.index') }}" class="nav-link">{{ __('Vegetables Prices') }}</a>
-                <a href="{{ route('fruits.index') }}" class="nav-link">{{ __('Fruits Prices') }}</a>
+                <a href="{{ route('home') }}" class="nav-link">{{ __('messages.home') }}</a>
+                <a href="{{ route('vegetables.index') }}" class="nav-link">{{ __('messages.vegetable_prices') }}</a>
+                <a href="{{ route('fruits.index') }}" class="nav-link">{{ __('messages.fruit_prices') }}</a>
 
                 <!-- Advices Navigation Links -->
-                <div class="dropdown" id="nav_bar">
-                    <button class="dropdown-toggle">{{ __('Crops Advices') }}</button>
+                <div class="dropdown">
+                    <button class="dropdown-toggle">{{ __('messages.crop_advices') }}</button>
                     <div class="dropdown-menu">
                         <a href="{{ route('advices.vegetables.index') }}"
-                            class="dropdown-item">{{ __('Vegetable Advices') }}</a>
+                            class="dropdown-item">{{ __('messages.vegetable_advices') }}</a>
                         <a href="{{ route('advices.fruits.index') }}"
-                            class="dropdown-item">{{ __('Fruit Advices') }}</a>
+                            class="dropdown-item">{{ __('messages.fruit_advices') }}</a>
                     </div>
                 </div>
             </div>
+
+<!-- Add this to your navigation menu or header -->
+<div class="language-switcher">
+    <form action="{{ route('language.switch') }}" method="POST">
+        @csrf
+        <select name="locale" onchange="this.form.submit()">
+            <option value="en" {{ session('locale') == 'en' ? 'selected' : '' }}>English</option>
+            <option value="si" {{ session('locale') == 'si' ? 'selected' : '' }}>සිංහල</option>
+        </select>
+    </form>
+</div>
+
 
             <!-- Authentication Links -->
             <div class="auth-links">
@@ -318,7 +371,7 @@
                             </div>
                         </div>
                     @else
-                        <a href="{{ route('login') }}" class="auth-link">{{ __('Log in') }}</a>
+                        <a href="{{ route('login') }}" class="auth-link">{{ __('messages.login') }}</a>
                     @endauth
                 @endif
             </div>
