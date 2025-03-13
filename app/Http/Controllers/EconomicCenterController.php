@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\EconomicCenter;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -52,6 +53,9 @@ class EconomicCenterController extends Controller
      */
     public function store(Request $request)
     {
+        // Start a database transaction
+        DB::beginTransaction();
+
         try {
             Log::info('Store method called.', ['request_data' => $request->all()]);
 
@@ -86,12 +90,17 @@ class EconomicCenterController extends Controller
 
             Log::info('Economic center created successfully.', ['eCenter' => $eCenter]);
 
+            // Commit the transaction
+            DB::commit();
+
             // Return success response
             return response()->json([
                 'success' => true,
                 'message' => 'Economic center created successfully.',
             ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
+            // Rollback the transaction on validation error
+            DB::rollBack();
             Log::error('Validation failed.', ['errors' => $e->validator->errors()->all()]);
 
             return response()->json([
@@ -99,6 +108,8 @@ class EconomicCenterController extends Controller
                 'errors' => $e->validator->errors()->all(),
             ], 422);
         } catch (\Exception $e) {
+            // Rollback the transaction on exception
+            DB::rollBack();
             Log::error('An exception occurred.', ['exception' => $e->getMessage()]);
 
             return response()->json([
@@ -121,6 +132,9 @@ class EconomicCenterController extends Controller
      */
     public function update(Request $request, EconomicCenter $economicCenter)
     {
+        // Start a database transaction
+        DB::beginTransaction();
+
         try {
             // Log incoming request data
             Log::info('Updating economic center with ID ' . $economicCenter->id, ['request_data' => $request->all()]);
@@ -164,12 +178,16 @@ class EconomicCenterController extends Controller
 
             Log::info('Economic center updated successfully.');
 
+            // Commit the transaction
+            DB::commit();
+
             return response()->json([
                 'success' => true,
                 'message' => 'Economic Center Updated Successfully !',
             ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
-            // Log validation exception error
+            // Rollback the transaction on validation error
+            DB::rollBack();
             Log::error('Validation error while updating economic center.', ['errors' => $e->validator->errors()->all()]);
 
             // Return validation errors as JSON
@@ -178,7 +196,8 @@ class EconomicCenterController extends Controller
                 'message' => $e->validator->errors()->all(),
             ]);
         } catch (\Exception $e) {
-            // Log unexpected errors
+            // Rollback the transaction on exception
+            DB::rollBack();
             Log::error("An unexpected error occurred while updating user.", [
                 'error_message' => $e->getMessage(),
                 'stack_trace' => $e->getTraceAsString()
@@ -192,14 +211,23 @@ class EconomicCenterController extends Controller
         }
     }
 
+    /**
+     * Show the form for assigning a user to an economic center.
+     */
     public function assignUserPage(EconomicCenter $economicCenter)
     {
         $roles = Role::whereNotIn('name', ['system-user', 'market-user'])->pluck('name', 'name')->all();
-        return view('pages.admin.economicCenter.assignUser', compact('economicCenter','roles'));
+        return view('pages.admin.economicCenter.assignUser', compact('economicCenter', 'roles'));
     }
 
+    /**
+     * Assign a user to an economic center.
+     */
     public function assignUser(Request $request)
     {
+        // Start a database transaction
+        DB::beginTransaction();
+
         try {
             Log::info('Economic center user assign method called.', ['request_data' => $request->all()]);
 
@@ -254,12 +282,17 @@ class EconomicCenterController extends Controller
 
             Log::info('User assigned to economic center.', ['user_id' => $user->id]);
 
+            // Commit the transaction
+            DB::commit();
+
             // Return success response
             return response()->json([
                 'success' => true,
                 'message' => 'User assigned to economic center.',
             ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
+            // Rollback the transaction on validation error
+            DB::rollBack();
             Log::error('Validation failed', ['errors' => $e->validator->errors()->all()]);
 
             return response()->json([
@@ -267,6 +300,8 @@ class EconomicCenterController extends Controller
                 'errors' => $e->validator->errors()->all(),
             ], 422);
         } catch (\Exception $e) {
+            // Rollback the transaction on exception
+            DB::rollBack();
             Log::error('An exception occurred.', ['exception' => $e->getMessage()]);
 
             return response()->json([
@@ -281,6 +316,9 @@ class EconomicCenterController extends Controller
      */
     public function destroy(string $id)
     {
+        // Start a database transaction
+        DB::beginTransaction();
+
         try {
             $eCenter = EconomicCenter::findOrFail($id);
             Log::info('Economic center found', ['Economic Center' => $eCenter]);
@@ -299,11 +337,16 @@ class EconomicCenterController extends Controller
             $eCenter->delete();
             Log::info('Economic center deleted successfully.', ['id' => $eCenter->id]);
 
+            // Commit the transaction
+            DB::commit();
+
             return response()->json([
                 'success' => true,
                 'message' => 'Economic center deleted successfully.',
             ]);
         } catch (\Exception $e) {
+            // Rollback the transaction on exception
+            DB::rollBack();
             Log::error('An unexpected error occurred while deleting Economic center.', [
                 'error_message' => $e->getMessage(),
                 'stack_trace' => $e->getTraceAsString()

@@ -28,8 +28,6 @@ class DatabaseSeeder extends Seeder
             EconomicCenterSeeder::class,
             FruitSeeder::class,
             VegetableSeeder::class,
-            VegetableAdviceSeeder::class,
-            FruitAdviceSeeder::class,
         ]);
     }
 }

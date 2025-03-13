@@ -8,22 +8,23 @@ use App\Models\VegetableAdvice;
 use App\Models\VegetableHasAdvice;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class VegetableAdviceController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of vegetable advice.
      */
     public function index(Request $request)
     {
-        // Fetch all vegetables for the dropdown
+        // Fetch all vegetables for the dropdown selection
         $vegetables = Vegetable::pluck('name', 'id')->all();
 
-        // Initialize the query for vegetable advice
+        // Initialize the query to fetch vegetable advice, ordered by the most recent
         $query = VegetableAdvice::orderBy('created_at', 'DESC');
 
-        // Filter by selected vegetable (if a vegetable is selected)
+        // Apply filtering if a specific vegetable is selected
         if ($request->has('vegetable_id') && $request->vegetable_id) {
             $vegetableId = $request->vegetable_id;
             $query->whereHas('vegetables', function ($q) use ($vegetableId) {
@@ -31,10 +32,9 @@ class VegetableAdviceController extends Controller
             });
         }
 
-        // Fetch the filtered advice
-        $vegetable_advice = $query->paginate(10); // 10 items per page
+        // Fetch paginated results (10 per page)
+        $vegetable_advice = $query->paginate(10);
 
-        // Pass the data to the view
         return view('pages.admin.advice.vegetable_advice.index', [
             'vegetable_advice' => $vegetable_advice,
             'vegetables' => $vegetables,
@@ -42,24 +42,20 @@ class VegetableAdviceController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating new vegetable advice.
      */
     public function create()
     {
         $vegetables = Vegetable::pluck('name', 'name')->all();
-        return view('pages.admin.advice.vegetable_advice.create',
-            [
-                'vegetables' => $vegetables
-            ]
-        );
+        return view('pages.admin.advice.vegetable_advice.create', compact('vegetables'));
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created vegetable advice in the database.
      */
     public function store(Request $request)
     {
-        // Validate the request data
+        // Validate request data
         $validated = $request->validate([
             'description' => 'required|min:3|unique:vegetable_advice,description',
             'vegetables' => 'required|array', // Ensure vegetables is an array
@@ -67,166 +63,116 @@ class VegetableAdviceController extends Controller
 
         Log::info('Validation successful.', ['validated_data' => $validated]);
 
+        DB::beginTransaction(); // Start database transaction
         try {
-            // Initialize the vegetable advice object
-            $vegetableAdvice = new VegetableAdvice();
-            $vegetableAdvice->description = $request->description;
+            // Create new vegetable advice
+            $vegetableAdvice = VegetableAdvice::create([
+                'description' => $request->description,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
 
-            // Manually set the created_at and updated_at timestamps
-            $vegetableAdvice->created_at = now(); // Current timestamp
-            $vegetableAdvice->updated_at = now(); // Current timestamp
-
-            // Save the vegetable advice in the database
-            $vegetableAdvice->save();
-
-            // Attach the selected vegetables to the advice
+            // Attach selected vegetables
             foreach ($request->vegetables as $vegetableName) {
-                // Find the vegetable by name
                 $vegetable = Vegetable::where('name', $vegetableName)->first();
-
                 if ($vegetable) {
-                    // Create a record in the vegetable_has_advice table
                     VegetableHasAdvice::create([
                         'advice_id' => $vegetableAdvice->id,
                         'vegetable_id' => $vegetable->id,
-                        'created_at' => now(), // Set created_at timestamp
-                        'updated_at' => now(), // Set updated_at timestamp
+                        'created_at' => now(),
+                        'updated_at' => now(),
                     ]);
                 }
             }
 
-            // Return a JSON response
+            DB::commit(); // Commit transaction
+
             return response()->json([
                 'success' => true,
                 'message' => 'Vegetable Advice added successfully!',
-                'data' => $vegetableAdvice, // Optionally include the created advice object
+                'data' => $vegetableAdvice,
             ]);
         } catch (\Exception $e) {
-            // Log the error
-            Log::error('Error storing vegetable advice:', [
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
-            ]);
-
-            // Return JSON response for error
-            return response()->json([
-                'success' => false,
-                'message' => 'An error occurred while adding the vegetable advice.',
-                'error' => $e->getMessage(),
-            ], 500); // 500 Internal Server Error
+            DB::rollBack(); // Rollback transaction on failure
+            Log::error('Error storing vegetable advice:', ['error' => $e->getMessage()]);
+            return response()->json(['success' => false, 'message' => 'Error adding vegetable advice.', 'error' => $e->getMessage()], 500);
         }
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified vegetable advice details.
      */
     public function show(VegetableAdvice $vegetableAdvice)
     {
-        // Load the related vegetables
         $vegetableAdvice->load('vegetables');
-
         return view('pages.admin.advice.vegetable_advice.show', compact('vegetableAdvice'));
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing an existing vegetable advice.
      */
     public function edit(VegetableAdvice $vegetableAdvice)
     {
-        // Fetch all vegetables
         $vegetables = Vegetable::pluck('name', 'id')->all();
-
-        // Fetch the IDs of currently associated vegetables
         $associatedVegetables = $vegetableAdvice->vegetables->pluck('id')->all();
-
         return view('pages.admin.advice.vegetable_advice.edit', compact('vegetableAdvice', 'vegetables', 'associatedVegetables'));
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified vegetable advice in the database.
      */
     public function update(Request $request, VegetableAdvice $vegetableAdvice)
     {
-        // Validate the request
-        $rules = [
+        $validator = Validator::make($request->all(), [
             'description' => 'required|min:3',
-            'vegetables' => 'required|array', // Ensure vegetables is an array
-        ];
+            'vegetables' => 'required|array',
+        ]);
 
-        $validator = Validator::make($request->all(), $rules);
-
-        // If validation fails, return JSON response with errors
         if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'errors' => $validator->errors(),
-            ], 422); // 422 Unprocessable Entity
+            return response()->json(['success' => false, 'errors' => $validator->errors()], 422);
         }
 
+        DB::beginTransaction(); // Start transaction
         try {
             // Update description
-            $vegetableAdvice->description = $request->description;
+            $vegetableAdvice->update(['description' => $request->description, 'updated_at' => now()]);
 
-            // Explicitly update the updated_at column
-            $vegetableAdvice->updated_at = now(); // Manually set the updated_at timestamp
-
-            // Save the vegetable advice in the database
-            $vegetableAdvice->save();
-
-            // Sync the associated vegetables
+            // Sync associated vegetables
             $vegetableAdvice->vegetables()->sync($request->vegetables);
 
-            // Return JSON response for success
-            return response()->json([
-                'success' => true,
-                'message' => 'Vegetable advice updated successfully!',
-                'data' => $vegetableAdvice, // Optionally include the updated advice object
-            ]);
-        } catch (\Exception $e) {
-            // Log the error
-            Log::error('Error updating vegetable advice:', [
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
-            ]);
+            DB::commit(); // Commit changes
 
-            // Return JSON response for error
-            return response()->json([
-                'success' => false,
-                'message' => 'An error occurred while updating the vegetable advice.',
-                'error' => $e->getMessage(),
-            ], 500); // 500 Internal Server Error
+            return response()->json(['success' => true, 'message' => 'Vegetable advice updated successfully!', 'data' => $vegetableAdvice]);
+        } catch (\Exception $e) {
+            DB::rollBack(); // Rollback on error
+            Log::error('Error updating vegetable advice:', ['error' => $e->getMessage()]);
+            return response()->json(['success' => false, 'message' => 'Error updating vegetable advice.', 'error' => $e->getMessage()], 500);
         }
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified vegetable advice from the database.
      */
     public function destroy($id)
     {
+        DB::beginTransaction(); // Start transaction
         try {
-            // Find the vegetable advice by ID
             $vegetableAdvice = VegetableAdvice::findOrFail($id);
 
-            // Delete the associated image file
+            // Delete associated image file if exists
             if ($vegetableAdvice->image) {
                 File::delete(public_path('uploads/vegetable_advice/' . $vegetableAdvice->image));
             }
 
-            // Delete the vegetable advice
+            // Delete the vegetable advice record
             $vegetableAdvice->delete();
 
-            // Return JSON response for success
-            return response()->json([
-                'success' => true,
-                'message' => 'Vegetable advice deleted successfully!',
-            ]);
+            DB::commit(); // Commit deletion
+
+            return response()->json(['success' => true, 'message' => 'Vegetable advice deleted successfully!']);
         } catch (\Exception $e) {
-            // Return JSON response for error
-            return response()->json([
-                'success' => false,
-                'message' => 'An error occurred while deleting the vegetable advice.',
-                'error' => $e->getMessage(),
-            ], 500); // 500 Internal Server Error
+            DB::rollBack(); // Rollback transaction on failure
+            return response()->json(['success' => false, 'message' => 'Error deleting vegetable advice.', 'error' => $e->getMessage()], 500);
         }
     }
 }
