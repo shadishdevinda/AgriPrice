@@ -47,21 +47,24 @@
         }
 
         .crop-advice {
-    font-weight: bold;
-    font-size: 16px; /* Reduce font size */
-    padding: 5px 12px; /* Adjust padding */
-    border: none;
-    border-radius: 5px;
-    color: #ffffff;
-    display: inline-block;
-    text-decoration: none;
-    cursor: pointer;
-    transition: background 0.3s ease-in-out;
-}
+            font-weight: bold;
+            font-size: 16px;
+            /* Reduce font size */
+            padding: 5px 12px;
+            /* Adjust padding */
+            border: none;
+            border-radius: 5px;
+            color: #ffffff;
+            display: inline-block;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.3s ease-in-out;
+        }
 
-.crop-advice:hover {
-    background-color: rgb(27, 97, 13); /* Darken on hover */
-}
+        .crop-advice:hover {
+            background-color: rgb(27, 97, 13);
+            /* Darken on hover */
+        }
 
         /*        FILTER FORM        */
         .filter-form {
@@ -241,14 +244,13 @@
                 justify-content: center;
             }
         }
-
     </style>
 
-@php
-if (session()->has('locale')) {
-    app()->setLocale(session('locale'));
-}
-@endphp
+    @php
+        if (session()->has('locale')) {
+            app()->setLocale(session('locale'));
+        }
+    @endphp
 
     <!-- Header & Filter Section (Same Row) -->
     <div class="header-filter-container">
@@ -258,7 +260,8 @@ if (session()->has('locale')) {
             <div class="header-text">
                 <h3><i>{{ $vegetable->name }}</i></h3>
                 <br>
-                <a href="{{ route('vegetable.advice.show', ['id' => $vegetable->id]) }}" class="btn btn-success crop-advice">
+                <a href="{{ route('vegetable.advice.show', ['id' => $vegetable->id]) }}"
+                    class="btn btn-success crop-advice">
                     {{ __('messages.crop_advices') }}
                 </a>
             </div>
@@ -288,7 +291,8 @@ if (session()->has('locale')) {
 
                 <div class="filter-buttons">
                     <button type="submit" class="btn btn-primary filter-btn">{{ __('messages.filter') }}</button>
-                    <a href="{{ url()->current() }}" class="btn btn-secondary reset-btn">{{ __('messages.reset') }}</a>
+                    <a href="{{ url()->current() }}"
+                        class="btn btn-secondary reset-btn">{{ __('messages.reset') }}</a>
                 </div>
             </div>
         </form>

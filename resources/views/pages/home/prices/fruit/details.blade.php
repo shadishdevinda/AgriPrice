@@ -32,7 +32,7 @@
             gap: 15px;
         }
 
-        .vegetable-image {
+        .fruit-image {
             width: 120px;
             height: 120px;
             object-fit: cover;
@@ -47,21 +47,24 @@
         }
 
         .crop-advice {
-    font-weight: bold;
-    font-size: 16px; /* Reduce font size */
-    padding: 5px 12px; /* Adjust padding */
-    border: none;
-    border-radius: 5px;
-    color: #ffffff;
-    display: inline-block;
-    text-decoration: none;
-    cursor: pointer;
-    transition: background 0.3s ease-in-out;
-}
+            font-weight: bold;
+            font-size: 16px;
+            /* Reduce font size */
+            padding: 5px 12px;
+            /* Adjust padding */
+            border: none;
+            border-radius: 5px;
+            color: #ffffff;
+            display: inline-block;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.3s ease-in-out;
+        }
 
-.crop-advice:hover {
-    background-color: rgb(27, 97, 13); /* Darken on hover */
-}
+        .crop-advice:hover {
+            background-color: rgb(27, 97, 13);
+            /* Darken on hover */
+        }
 
         /*        FILTER FORM        */
         .filter-form {
@@ -244,11 +247,11 @@
         }
     </style>
 
-@php
-if (session()->has('locale')) {
-    app()->setLocale(session('locale'));
-}
-@endphp
+    @php
+        if (session()->has('locale')) {
+            app()->setLocale(session('locale'));
+        }
+    @endphp
 
 
     <!-- Header & Filter Container -->
@@ -290,7 +293,8 @@ if (session()->has('locale')) {
 
                 <div class="filter-buttons">
                     <button type="submit" class="btn btn-primary filter-btn">{{ __('messages.filter') }}</button>
-                    <a href="{{ url()->current() }}" class="btn btn-secondary reset-btn">{{ __('messages.reset') }}</a>
+                    <a href="{{ url()->current() }}"
+                        class="btn btn-secondary reset-btn">{{ __('messages.reset') }}</a>
                 </div>
             </div>
         </form>

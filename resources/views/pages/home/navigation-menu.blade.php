@@ -229,6 +229,46 @@
         transition: transform 0.3s ease, opacity 0.3s ease;
     }
 
+    /* Language Switcher */
+    .language-switcher {
+        position: relative;
+        display: inline-block;
+    }
+
+    .language-switcher select {
+        background: none;
+        border: 1px solid #065744;
+        color: white;
+        font-size: 16px;
+        font-weight: 500;
+        padding: 5px 15px;
+        cursor: pointer;
+        transition: color 0.3s ease, background-color 0.3s ease;
+    }
+
+    .language-switcher select:hover {
+        color: #ffd700;
+        background-color: #065744;
+        /* Dark green background on hover */
+    }
+
+    .language-switcher option {
+        color: #065744;
+        background-color: white;
+        font-size: 14px;
+    }
+
+    .language-switcher select:focus {
+        outline: none;
+        border-color: #ffd700;
+        /* Gold color for focus */
+    }
+
+    /* Optional: If you want to adjust the select dropdown arrow */
+    .language-switcher select::-ms-expand {
+        display: none;
+    }
+
 
     /* Media Queries for Responsive Design */
     @media (max-width: 768px) {
@@ -262,47 +302,6 @@
         }
     }
 </style>
-<style>
-    /* Language Switcher */
-.language-switcher {
-    position: relative;
-    display: inline-block;
-}
-
-.language-switcher select {
-    background: none;
-    border: 1px solid #065744;
-    color: white;
-    font-size: 16px;
-    font-weight: 500;
-    padding: 5px 15px;
-    cursor: pointer;
-    transition: color 0.3s ease, background-color 0.3s ease;
-}
-
-.language-switcher select:hover {
-    color: #ffd700;
-    background-color: #065744; /* Dark green background on hover */
-}
-
-.language-switcher option {
-    color: #065744;
-    background-color: white;
-    font-size: 14px;
-}
-
-.language-switcher select:focus {
-    outline: none;
-    border-color: #ffd700; /* Gold color for focus */
-}
-
-/* Optional: If you want to adjust the select dropdown arrow */
-.language-switcher select::-ms-expand {
-    display: none;
-}
-
-</style>
-
 
 <nav>
     <!-- Primary Navigation Menu -->
@@ -340,16 +339,16 @@
                 </div>
             </div>
 
-<!-- Add this to your navigation menu or header -->
-<div class="language-switcher">
-    <form action="{{ route('language.switch') }}" method="POST">
-        @csrf
-        <select name="locale" onchange="this.form.submit()">
-            <option value="en" {{ session('locale') == 'en' ? 'selected' : '' }}>English</option>
-            <option value="si" {{ session('locale') == 'si' ? 'selected' : '' }}>සිංහල</option>
-        </select>
-    </form>
-</div>
+            <!-- Add this to your navigation menu or header -->
+            <div class="language-switcher">
+                <form action="{{ route('language.switch') }}" method="POST">
+                    @csrf
+                    <select name="locale" onchange="this.form.submit()">
+                        <option value="en" {{ session('locale') == 'en' ? 'selected' : '' }}>English</option>
+                        <option value="si" {{ session('locale') == 'si' ? 'selected' : '' }}>සිංහල</option>
+                    </select>
+                </form>
+            </div>
 
 
             <!-- Authentication Links -->
