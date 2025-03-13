@@ -31,116 +31,125 @@
                 <div class="card">
                     <!-- Card Header -->
                     <div class="card-header bg-dark d-flex justify-content-between align-items-center">
-                        <h3 class="text-white mb-0"><i class="fas fa-apple-alt" style="margin-right: 10px;"></i>Fruit Management</h3>
+                        <h3 class="text-white mb-0"><i class="fas fa-apple-alt" style="margin-right: 10px;"></i>Fruit
+                            Management</h3>
                         <a href="{{ route('fruit.create') }}"
                             class="btn btn-dark float-end border border-white d-flex align-items-center gap-2 justify-content-end">
                             <i class="fas fa-seedling"></i> <span>Add Fruit</span>
                         </a>
                     </div>
 
+
                     <!-- Filter Section -->
                     <div class="card-body bg-light">
                         <form action="{{ route('fruit.index') }}" method="GET">
-                            <div class="input-group">
-                                <select name="fruit_id" id="fruits" class="form-select select2"
-                                    onchange="this.form.submit()">
-                                    <option value="">Select a fruit to filter</option>
-                                    @foreach ($fruits as $id => $name)
-                                        <option value="{{ $id }}"
-                                            {{ request('fruit_id') == $id ? 'selected' : '' }}>
-                                            {{ $name }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                            <div class="row">
+                                <div class="col-12 col-md-8 mx-auto">
+                                    <div class="input-group">
+                                        <select name="fruit_id" id="fruits" class="form-select select2"
+                                            onchange="this.form.submit()">
+                                            <option value="">Select a fruit to filter</option>
+                                            @foreach ($fruits as $id => $name)
+                                                <option value="{{ $id }}"
+                                                    {{ request('fruit_id') == $id ? 'selected' : '' }}>
+                                                    {{ $name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                         </form>
                     </div>
 
                     <!-- Card Body -->
                     <div class="card-body">
-                        <table class="table">
-                            <thead style="text-align: center;">
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Description</th>
-                                    <th>Image</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody style="text-align: center;">
-                                @if ($fruitsList->isNotEmpty())
-                                    @foreach ($fruitsList as $fruit)
-                                        <tr>
-                                            <td>{{ $fruit->id }}</td>
-                                            <td>{{ $fruit->name }}</td>
-                                            <td class="description-column">
-                                                {{ Str::limit($fruit->description, 50, '...') }}
-                                            </td>
-                                            <td class="fruit-image">
-                                                @if ($fruit->image)
-                                                    <img src="{{ asset('storage/' . $fruit->image) }}" alt="Fruit Photo"
-                                                        class="rounded-circle" width="50" height="50">
-                                                @else
-                                                    <img src="{{ asset('images/default-fruit/fruits.jpg') }}"
-                                                        alt="Default Photo" class="rounded-circle" width="50"
-                                                        height="50">
-                                                @endif
-                                            </td>
-                                            <td>
-                                                <div class="d-flex justify-content-end gap-2">
-                                                    <!-- Show Button -->
-                                                    <button type="button"
-                                                        class="btn btn-primary d-flex align-items-center gap-1"
-                                                        style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
-                                                        onclick="window.location.href='{{ route('fruit.show', $fruit->id) }}'">
-                                                        <i class="fas fa-eye"></i> <span>Show</span>
-                                                    </button>
-
-                                                    <!-- Edit Button -->
-                                                    <button type="button"
-                                                        class="btn btn-warning d-flex align-items-center gap-1"
-                                                        style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
-                                                        onclick="window.location.href='{{ route('fruit.edit', $fruit->id) }}'">
-                                                        <i class="fas fa-edit"></i> <span>Edit</span>
-                                                    </button>
-
-                                                    <!-- Delete Button -->
-                                                    <button type="button"
-                                                        class="btn btn-danger btn-sm d-flex align-items-center gap-1"
-                                                        style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
-                                                        onclick="deleteFruit({{ $fruit->id }})">
-                                                        <i class="fas fa-trash-alt"></i> <span>Delete</span>
-                                                    </button>
-
-                                                    <!-- Hidden delete form -->
-                                                    <form id="delete-fruit-form-{{ $fruit->id }}"
-                                                        action="{{ route('fruit.destroy', $fruit->id) }}"
-                                                        method="POST">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                    </form>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                @else
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead class="text-center">
                                     <tr>
-                                        <td colspan="5" class="text-center">No fruits found</td>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Description</th>
+                                        <th>Image</th>
+                                        <th>Action</th>
                                     </tr>
-                                @endif
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody style="text-align: center;">
+                                    @if ($fruitsList->isNotEmpty())
+                                        @foreach ($fruitsList as $fruit)
+                                            <tr>
+                                                <td>{{ $fruit->id }}</td>
+                                                <td>{{ $fruit->name }}</td>
+                                                <td class="description-column">
+                                                    {{ Str::limit($fruit->description, 50, '...') }}
+                                                </td>
+                                                <td class="fruit-image">
+                                                    @if ($fruit->image)
+                                                        <img src="{{ asset('storage/' . $fruit->image) }}"
+                                                            alt="Fruit Photo" class="rounded-circle img-fluid"
+                                                            width="50" height="50">
+                                                    @else
+                                                        <img src="{{ asset('images/default-fruit/fruits.jpg') }}"
+                                                            alt="Default Photo" class="rounded-circle img-fluid"
+                                                            width="50" height="50">
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    <div
+                                                        class="d-flex flex-column flex-md-row justify-content-center gap-2">
+                                                        <!-- Show Button -->
+                                                        <button type="button"
+                                                            class="btn btn-primary d-flex align-items-center gap-1"
+                                                            style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
+                                                            onclick="window.location.href='{{ route('fruit.show', $fruit->id) }}'">
+                                                            <i class="fas fa-eye"></i> <span>Show</span>
+                                                        </button>
 
-                        <!-- Pagination Links -->
-                        <div class="d-flex justify-content-center mt-4">
-                            {{ $fruitsList->links() }}
+                                                        <!-- Edit Button -->
+                                                        <button type="button"
+                                                            class="btn btn-warning d-flex align-items-center gap-1"
+                                                            style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
+                                                            onclick="window.location.href='{{ route('fruit.edit', $fruit->id) }}'">
+                                                            <i class="fas fa-edit"></i> <span>Edit</span>
+                                                        </button>
+
+                                                        <!-- Delete Button -->
+                                                        <button type="button"
+                                                            class="btn btn-danger btn-sm d-flex align-items-center gap-1"
+                                                            style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
+                                                            onclick="deleteFruit({{ $fruit->id }})">
+                                                            <i class="fas fa-trash-alt"></i> <span>Delete</span>
+                                                        </button>
+
+                                                        <!-- Hidden delete form -->
+                                                        <form id="delete-fruit-form-{{ $fruit->id }}"
+                                                            action="{{ route('fruit.destroy', $fruit->id) }}"
+                                                            method="POST">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                        </form>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    @else
+                                        <tr>
+                                            <td colspan="5" class="text-center">No fruits found</td>
+                                        </tr>
+                                    @endif
+                                </tbody>
+                            </table>
+
+                            <!-- Pagination Links -->
+                            <div class="d-flex justify-content-center mt-4">
+                                {{ $fruitsList->links() }}
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 </x-admin-layout>
 
 <!-- Bootstrap JS -->

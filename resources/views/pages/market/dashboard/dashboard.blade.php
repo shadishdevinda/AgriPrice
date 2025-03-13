@@ -61,139 +61,121 @@
         </div>
     </x-slot>
 
-    <div class="d-flex">
-
-        {{-- Vegetable --}}
-        <div class="container">
-            <div class="row justify-content-center mt-2">
-                <div class="row d-flex justify-content-center">
-                    <div class="col-md-20">
-                        <div class="card my-4">
-
-                            <div class="card">
-                                <div class="card-header bg-dark">
-                                    <h3 class="text-white">
-                                        <i class="fas fa-carrot me-2"></i>
-                                        Vegetables
-                                    </h3>
-                                </div>
-
-                                <!-- Filter Section -->
-                                <div class="card-body bg-light">
-                                    <form id="filterForm" action="{{ route('market.dashboard') }}" method="GET">
-                                        <div class="input-group">
-                                            <select name="vegetable_id" id="vegetables" class="form-select select2">
-                                                <option value="">Select a vegetable to filter</option>
-                                                @foreach ($vegetables as $id => $name)
-                                                    <option value="{{ $id }}"
-                                                        {{ request('vegetable_id') == $id ? 'selected' : '' }}>
-                                                        {{ $name }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </form>
-                                </div>
-
-                                <!-- Table Section -->
-                                <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table class="table table-bordered md-10" id="vegetableTable">
-                                            <thead>
-                                                <tr>
-                                                    <th>Image</th>
-                                                    <th>Name</th>
-                                                    <th>Wholesale Price(1kg-Rs.)</th>
-                                                    <th>Retail Price(1kg-Rs.)</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody style="text-align: center;">
-                                                @include('pages.market.dashboard.vegetable-table', [
-                                                    'vegetablesList' => $vegetablesList,
-                                                    'vegetablePrices' => $vegetablePrices,
-                                                ])
-                                            </tbody>
-                                        </table>
-
-                                        <!-- Vegetable Table Pagination -->
-                                        <div id="vegetablePagination">
-                                            {{ $vegetablesList->links() }}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+    <div class="container">
+        <div class="row">
+            <!-- Vegetable Section -->
+            <div class="col-12 col-lg-6">
+                <div class="card my-4">
+                    <div class="card-header bg-dark">
+                        <h3 class="text-white">
+                            <i class="fas fa-carrot me-2"></i>
+                            Vegetables
+                        </h3>
                     </div>
-                </div>
-            </div>
-        </div>
 
-        {{-- Fruit --}}
-        <div class="container">
-            <div class="row justify-content-center mt-2">
-                <div class="row d-flex justify-content-center">
-                    <div class="col-md-20">
-                        <div class="card my-4">
+                    <!-- Filter Section -->
+                    <div class="card-body bg-light">
+                        <form id="filterForm" action="{{ route('market.dashboard') }}" method="GET">
+                            <div class="input-group">
+                                <select name="vegetable_id" id="vegetables" class="form-select select2">
+                                    <option value="">Select a vegetable to filter</option>
+                                    @foreach ($vegetables as $id => $name)
+                                        <option value="{{ $id }}" {{ request('vegetable_id') == $id ? 'selected' : '' }}>
+                                            {{ $name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </form>
+                    </div>
 
-                            <div class="card">
-                                <div class="card-header bg-dark">
-                                    <h3 class="text-white">
-                                        <i class="fas fa-apple-alt me-2"></i>
-                                        Fruits
-                                    </h3>
-                                </div>
+                    <!-- Table Section -->
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="vegetableTable">
+                                <thead>
+                                    <tr>
+                                        <th>Image</th>
+                                        <th>Name</th>
+                                        <th>Wholesale Price(1kg-Rs.)</th>
+                                        <th>Retail Price(1kg-Rs.)</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-center">
+                                    @include('pages.market.dashboard.vegetable-table', [
+                                        'vegetablesList' => $vegetablesList,
+                                        'vegetablePrices' => $vegetablePrices,
+                                    ])
+                                </tbody>
+                            </table>
 
-                                <!-- Filter Section -->
-                                <div class="card-body bg-light">
-                                    <form id="filterForm" action="{{ route('market.dashboard') }}" method="GET">
-                                        <div class="input-group">
-                                            <select name="fruit_id" id="fruits" class="form-select select2">
-                                                <option value="">Select a fruit to filter</option>
-                                                @foreach ($fruits as $id => $name)
-                                                    <option value="{{ $id }}"
-                                                        {{ request('fruit_id') == $id ? 'selected' : '' }}>
-                                                        {{ $name }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </form>
-                                </div>
-
-                                <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table class="table table-bordered md-10" id="fruitTable">
-                                            <thead>
-                                                <tr>
-                                                    <th>Image</th>
-                                                    <th>Name</th>
-                                                    <th>Wholesale Price(1kg-Rs.)</th>
-                                                    <th>Retail Price(1kg-Rs.)</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody style="text-align: center;">
-                                                @include('pages.market.dashboard.fruit-table', [
-                                                    'fruitList' => $fruitList,
-                                                    'fruitPrices' => $fruitPrices,
-                                                ])
-                                            </tbody>
-                                        </table>
-
-                                        <!-- Fruit Table Pagination -->
-                                        <div id="fruitPagination">
-                                            {{ $fruitList->links() }}
-                                        </div>
-                                    </div>
-                                </div>
+                            <!-- Pagination -->
+                            <div id="vegetablePagination">
+                                {{ $vegetablesList->links() }}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
+            <!-- Fruit Section -->
+            <div class="col-12 col-lg-6">
+                <div class="card my-4">
+                    <div class="card-header bg-dark">
+                        <h3 class="text-white">
+                            <i class="fas fa-apple-alt me-2"></i>
+                            Fruits
+                        </h3>
+                    </div>
+
+                    <!-- Filter Section -->
+                    <div class="card-body bg-light">
+                        <form id="filterForm" action="{{ route('market.dashboard') }}" method="GET">
+                            <div class="input-group">
+                                <select name="fruit_id" id="fruits" class="form-select select2">
+                                    <option value="">Select a fruit to filter</option>
+                                    @foreach ($fruits as $id => $name)
+                                        <option value="{{ $id }}" {{ request('fruit_id') == $id ? 'selected' : '' }}>
+                                            {{ $name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="fruitTable">
+                                <thead>
+                                    <tr>
+                                        <th>Image</th>
+                                        <th>Name</th>
+                                        <th>Wholesale Price(1kg-Rs.)</th>
+                                        <th>Retail Price(1kg-Rs.)</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-center">
+                                    @include('pages.market.dashboard.fruit-table', [
+                                        'fruitList' => $fruitList,
+                                        'fruitPrices' => $fruitPrices,
+                                    ])
+                                </tbody>
+                            </table>
+
+                            <!-- Pagination -->
+                            <div id="fruitPagination">
+                                {{ $fruitList->links() }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+    </div>
+
 
 </x-market-layout>
 

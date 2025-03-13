@@ -27,7 +27,8 @@
                 <div class="card">
                     <!-- Card Header -->
                     <div class="card-header bg-dark d-flex justify-content-between align-items-center">
-                        <h3 class="text-white mb-0"><i class="fas fa-user-shield" style="margin-right: 10px;"></i>System User Management</h3>
+                        <h3 class="text-white mb-0"><i class="fas fa-user-shield" style="margin-right: 10px;"></i>System
+                            User Management</h3>
                         <a href="{{ route('users.create') }}"
                             class="btn btn-dark float-end border border-white d-flex align-items-center gap-2 justify-content-end">
                             <i class="fas fa-plus"></i> <span>Add System User</span>
@@ -37,101 +38,105 @@
                     <!-- Filter Section -->
                     <div class="card-body bg-light">
                         <form action="{{ route('users.index') }}" method="GET">
-                            <div class="input-group">
-                                <select name="user_id" id="users" class="form-select select2"
-                                    onchange="this.form.submit()">
-                                    <option value="">Select a user's ID/Name/Email to filter</option>
-                                    @foreach ($userOptions as $id => $details)
-                                        <option value="{{ $id }}"
-                                            {{ request('user_id') == $id ? 'selected' : '' }}>
-                                            {{ $details }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                            <div class="row">
+                                <div class="col-12 col-md-8 mx-auto">
+                                    <div class="input-group">
+                                        <select name="user_id" id="users" class="form-select select2 w-100"
+                                            onchange="this.form.submit()">
+                                            <option value="">Select a user's ID/Name/Email to filter</option>
+                                            @foreach ($userOptions as $id => $details)
+                                                <option value="{{ $id }}"
+                                                    {{ request('user_id') == $id ? 'selected' : '' }}>
+                                                    {{ $details }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                         </form>
                     </div>
 
                     <!-- Card Body -->
                     <div class="card-body">
-                        <table class="table table-bordered table-striped">
-                            <thead style="text-align: center;">
-                                <tr style="text-align: center;">
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th width="30%">Email</th>
-                                    <td><b>Photo</b></th>
-                                    <th>Roles</th>
-                                    <th width="30%">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody style="text-align: center;">
-                                @if ($users->isNotEmpty())
-                                    @foreach ($users as $user)
-                                        <tr style="text-align: center;">
-                                            <td>{{ $user->id }}</td>
-                                            <td>{{ $user->name }}</td>
-                                            <td>{{ $user->email }}</td>
-                                            <td class="center-image">
-                                                @if ($user->profile_photo_path)
-                                                    <img src="{{ asset('storage/' . $user->profile_photo_path) }}"
-                                                        alt="Profile Photo" class="rounded-circle" width="50"
-                                                        height="50">
-                                                @else
-                                                    <img src="{{ asset('images/default-user/user.png') }}"
-                                                        alt="Default Photo" class="rounded-circle" width="50"
-                                                        height="50">
-                                                @endif
-                                            </td>
-                                            <td>
-                                                @if (!empty($user->getRoleNames()))
-                                                    @foreach ($user->getRoleNames() as $role)
-                                                        <span class="badge bg-success">{{ $role }}</span>
-                                                    @endforeach
-                                                @endif
-                                            </td>
-                                            <td>
-                                                <div class="d-flex justify-content-end gap-2">
-                                                    <!-- Edit Button -->
-                                                    <button type="button"
-                                                        class="btn btn-warning d-flex align-items-center gap-1"
-                                                        style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
-                                                        onclick="window.location.href='{{ route('users.edit', $user->id) }}'">
-                                                        <i class="fas fa-edit"></i> <span>Edit</span>
-                                                    </button>
-
-                                                    <!-- Assign Permission Buttons -->
-                                                    <a href="{{ route('system.users.permissions', $user->id) }}"
-                                                        class="btn btn-info"
-                                                        style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
-                                                        <i class="fas fa-user"></i> <span>Assign Permission</span>
-                                                    </a>
-
-                                                    <!-- Delete Button -->
-                                                    <button type="button"
-                                                        class="btn btn-danger btn-sm d-flex align-items-center gap-1"
-                                                        style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
-                                                        onclick="confirmDelete({{ $user->id }}, '{{ $user->name }}', '{{ $user->getRoleNames()->implode(', ') }}')">
-                                                        <i class="fas fa-trash"></i> <span>Delete</span>
-                                                    </button>
-                                                </div>
-
-                                                <!-- Hidden delete form -->
-                                                <form id="delete-system-user-form" action="" method="POST"
-                                                    style="display: none;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                @else
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead class="text-center">
                                     <tr>
-                                        <td colspan="3" class="text-center">No users found</td>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Photo</th>
+                                        <th>Roles</th>
+                                        <th>Actions</th>
                                     </tr>
-                                @endif
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody class="text-center">
+                                    @if ($users->isNotEmpty())
+                                        @foreach ($users as $user)
+                                            <tr>
+                                                <td>{{ $user->id }}</td>
+                                                <td>{{ $user->name }}</td>
+                                                <td>{{ $user->email }}</td>
+                                                <td class="center-image">
+                                                    @if ($user->profile_photo_path)
+                                                        <img src="{{ asset('storage/' . $user->profile_photo_path) }}"
+                                                            alt="Profile Photo" class="rounded-circle img-fluid"
+                                                            width="50" height="50">
+                                                    @else
+                                                        <img src="{{ asset('images/default-user/user.png') }}"
+                                                            alt="Default Photo" class="rounded-circle img-fluid"
+                                                            width="50" height="50">
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if (!empty($user->getRoleNames()))
+                                                        @foreach ($user->getRoleNames() as $role)
+                                                            <span class="badge bg-success">{{ $role }}</span>
+                                                        @endforeach
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    <div
+                                                        class="d-flex flex-column flex-md-row justify-content-center gap-2">
+                                                        <!-- Edit Button -->
+                                                        <button type="button"
+                                                            class="btn btn-warning btn-sm d-flex align-items-center gap-1"
+                                                            onclick="window.location.href='{{ route('users.edit', $user->id) }}'">
+                                                            <i class="fas fa-edit"></i> <span>Edit</span>
+                                                        </button>
+
+                                                        <!-- Assign Permission Button -->
+                                                        <a href="{{ route('system.users.permissions', $user->id) }}"
+                                                            class="btn btn-info btn-sm d-flex align-items-center gap-1">
+                                                            <i class="fas fa-user"></i> <span>Assign</span>
+                                                        </a>
+
+                                                        <!-- Delete Button -->
+                                                        <button type="button"
+                                                            class="btn btn-danger btn-sm d-flex align-items-center gap-1"
+                                                            onclick="confirmDelete({{ $user->id }}, '{{ $user->name }}', '{{ $user->getRoleNames()->implode(', ') }}')">
+                                                            <i class="fas fa-trash"></i> <span>Delete</span>
+                                                        </button>
+                                                    </div>
+
+                                                    <!-- Hidden delete form -->
+                                                    <form id="delete-system-user-form" action="" method="POST"
+                                                        style="display: none;">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    @else
+                                        <tr>
+                                            <td colspan="6" class="text-center">No users found</td>
+                                        </tr>
+                                    @endif
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
 
                     {{-- Pagination --}}

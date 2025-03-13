@@ -26,17 +26,21 @@
                     <!-- Filter Section -->
                     <div class="card-body bg-light">
                         <form action="{{ route('permissions.index') }}" method="GET">
-                            <div class="input-group">
-                                <select name="permission_id" id="permissions" class="form-select select2"
-                                    onchange="this.form.submit()">
-                                    <option value="">Search a permission to filter</option>
-                                    @foreach ($permissions as $id => $name)
-                                        <option value="{{ $id }}"
-                                            {{ request('permission_id') == $id ? 'selected' : '' }}>
-                                            {{ $name }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                            <div class="row">
+                                <div class="col-12 col-md-8 mx-auto">
+                                    <div class="input-group">
+                                        <select name="permission_id" id="permissions" class="form-select select2"
+                                            onchange="this.form.submit()">
+                                            <option value="">Search a permission to filter</option>
+                                            @foreach ($permissions as $id => $name)
+                                                <option value="{{ $id }}"
+                                                    {{ request('permission_id') == $id ? 'selected' : '' }}>
+                                                    {{ $name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                         </form>
                     </div>

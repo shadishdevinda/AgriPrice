@@ -24,92 +24,98 @@
                     <!-- Filter Section -->
                     <div class="card-body bg-light">
                         <form action="{{ route('vegetable_advice.index') }}" method="GET">
-                            <div class="input-group">
-                                <select name="vegetable_id" id="vegetables" class="form-select select2"
-                                    onchange="this.form.submit()">
-                                    <option value="">Select a vegetable to filter</option>
-                                    @foreach ($vegetables as $id => $name)
-                                        <option value="{{ $id }}"
-                                            {{ request('vegetable_id') == $id ? 'selected' : '' }}>
-                                            {{ $name }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                            <div class="row">
+                                <div class="col-12 col-md-8 mx-auto">
+                                    <div class="input-group">
+                                        <select name="vegetable_id" id="vegetables" class="form-select select2"
+                                            onchange="this.form.submit()">
+                                            <option value="">Select a vegetable to filter</option>
+                                            @foreach ($vegetables as $id => $name)
+                                                <option value="{{ $id }}"
+                                                    {{ request('vegetable_id') == $id ? 'selected' : '' }}>
+                                                    {{ $name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                         </form>
                     </div>
 
                     <!-- Card Body -->
                     <div class="card-body">
-                        <table class="table table-striped">
-                            <thead style="text-align: center;">
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Description</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody style="text-align: center;">
-                                @if ($vegetable_advice->isNotEmpty())
-                                    @foreach ($vegetable_advice as $vegetableAdvice)
-                                        <tr>
-                                            <td>{{ $vegetableAdvice->id }}</td>
-                                            <td class="description-column">
-                                                {!! Str::limit(strip_tags($vegetableAdvice->description), 50, '...') !!}
-                                            </td>
-                                            <td>
-                                                <div class="d-flex justify-content-end gap-2">
-                                                    <!-- Show Button -->
-                                                    <button type="button"
-                                                        class="btn btn-primary d-flex align-items-center gap-1"
-                                                        style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
-                                                        onclick="window.location.href='{{ route('vegetable_advice.show', $vegetableAdvice->id) }}'">
-                                                        <i class="fas fa-eye"></i> <span>Show</span>
-                                                    </button>
-
-                                                    <!-- Edit Button -->
-                                                    <button type="button"
-                                                        class="btn btn-warning d-flex align-items-center gap-1"
-                                                        style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
-                                                        onclick="window.location.href='{{ route('vegetable_advice.edit', $vegetableAdvice->id) }}'">
-                                                        <i class="fas fa-edit"></i> <span>Edit</span>
-                                                    </button>
-
-                                                    <button type="button"
-                                                        class="btn btn-danger btn-sm d-flex align-items-center gap-1"
-                                                        style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
-                                                        onclick="deleteVegAdvice({{ $vegetableAdvice->id }})">
-                                                        <i class="fas fa-trash"></i> <span>Delete</span>
-                                                    </button>
-                                                </div>
-
-                                                <!-- Hidden delete form -->
-                                                <form id="delete-vegetable-advice-form{{ $vegetableAdvice->id }}"
-                                                    action="{{ route('vegetable_advice.destroy', $vegetableAdvice->id) }}"
-                                                    method="POST" style="display: none;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                @else
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead class="text-center">
                                     <tr>
-                                        <td colspan="3" class="text-center">No vegetable advice found</td>
+                                        <th>ID</th>
+                                        <th>Description</th>
+                                        <th>Action</th>
                                     </tr>
-                                @endif
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody style="text-align: center;">
+                                    @if ($vegetable_advice->isNotEmpty())
+                                        @foreach ($vegetable_advice as $vegetableAdvice)
+                                            <tr>
+                                                <td>{{ $vegetableAdvice->id }}</td>
+                                                <td class="description-column">
+                                                    {!! Str::limit(strip_tags($vegetableAdvice->description), 50, '...') !!}
+                                                </td>
+                                                <td>
+                                                    <div
+                                                        class="d-flex flex-column flex-md-row justify-content-center gap-2">
+                                                        <!-- Show Button -->
+                                                        <button type="button"
+                                                            class="btn btn-primary d-flex align-items-center gap-1"
+                                                            style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
+                                                            onclick="window.location.href='{{ route('vegetable_advice.show', $vegetableAdvice->id) }}'">
+                                                            <i class="fas fa-eye"></i> <span>Show</span>
+                                                        </button>
 
-                        <!-- Pagination Links -->
-                        <div class="d-flex justify-content-center mt-4">
-                            {{ $vegetable_advice->links() }}
+                                                        <!-- Edit Button -->
+                                                        <button type="button"
+                                                            class="btn btn-warning d-flex align-items-center gap-1"
+                                                            style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
+                                                            onclick="window.location.href='{{ route('vegetable_advice.edit', $vegetableAdvice->id) }}'">
+                                                            <i class="fas fa-edit"></i> <span>Edit</span>
+                                                        </button>
+
+                                                        <button type="button"
+                                                            class="btn btn-danger btn-sm d-flex align-items-center gap-1"
+                                                            style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
+                                                            onclick="deleteVegAdvice({{ $vegetableAdvice->id }})">
+                                                            <i class="fas fa-trash"></i> <span>Delete</span>
+                                                        </button>
+                                                    </div>
+
+                                                    <!-- Hidden delete form -->
+                                                    <form id="delete-vegetable-advice-form{{ $vegetableAdvice->id }}"
+                                                        action="{{ route('vegetable_advice.destroy', $vegetableAdvice->id) }}"
+                                                        method="POST" style="display: none;">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    @else
+                                        <tr>
+                                            <td colspan="3" class="text-center">No vegetable advice found</td>
+                                        </tr>
+                                    @endif
+                                </tbody>
+                            </table>
+
+                            <!-- Pagination Links -->
+                            <div class="d-flex justify-content-center mt-4">
+                                {{ $vegetable_advice->links() }}
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 </x-admin-layout>
 
 {{-- Bootstrap CDN --}}
