@@ -288,7 +288,7 @@
                 <a href="{{ route('fruits.index') }}" class="nav-link">{{ __('Fruits Prices') }}</a>
 
                 <!-- Advices Navigation Links -->
-                <div class="dropdown">
+                <div class="dropdown" id="nav_bar">
                     <button class="dropdown-toggle">{{ __('Crops Advices') }}</button>
                     <div class="dropdown-menu">
                         <a href="{{ route('advices.vegetables.index') }}"
