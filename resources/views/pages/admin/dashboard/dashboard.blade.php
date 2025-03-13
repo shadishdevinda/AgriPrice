@@ -80,7 +80,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="card-text">
-                            <h1>Fruit</h1>
+                            <h1>Fruits</h1>
                             <p>{{ $fruitCount }}</p> <!-- Displays fruit count -->
                         </div>
                         <div class="card-img">
