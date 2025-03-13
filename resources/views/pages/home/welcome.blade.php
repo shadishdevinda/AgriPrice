@@ -22,25 +22,44 @@
     <link rel="stylesheet" href="{{ asset('css/owl.theme.default.min.css') }}">
 
     <link rel="stylesheet" href="{{ asset('/css/welcome.css') }}">
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+    </style>
 
 </head>
 <body class="font-sans antialiased">
 
+    @php
+    if (session()->has('locale')) {
+        app()->setLocale(session('locale'));
+    }
+    @endphp
+
     {{-- Navigation menu --}}
-    @include('pages.home.navigation-menu')
+        @include('pages.home.navigation-menu')
     {{-- Hero section --}}
-    @include('pages.home.header.hero')
+    <div id="header-section">
+        @include('pages.home.header.hero')
+    </div>
     {{-- Services-menu --}}
-    @include('pages.home.services_category.services')
+    <div id="services-section">
+        @include('pages.home.services_category.services')
+    </div>
     {{-- Calculations --}}
-    @include('pages.home.homeBody.calculations')
+        @include('pages.home.homeBody.calculations')
     {{-- About section --}}
-    @include('pages.home.about.aboutSection')
+    <div id="about-section">
+        @include('pages.home.about.aboutSection')
+    </div>
+
     <hr style="margin: 0;">
-    {{-- Contact section --}}
-    @include('pages.home.contact.contactSection')
     {{-- footerSection section --}}
-    @include('pages.home.footer.footerSection')
+    <div id="footer-section">
+        @include('pages.home.footer.footerSection')
+    </div>
     <!-- loader -->
     <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px">
             <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4"

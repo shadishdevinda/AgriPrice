@@ -2,36 +2,34 @@
     <div class="container">
         <div class="row">
 
-            {{-- Vegetable Prices --}}
+            {{-- Fruit Prices --}}
             <div class="col-md-3 d-flex align-self-stretch ftco-animate">
                 <div class="services">
                     <div class="p-4">
                         <div class="media-body">
-                            <h3 class="heading mb-3">Vegetable <br>Prices</h3>
-                            <p class="mb-2">Stay updated with the latest market prices for fresh vegetables. Get real-time data on price trends,
-                                seasonal fluctuations,and local wholesale rates to make informed buying or selling decisions.</p>
+                            <h3 class="heading mb-3">{{ __('messages.fruit_prices') }}</h3>
+                            <p>{{ __('messages.fruit_description') }}</p>
                         </div>
                     </div>
-                    <div class="img" style="background-image: url(images/services-1.jpg);">
-                        <a href="{{ route('vegetables.index') }}"
+                    <div class="img" style="background-image: url(images/fruits_bg.jpg);">
+                        <a href="{{ route('fruits.index') }}"
                             class="btn-custom d-flex align-items-center justify-content-center"><span
                                 class="fa fa-chevron-right"></span></a>
                     </div>
                 </div>
             </div>
 
-            {{-- Fruit Prices --}}
+            {{-- Vegetable Prices --}}
             <div class="col-md-3 d-flex align-self-stretch ftco-animate">
                 <div class="services">
                     <div class="p-4">
                         <div class="media-body">
-                            <h3 class="heading mb-3">Fruit <br>Prices</h3>
-                            <p style="margin-bottom: 30px;">Track the current prices of fruits in the market. Whether you're a farmer, trader, or consumer, access up-to-date
-                                pricing details, market trends, and forecasts to optimize your purchasing or sales strategy.</p>
+                            <h3 class="heading mb-3">{{ __('messages.vegetable_prices') }}</h3>
+                            <p>{{ __('messages.vegetable_description') }}</p>
                         </div>
                     </div>
-                    <div class="img" style="background-image: url(images/services-2.jpg);">
-                        <a href="{{ route('fruits.index') }}"
+                    <div class="img" style="background-image: url(images/services-1.jpg);">
+                        <a href="{{ route('vegetables.index') }}"
                             class="btn-custom d-flex align-items-center justify-content-center"><span
                                 class="fa fa-chevron-right"></span></a>
                     </div>
@@ -43,12 +41,11 @@
                 <div class="services">
                     <div class="p-4">
                         <div class="media-body">
-                            <h3 class="heading mb-3">Economic <br>Centers</h3>
-                            <p class="mb-2">Discover key economic hubs that influence agricultural trade. Learn about major distribution points,
-                                trading centers, and financial trends affecting the agricultural sector to make strategic business moves.</p>
+                            <h3 class="heading mb-3">{{ __('messages.economic_centers') }}</h3>
+                            <p>{{ __('messages.economic_description') }}</p>
                         </div>
                     </div>
-                    <div class="img" style="background-image: url(images/services-4.jpg);">
+                    <div class="img" style="background-image: url(images/ecenter.jpg);">
                         <a href="#"
                             class="btn-custom d-flex align-items-center justify-content-center"><span
                                 class="fa fa-chevron-right"></span></a>
@@ -61,9 +58,8 @@
                 <div class="services">
                     <div class="p-4">
                         <div class="media-body">
-                            <h3 class="heading mb-3">Crop <br>Advices</h3>
-                            <p class="mb-2">Get expert guidance on crop cultivation, pest management, and best farming practices. Receive insights on soil health,
-                                 weather conditions, and sustainable farming techniques to improve yield and profitability.</p>
+                            <h3 class="heading mb-3">{{ __('messages.crop_advices') }}</h3>
+                            <p>{{ __('messages.crop_description') }}</p>
                         </div>
                     </div>
                     <div class="img" style="background-image: url(images/services-3.jpg);">

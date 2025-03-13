@@ -47,23 +47,21 @@
         }
 
         .crop-advice {
-            font-weight: bold;
-            font-size: 20px;
-            position: relative;
-            display: inline-block;
-            margin-top: 10px;
-            color: #666;
-        }
+    font-weight: bold;
+    font-size: 16px; /* Reduce font size */
+    padding: 5px 12px; /* Adjust padding */
+    border: none;
+    border-radius: 5px;
+    color: #ffffff;
+    display: inline-block;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+}
 
-        .crop-advice::after {
-            content: "";
-            display: block;
-            width: 100%;
-            height: 3px;
-            background: red;
-            position: absolute;
-            bottom: -3px;
-        }
+.crop-advice:hover {
+    background-color: rgb(27, 97, 13); /* Darken on hover */
+}
 
         /*        FILTER FORM        */
         .filter-form {
@@ -246,6 +244,13 @@
         }
     </style>
 
+@php
+if (session()->has('locale')) {
+    app()->setLocale(session('locale'));
+}
+@endphp
+
+
     <!-- Header & Filter Container -->
     <div class="header-filter-container">
 
@@ -254,7 +259,10 @@
             <img src="{{ asset('storage/' . $fruit->image) }}" class="fruit-image" alt="{{ $fruit->name }}">
             <div class="header-text">
                 <h3><i>{{ $fruit->name }}</i></h3>
-                <p class="crop-advice">Crop advice</p>
+                <br>
+                <a href="{{ route('fruit.advice.show', ['id' => $fruit->id]) }}" class="btn btn-success crop-advice">
+                    {{ __('messages.crop_advices') }}
+                </a>
             </div>
         </div>
 
@@ -262,13 +270,13 @@
         <form method="GET" action="" class="filter-form">
             <div class="d-flex">
                 <div class="filter-item">
-                    <label for="date" class="form-label">Select Date:</label>
+                    <label for="date" class="form-label">{{ __('messages.date_selection') }}</label>
                     <input type="date" name="date" id="date" class="form-control"
                         value="{{ request('center_id') ? '' : request('date') ?? $latestDate }}">
                 </div>
 
                 <div class="filter-item">
-                    <label for="center_id" class="form-label">Select Economic Center:</label>
+                    <label for="center_id" class="form-label">{{ __('messages.economic_center_selection') }}</label>
                     <select name="center_id" id="center_id" class="form-control">
                         <option value="">All Centers</option>
                         @foreach ($centers as $center)
@@ -281,8 +289,8 @@
                 </div>
 
                 <div class="filter-buttons">
-                    <button type="submit" class="btn btn-primary filter-btn">Filter</button>
-                    <a href="{{ url()->current() }}" class="btn btn-secondary reset-btn">Reset</a>
+                    <button type="submit" class="btn btn-primary filter-btn">{{ __('messages.filter') }}</button>
+                    <a href="{{ url()->current() }}" class="btn btn-secondary reset-btn">{{ __('messages.reset') }}</a>
                 </div>
             </div>
         </form>
@@ -299,10 +307,10 @@
         <table class="table table-striped table-bordered">
             <thead>
                 <tr>
-                    <th>Date</th>
-                    <th>Economic Center</th>
-                    <th>Wholesale Price</th>
-                    <th>Retail Price</th>
+                    <th>{{ __('messages.date') }}</th>
+                    <th>{{ __('messages.economic_center') }}</th>
+                    <th>{{ __('messages.wholsale_prices') }}</th>
+                    <th>{{ __('messages.retail_prices') }}</th>
                 </tr>
             </thead>
             <tbody>

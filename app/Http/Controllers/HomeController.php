@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\Fruit;
 use App\Models\Vegetable;
+use App\Models\FruitAdvice;
+use App\Models\VegetableAdvice;
 use Illuminate\Http\Request;
 use App\Models\CenterHasFruits;
 use Illuminate\Support\Facades\DB;
@@ -161,4 +163,5 @@ class HomeController extends Controller
         $vegetable = Vegetable::with('advice')->findOrFail($id);
         return view('pages.home.advices.vegetable.show', compact('vegetable'));
     }
+
 }

@@ -123,6 +123,12 @@
         }
     </style>
 
+@php
+if (session()->has('locale')) {
+    app()->setLocale(session('locale'));
+}
+@endphp
+
     <x-slot name="title">{{ $fruit->name ?? 'Fruit' }}'s Details</x-slot>
 
     <div class="container" style="max-width: auto; margin: 0 auto; padding: 20px;">
