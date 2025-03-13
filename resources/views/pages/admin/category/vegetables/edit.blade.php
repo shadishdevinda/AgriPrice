@@ -32,7 +32,7 @@
     }
 
     .btn-custom {
-        background-color: #065744cc;
+        background-color: #065744;
         color: white;
         border: none;
         padding: 0.5rem 1rem;
@@ -40,7 +40,8 @@
     }
 
     .btn-custom:hover {
-        background-color: #054735cc;
+        color: white;
+        background-color: #065744;
     }
 
     .photo-preview {
@@ -101,30 +102,6 @@
                                     placeholder="Enter vegetable description">{{ old('description', $vegetable->description) }}</textarea>
                             </div>
 
-                            {{-- ! Modify this part price change the center has vegetable table --}}
-                            <!-- Wholesale Price Field & Retail Price Field -->
-                            <div class="row mb-4">
-                                <!-- Wholesale Price Field (Left Column) -->
-                                <div class="col-md-6">
-                                    <label for="Wholesale_Price" class="form-label h5">
-                                        <i class="fas fa-dollar-sign"></i> Wholesale Price
-                                    </label>
-                                    <x-input value="{{ old('Wholesale_Price', $vegetable->Wholesale_Price) }}"
-                                        type="text" class="form-control form-control-lg"
-                                        placeholder="Enter wholesale price" name="Wholesale_Price" />
-                                </div>
-
-                                <!-- Retail Price Field (Right Column) -->
-                                <div class="col-md-6">
-                                    <label for="Retail_Price" class="form-label h5">
-                                        <i class="fas fa-dollar-sign"></i> Retail Price
-                                    </label>
-                                    <x-input value="{{ old('Retail_Price', $vegetable->Retail_Price) }}" type="text"
-                                        class="form-control form-control-lg" placeholder="Enter retail price"
-                                        name="Retail_Price" />
-                                </div>
-                            </div>
-
                             <!-- Image Field -->
                             <div class="mb-4">
                                 <label for="image" class="form-label h5">
@@ -162,7 +139,7 @@
                             <div class="row">
                                 <div class="col-md-12 d-flex justify-content-end">
                                     <button type="submit" class="btn btn-custom">
-                                        <i class="fas fa-save"></i> Create Vegetable
+                                        <i class="fas fa-save"></i> Update the Vegetable
                                     </button>
                                 </div>
                             </div>
