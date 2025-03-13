@@ -28,7 +28,7 @@ class MarketController extends Controller
 
         // Fetch the economic center details for the market user
         $economicCenter = null;
-        if ($user && $user->user_type === 'market-user') {
+        if ($user && $user->hasRole('market-admin')) {
             $economicCenter = EconomicCenter::find($user->center_id);
         }
 
@@ -249,9 +249,9 @@ class MarketController extends Controller
         // Get the authenticated user
         $user = Auth::user();
 
-        // Fetch the economic center details for the market user
+        // Fetch the economic center details for the market admin
         $economicCenter = null;
-        if ($user && $user->user_type === 'market-user') {
+        if ($user && $user->hasRole('market-admin')) {
             $economicCenter = EconomicCenter::find($user->center_id);
         }
 

@@ -195,9 +195,7 @@ class EconomicCenterController extends Controller
     public function assignUserPage(EconomicCenter $economicCenter)
     {
         $roles = Role::whereNotIn('name', ['system-user', 'market-user'])->pluck('name', 'name')->all();
-        // Fetch only the 'market-user' role for the first dropdown
-        $marketUserRole = Role::where('name', 'market-user')->pluck('name', 'name')->all();
-        return view('pages.admin.economicCenter.assignUser', compact('economicCenter', 'marketUserRole', 'roles'));
+        return view('pages.admin.economicCenter.assignUser', compact('economicCenter','roles'));
     }
 
     public function assignUser(Request $request)
@@ -208,7 +206,6 @@ class EconomicCenterController extends Controller
             // Validate the request data
             $validated = $request->validate([
                 'center_id' => 'required|string',
-                'user_type' => 'required|string',
                 'username' => 'required|string|max:255',
                 'roles' => 'required|array',
                 'email' => 'required|string|email|max:255|unique:users,email',
@@ -221,7 +218,6 @@ class EconomicCenterController extends Controller
             $user = User::create([
                 'name' => $validated['username'],
                 'email' => $validated['email'],
-                'user_type' => $validated['user_type'],
                 'center_id' => $validated['center_id'],
                 'password' => Hash::make($validated['password']),
             ]);

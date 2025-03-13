@@ -23,13 +23,13 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $this->call([
+            RoleSeeder::class,
             AdminUserSeeder::class,
             EconomicCenterSeeder::class,
             FruitSeeder::class,
             VegetableSeeder::class,
             VegetableAdviceSeeder::class,
             FruitAdviceSeeder::class,
-            RoleSeeder::class,
         ]);
     }
 }

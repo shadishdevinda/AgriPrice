@@ -21,8 +21,9 @@ class AdminController extends Controller
         $fruitCount = Fruit::count();
         $economicCenter = EconomicCenter::count();
 
-        // Get users and roles if needed
-        $users = User::where('user_type', 'system-user')->paginate(10);
+        // Get users where center_id is NULL
+        $users = User::whereNull('center_id') // Fetch users with center_id = NULL
+            ->paginate(10);
         $roles = Role::pluck('name', 'name')->all();
 
         // Pass the counts and other data to the view
@@ -36,5 +37,4 @@ class AdminController extends Controller
     {
         return view('pages.admin.profile.show');
     }
-
 }

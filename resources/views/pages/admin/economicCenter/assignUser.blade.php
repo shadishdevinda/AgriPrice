@@ -71,9 +71,9 @@
                             @csrf
                             @method('PUT')
 
-                            <!-- Center ID, Name and User Type -->
+                            <!-- Center ID, Name -->
                             <div class="row mb-3">
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <label for="center_id" class="form-label">Center Registration ID :
                                     </label><span style="font-weight: 500"> {{ $economicCenter->id }}</span>
                                     <x-input type="hidden" name="center_id"
@@ -82,17 +82,6 @@
                                         value="{{ old('center_name', $economicCenter->center_name) }}" disabled />
                                     <small id="center_nameHelp" class="form-text text-muted">Economic center
                                         name.</small>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="user_type" class="form-label">User Type</label>
-                                    <select name="user_type" class="form-select" id="user_type"
-                                        aria-describedby="user_typeHelp" required>
-                                        <option value="" selected disabled>Select User Type</option>
-                                        @foreach ($marketUserRole as $key => $value)
-                                            <option value="{{ $key }}">{{ $value }}</option>
-                                        @endforeach
-                                    </select>
-                                    <small id="user_typeHelp" class="form-text text-muted">Select the user type.</small>
                                 </div>
                             </div>
 
@@ -129,7 +118,7 @@
                                 </div>
                             </div>
 
-                            <!-- Row 2: Email and Password -->
+                            <!-- Row 2: Password -->
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="password" class="form-label">Password</label>

@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Str;
+use App\Mail\SendLoginCredentials;
+use Illuminate\Support\Facades\Mail;
 
 class UserManageController extends Controller
 {
@@ -19,7 +21,7 @@ class UserManageController extends Controller
     public function index(Request $request)
     {
         // Initialize the query for system users
-        $query = User::where('user_type', 'system-user');
+        $query = User::whereNull('center_id');
 
         // Apply filter if user_id is selected
         if ($request->has('user_id') && !empty($request->user_id)) {
@@ -33,7 +35,7 @@ class UserManageController extends Controller
         $users = $query->paginate(10);
 
         // Fetch users for the dropdown (ID, Name, Email)
-        $userOptions = User::where('user_type', 'system-user')
+        $userOptions = User::whereNull('center_id')
             ->get()
             ->mapWithKeys(function ($user) {
                 return [$user->id => "{$user->id} - {$user->name} - {$user->email}"];
@@ -48,13 +50,11 @@ class UserManageController extends Controller
      */
     public function create()
     {
-        // Fetch only the 'system-user' role for the first dropdown
-        $systemUserRole = Role::where('name', 'system-user')->pluck('name', 'name')->all();
 
         // Fetch all roles except 'system-user' and 'market-user' for the second dropdown
-        $roles = Role::whereNotIn('name', ['system-user', 'market-user'])->pluck('name', 'name')->all();
+        $roles = Role::whereNotIn('name', ['market-admin'])->pluck('name', 'name')->all();
 
-        return view('pages.admin.userManagement.system_user.create', compact('systemUserRole', 'roles'));
+        return view('pages.admin.userManagement.system_user.create', compact('roles'));
     }
 
     /**
@@ -69,9 +69,21 @@ class UserManageController extends Controller
             $validated = $request->validate([
                 'username' => 'required|string|max:255',
                 'email' => 'required|string|email|max:255|unique:users,email',
-                'user_type' => 'required|string',
                 'roles' => 'required',
-                'password' => 'required|string|min:8|confirmed',
+                'password' => [
+                    'required',
+                    'string',
+                    'min:8', // Minimum 8 characters
+                    'confirmed', // Must match password_confirmation
+                    'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/',
+                    // Regex explanation:
+                    // (?=.*[a-z]) - At least one lowercase letter
+                    // (?=.*[A-Z]) - At least one uppercase letter
+                    // (?=.*\d)    - At least one number
+                    // (?=.*[@$!%*?&]) - At least one special character
+                    // [A-Za-z\d@$!%*?&]{8,} - Minimum 8 characters of the allowed set
+                ],
+                'password_confirmation' => 'required|string|min:8',
                 'center_reg_id' => 'nullable|string',
                 'center_name' => 'nullable|string',
                 'center_location' => 'nullable|string',
@@ -84,7 +96,6 @@ class UserManageController extends Controller
             $user = User::create([
                 'name' => $validated['username'],
                 'email' => $validated['email'],
-                'user_type' => $validated['user_type'],
                 'center_id' => $validated['center_reg_id'] ?? null,
                 'password' => Hash::make($validated['password']),
             ]);
@@ -119,6 +130,11 @@ class UserManageController extends Controller
 
             Log::info('User created.', ['user_id' => $user->id]);
 
+            // Send email with login credentials
+            Mail::to($user->email)->send(new SendLoginCredentials($user->email, $validated['password']));
+
+            Log::info('Login credentials email sent.', ['user_id' => $user->id]);
+
             // Return a success response
             return response()->json([
                 'success' => true,
@@ -142,17 +158,16 @@ class UserManageController extends Controller
             ], 500);
         }
     }
+
     /**
      * Display the specified resource.
      */
     public function edit(User $user)
     {
         // Fetch all roles except 'system-user' and 'market-user' for the second dropdown
-        $roles = Role::whereNotIn('name', ['system-user', 'market-user', 'market-admin'])->pluck('name', 'name')->all();
-        // Fetch only the 'system-user' role for the first dropdown
-        $systemUserRole = Role::where('name', 'system-user')->pluck('name', 'name')->all();
+        $roles = Role::whereNotIn('name', ['market-admin'])->pluck('name', 'name')->all();
         $userRoles = $user->roles ? $user->roles->pluck('name')->toArray() : []; // Handle null cases
-        return view('pages.admin.userManagement.system_user.edit', compact('user', 'systemUserRole', 'roles', 'userRoles'));
+        return view('pages.admin.userManagement.system_user.edit', compact('user', 'roles', 'userRoles'));
     }
 
     /**
@@ -168,7 +183,6 @@ class UserManageController extends Controller
             $validated = $request->validate([
                 'name' => 'required|string|max:255',
                 'email' => 'required|email|unique:users,email,' . $user->id,
-                'user_type' => 'required|string',
                 'roles' => 'required',
                 'password' => 'nullable|string|min:8|confirmed',
                 'profile_photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
@@ -198,7 +212,6 @@ class UserManageController extends Controller
             $data = [
                 'name' => $validated['name'],
                 'email' => $validated['email'],
-                'user_type' => $validated['user_type'],
                 'profile_photo_path' => $validated['profile_photo_path'], // Ensure this is included
             ];
 

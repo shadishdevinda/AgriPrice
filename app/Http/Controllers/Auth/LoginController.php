@@ -21,13 +21,13 @@ class LoginController extends Controller
             // Authentication was successful
             $user = Auth::user();
 
-            // Redirect based on user_type
-            if ($user->user_type === 'system-user') {
+            // Redirect based on user role
+            if ($user->hasRole('system-admin')) {
                 return redirect()->route('admin.dashboard');
-            } elseif ($user->user_type === 'market-user') {
+            } elseif ($user->hasRole('market-admin')) {
                 return redirect()->route('market.dashboard');
             } else {
-                // Default redirect if user_type does not match expected values
+                // Default redirect if the user does not have the required roles
                 return redirect()->route('home')->with('error', 'Unauthorized access.');
             }
         }

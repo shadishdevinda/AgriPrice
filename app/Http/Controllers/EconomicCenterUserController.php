@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Permission;
+use App\Mail\SendLoginCredentials;
+use Illuminate\Support\Facades\Mail;
 
 class EconomicCenterUserController extends Controller
 {
@@ -20,7 +22,7 @@ class EconomicCenterUserController extends Controller
     public function index(Request $request)
     {
         // Initialize the query for market users
-        $query = User::where('user_type', 'market-user');
+        $query = User::whereNotNull('center_id');
 
         // Apply filter if user_id is selected
         if ($request->has('user_id') && !empty($request->user_id)) {
@@ -34,7 +36,7 @@ class EconomicCenterUserController extends Controller
         $users = $query->with('economicCenter')->paginate(10);
 
         // Fetch users for the dropdown (ID, Name, Email)
-        $userOptions = User::where('user_type', 'market-user')
+        $userOptions = User::whereNotNull('center_id')
             ->get()
             ->mapWithKeys(function ($user) {
                 return [$user->id => "{$user->id} - {$user->name} - {$user->email}"];
@@ -49,11 +51,9 @@ class EconomicCenterUserController extends Controller
      */
     public function create()
     {
-        // Fetch only the 'market-user' role for the first dropdown
-        $marketUserRole = Role::where('name', 'market-user')->pluck('name', 'name')->all();
-        $roles = Role::whereNotIn('name', ['system-user', 'market-user'])->pluck('name', 'name')->all();
+        $roles = Role::whereNotIn('name', ['system-admin'])->pluck('name', 'name')->all();
         $economicCenters = EconomicCenter::pluck('center_name', 'id')->all();
-        return view('pages.admin.userManagement.economic_center_user.create', compact('roles', 'marketUserRole', 'economicCenters'));
+        return view('pages.admin.userManagement.economic_center_user.create', compact('roles','economicCenters'));
     }
 
     /**
@@ -67,7 +67,6 @@ class EconomicCenterUserController extends Controller
             // Validate the request data
             $validated = $request->validate([
                 'center_id' => 'required|exists:economic_center,id',
-                'user_type' => 'required|string',
                 'username' => 'required|string|max:255',
                 'roles' => 'required|array',
                 'email' => 'required|string|email|max:255|unique:users,email',
@@ -81,7 +80,6 @@ class EconomicCenterUserController extends Controller
             $user = User::create([
                 'name' => $validated['username'],
                 'email' => $validated['email'],
-                'user_type' => $validated['user_type'],
                 'center_id' => $validated['center_id'],
                 'password' => Hash::make($validated['password']),
             ]);
@@ -118,6 +116,11 @@ class EconomicCenterUserController extends Controller
 
             Log::info('User assigned to economic center.', ['user_id' => $user->id]);
 
+            // Send email with login credentials
+            Mail::to($user->email)->send(new SendLoginCredentials($user->email, $validated['password']));
+
+            Log::info('Login credentials email sent.', ['user_id' => $user->id]);
+
             // Return success response
             return response()->json([
                 'success' => true,
@@ -145,11 +148,9 @@ class EconomicCenterUserController extends Controller
      */
     public function edit(User $user)
     {
-        $roles = Role::whereNotIn('name', ['system-user', 'market-user', 'system-admin'])->pluck('name', 'name')->all();
-        // Fetch only the 'market-user' role for the first dropdown
-        $marketUserRole = Role::where('name', 'market-user')->pluck('name', 'name')->all();
+        $roles = Role::whereNotIn('name', ['system-admin'])->pluck('name', 'name')->all();
         $userRoles = $user->roles ? $user->roles->pluck('name')->toArray() : []; // Handle null cases
-        return view('pages.admin.userManagement.economic_center_user.edit', compact('user', 'marketUserRole', 'roles', 'userRoles'));
+        return view('pages.admin.userManagement.economic_center_user.edit', compact('user', 'roles', 'userRoles'));
     }
 
     /**
@@ -165,7 +166,6 @@ class EconomicCenterUserController extends Controller
             $validated = $request->validate([
                 'name' => 'required|string|max:255',
                 'email' => 'required|email|unique:users,email,' . $user->id,
-                'user_type' => 'required|string',
                 'roles' => 'required',
                 'password' => 'nullable|string|min:8|confirmed',
                 'profile_photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
@@ -195,7 +195,6 @@ class EconomicCenterUserController extends Controller
             $data = [
                 'name' => $validated['name'],
                 'email' => $validated['email'],
-                'user_type' => $validated['user_type'],
                 'profile_photo_path' => $validated['profile_photo_path'], // Ensure this is included
             ];
 
