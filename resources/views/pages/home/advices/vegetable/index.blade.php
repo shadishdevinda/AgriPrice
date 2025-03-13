@@ -122,6 +122,12 @@
         }
     </style>
 
+@php
+if (session()->has('locale')) {
+    app()->setLocale(session('locale'));
+}
+@endphp
+
     <div class="container">
         <br>
 

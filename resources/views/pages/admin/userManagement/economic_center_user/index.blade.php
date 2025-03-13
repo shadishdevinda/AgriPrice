@@ -38,109 +38,116 @@
                     <!-- Filter Section -->
                     <div class="card-body bg-light">
                         <form action="{{ route('economic-center-user.index') }}" method="GET">
-                            <div class="input-group">
-                                <select name="user_id" id="users" class="form-select select2"
-                                    onchange="this.form.submit()">
-                                    <option value="">Select a user's ID/Name/Email to filter</option>
-                                    @foreach ($userOptions as $id => $details)
-                                        <option value="{{ $id }}"
-                                            {{ request('user_id') == $id ? 'selected' : '' }}>
-                                            {{ $details }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                            <div class="row">
+                                <div class="col-12 col-md-8 mx-auto">
+                                    <div class="input-group">
+                                        <select name="user_id" id="users"
+                                            class="form-select select2 w-100 w-md-auto" onchange="this.form.submit()">
+                                            <option value="">Select a user's ID/Name/Email to filter</option>
+                                            @foreach ($userOptions as $id => $details)
+                                                <option value="{{ $id }}"
+                                                    {{ request('user_id') == $id ? 'selected' : '' }}>
+                                                    {{ $details }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                         </form>
                     </div>
 
                     {{-- Card body - Displaying economic center users --}}
                     <div class="card-body">
-                        <table class="table table-bordered table-striped">
-                            <thead style="text-align: center;">
-                                <tr style="text-align: center;">
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th width="30%">Email</th>
-                                    <td><b>Photo</b></th>
-                                    <th>Roles</th>
-                                    <th width="30%">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if ($users->isNotEmpty())
-                                    @foreach ($users as $user)
-                                        <tr style="text-align: center;">
-                                            <td>{{ $user->id }}</td>
-                                            <td>{{ $user->name }}</td>
-                                            <td>{{ $user->email }}</td>
-                                            <td class="center-image">
-                                                @if ($user->profile_photo_path)
-                                                    <img src="{{ asset('storage/' . $user->profile_photo_path) }}"
-                                                        alt="Profile Photo" class="rounded-circle" width="50"
-                                                        height="50">
-                                                @else
-                                                    <img src="{{ asset('images/default-user/user.png') }}"
-                                                        alt="Default Photo" class="rounded-circle" width="50"
-                                                        height="50">
-                                                @endif
-                                            </td>
-                                            <td>
-                                                @if (!empty($user->getRoleNames()))
-                                                    @foreach ($user->getRoleNames() as $role)
-                                                        <span class="badge bg-success">{{ $role }}</span>
-                                                    @endforeach
-                                                @endif
-                                            </td>
-                                            <td>
-                                                <div class="d-flex justify-content-end gap-2">
-                                                    <!-- Edit Button -->
-                                                    <a href="{{ route('economic-center-user.edit', $user->id) }}"
-                                                        class="btn btn-warning"
-                                                        style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
-                                                        <i class="fas fa-edit"></i> <span>Edit</span>
-                                                    </a>
-
-                                                    <!-- Assign Permission Buttons -->
-                                                    <a href="{{ route('economic.center.users.permissions', $user->id) }}"
-                                                        class="btn btn-info"
-                                                        style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
-                                                        <i class="fas fa-user"></i> <span>Assign Permission</span>
-                                                    </a>
-
-                                                    <!-- Delete Button -->
-                                                    <button type="button"
-                                                        class="btn btn-danger btn-sm d-flex align-items-center gap-1"
-                                                        style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
-                                                        onclick="confirmDelete({{ $user->id }}, '{{ $user->name }}', '{{ $user->getRoleNames()->implode(', ') }}', '{{ $user->economicCenter->center_name ?? 'N/A' }}')">
-                                                        <i class="fas fa-trash"></i> <span>Delete</span>
-                                                    </button>
-                                                </div>
-
-                                                <!-- Hidden delete form -->
-                                                <form id="delete-economic-center-user-delete-form{{ $user->id }}"
-                                                    action="{{ route('economic-center-user.destroy', $user->id) }}"
-                                                    method="POST" style="display: none;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                @else
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead class="text-center">
                                     <tr>
-                                        <td colspan="3" class="text-center">No users found</td>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th width="30%">Email</th>
+                                        <td><b>Photo</b></th>
+                                        <th>Roles</th>
+                                        <th width="30%">Actions</th>
                                     </tr>
-                                @endif
-                            </tbody>
-                        </table>
-                        {{-- Pagination --}}
-                        <div class="d-flex justify-content-end mt-3">
-                            {{ $users->appends(request()->query())->links() }}
+                                </thead>
+                                <tbody>
+                                    @if ($users->isNotEmpty())
+                                        @foreach ($users as $user)
+                                            <tr style="text-align: center;">
+                                                <td>{{ $user->id }}</td>
+                                                <td>{{ $user->name }}</td>
+                                                <td>{{ $user->email }}</td>
+                                                <td class="center-image">
+                                                    @if ($user->profile_photo_path)
+                                                        <img src="{{ asset('storage/' . $user->profile_photo_path) }}"
+                                                            alt="Profile Photo" class="rounded-circle img-fluid" width="50"
+                                                            height="50">
+                                                    @else
+                                                        <img src="{{ asset('images/default-user/user.png') }}"
+                                                            alt="Default Photo" class="rounded-circle img-fluid" width="50"
+                                                            height="50">
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if (!empty($user->getRoleNames()))
+                                                        @foreach ($user->getRoleNames() as $role)
+                                                            <span class="badge bg-success">{{ $role }}</span>
+                                                        @endforeach
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex flex-column flex-md-row justify-content-center gap-2">
+                                                        <!-- Edit Button -->
+                                                        <a href="{{ route('economic-center-user.edit', $user->id) }}"
+                                                            class="btn btn-warning"
+                                                            style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
+                                                            <i class="fas fa-edit"></i> <span>Edit</span>
+                                                        </a>
+
+                                                        <!-- Assign Permission Buttons -->
+                                                        <a href="{{ route('economic.center.users.permissions', $user->id) }}"
+                                                            class="btn btn-info"
+                                                            style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
+                                                            <i class="fas fa-user"></i> <span>Assign Permission</span>
+                                                        </a>
+
+                                                        <!-- Delete Button -->
+                                                        <button type="button"
+                                                            class="btn btn-danger btn-sm d-flex align-items-center gap-1"
+                                                            style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
+                                                            onclick="confirmDelete({{ $user->id }}, '{{ $user->name }}', '{{ $user->getRoleNames()->implode(', ') }}', '{{ $user->economicCenter->center_name ?? 'N/A' }}')">
+                                                            <i class="fas fa-trash"></i> <span>Delete</span>
+                                                        </button>
+                                                    </div>
+
+                                                    <!-- Hidden delete form -->
+                                                    <form
+                                                        id="delete-economic-center-user-delete-form{{ $user->id }}"
+                                                        action="{{ route('economic-center-user.destroy', $user->id) }}"
+                                                        method="POST" style="display: none;">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    @else
+                                        <tr>
+                                            <td colspan="3" class="text-center">No users found</td>
+                                        </tr>
+                                    @endif
+                                </tbody>
+                            </table>
+                            {{-- Pagination --}}
+                            <div class="d-flex justify-content-end mt-3">
+                                {{ $users->appends(request()->query())->links() }}
+                            </div>
                         </div>
+
                     </div>
                 </div>
             </div>
-        </div>
 </x-admin-layout>
 
 {{-- Bootstrap CDN --}}

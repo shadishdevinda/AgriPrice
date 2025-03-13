@@ -140,6 +140,12 @@
         }
     </style>
 
+@php
+if (session()->has('locale')) {
+    app()->setLocale(session('locale'));
+}
+@endphp
+
     <x-slot name="title">Fruit Price</x-slot>
 
     <div class="container">

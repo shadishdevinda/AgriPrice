@@ -27,7 +27,8 @@
                 <div class="card">
                     <!-- Card Header -->
                     <div class="card-header bg-dark d-flex justify-content-between align-items-center">
-                        <h3 class="text-white mb-0"><i class="fas fa-building" style="margin-right: 10px;"></i>Economic Center Management</h3>
+                        <h3 class="text-white mb-0"><i class="fas fa-building" style="margin-right: 10px;"></i>Economic
+                            Center Management</h3>
                         <a href="{{ route('economic-centers.create') }}"
                             class="btn btn-dark float-end border border-white d-flex align-items-center gap-2 justify-content-end">
                             <i class="fas fa-plus"></i> </i><span>Add Economic Center</span>
@@ -37,100 +38,106 @@
                     <!-- Filter Section -->
                     <div class="card-body bg-light">
                         <form action="{{ route('economic-centers.index') }}" method="GET">
-                            <div class="input-group">
-                                <select name="economicCenter_id" id="economic-centers" class="form-select select2"
-                                    onchange="this.form.submit()">
-                                    <option value="">Select a user's ID/Economic Center Name</option>
-                                    @foreach ($userOptions as $id => $details)
-                                        <option value="{{ $id }}"
-                                            {{ request('economicCenter_id') == $id ? 'selected' : '' }}>
-                                            {{ $details }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                            <div class="row">
+                                <div class="col-12 col-md-8 mx-auto">
+                                    <div class="input-group">
+                                        <select name="economicCenter_id" id="economic-centers"
+                                            class="form-select select2" onchange="this.form.submit()">
+                                            <option value="">Select a user's ID/Economic Center Name</option>
+                                            @foreach ($userOptions as $id => $details)
+                                                <option value="{{ $id }}"
+                                                    {{ request('economicCenter_id') == $id ? 'selected' : '' }}>
+                                                    {{ $details }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                         </form>
                     </div>
 
                     <!-- Card Body - Economic Center Table -->
                     <div class="card-body">
-                        <table class="table table-bordered table-striped">
-                            <thead style="text-align: center;">
-                                <tr style="text-align: center;">
-                                    <th>ID</th>
-                                    <th>Center Name</th>
-                                    <td><b>Photo</b></th>
-                                    <th width="30%">Address</th>
-                                    <th>Contact Number</th>
-                                    <th width="30%">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($economicCenters as $economicCenter)
-                                    <tr style="text-align: center;">
-                                        <td>{{ $economicCenter->id }}</td>
-                                        <td>{{ $economicCenter->center_name }}</td>
-                                        <td class="center-image">
-                                            @if ($economicCenter->profile_photo_path)
-                                                <img src="{{ asset('storage/' . $economicCenter->profile_photo_path) }}"
-                                                    alt="Profile Photo" class="rounded-circle" width="50"
-                                                    height="50">
-                                            @else
-                                                <img src="{{ asset('images/default-center/economic-center.jpg') }}"
-                                                    alt="Default Photo" class="rounded-circle" width="50"
-                                                    height="50">
-                                            @endif
-                                        </td>
-                                        <td>{{ $economicCenter->center_location }}</td>
-                                        <td>{{ $economicCenter->contact_number }}</td>
-                                        <td>
-                                            <div class="d-flex justify-content-end gap-2">
-                                                <!-- Edit Button -->
-                                                <button type="button"
-                                                    class="btn btn-warning d-flex align-items-center gap-1"
-                                                    style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
-                                                    onclick="window.location.href='{{ route('economic-centers.edit', $economicCenter->id) }}'">
-                                                    <i class="fas fa-edit"></i> <span>Edit</span>
-                                                </button>
-
-                                                <!-- Assign Users Buttons -->
-                                                <a href="{{ route('economic.center.assign.user', $economicCenter->id) }}"
-                                                    class="btn btn-info"
-                                                    style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
-                                                    data-id="{{ $economicCenter->id }}"
-                                                    data-name="{{ $economicCenter->center_name }}">
-                                                    <i class="fas fa-user"></i> <span>Assign Users</span>
-                                                </a>
-
-                                                <!-- Delete Button -->
-                                                <button type="button" class="btn btn-danger"
-                                                    style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
-                                                    onclick="confirmDelete('{{ $economicCenter->id }}', '{{ $economicCenter->center_name }}')">
-                                                    <i class="fas fa-trash"></i> <span>Delete</span>
-                                                </button>
-                                            </div>
-
-                                            <!-- Hidden delete form -->
-                                            <form id="delete-economic-center-form" action="" method="POST"
-                                                style="display: none;">
-                                                @csrf
-                                                @method('DELETE')
-                                            </form>
-                                        </td>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead class="text-center">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Center Name</th>
+                                        <td><b>Photo</b></th>
+                                        <th width="30%">Address</th>
+                                        <th>Contact Number</th>
+                                        <th width="30%">Actions</th>
                                     </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    @foreach ($economicCenters as $economicCenter)
+                                        <tr style="text-align: center;">
+                                            <td>{{ $economicCenter->id }}</td>
+                                            <td>{{ $economicCenter->center_name }}</td>
+                                            <td class="center-image">
+                                                @if ($economicCenter->profile_photo_path)
+                                                    <img src="{{ asset('storage/' . $economicCenter->profile_photo_path) }}"
+                                                        alt="Profile Photo" class="rounded-circle img-fluid"
+                                                        width="50" height="50">
+                                                @else
+                                                    <img src="{{ asset('images/default-center/economic-center.jpg') }}"
+                                                        alt="Default Photo" class="rounded-circle img-fluid"
+                                                        width="50" height="50">
+                                                @endif
+                                            </td>
+                                            <td>{{ $economicCenter->center_location }}</td>
+                                            <td>{{ $economicCenter->contact_number }}</td>
+                                            <td>
+                                                <div
+                                                    class="d-flex flex-column flex-md-row justify-content-center gap-2">
+                                                    <!-- Edit Button -->
+                                                    <button type="button"
+                                                        class="btn btn-warning d-flex align-items-center gap-1"
+                                                        style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
+                                                        onclick="window.location.href='{{ route('economic-centers.edit', $economicCenter->id) }}'">
+                                                        <i class="fas fa-edit"></i> <span>Edit</span>
+                                                    </button>
 
-                        {{-- Pagination --}}
-                        <div class="d-flex justify-content-end mt-3">
-                            {{ $economicCenters->links() }}
+                                                    <!-- Assign Users Buttons -->
+                                                    <a href="{{ route('economic.center.assign.user', $economicCenter->id) }}"
+                                                        class="btn btn-info"
+                                                        style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
+                                                        data-id="{{ $economicCenter->id }}"
+                                                        data-name="{{ $economicCenter->center_name }}">
+                                                        <i class="fas fa-user"></i> <span>Assign Users</span>
+                                                    </a>
+
+                                                    <!-- Delete Button -->
+                                                    <button type="button" class="btn btn-danger"
+                                                        style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
+                                                        onclick="confirmDelete('{{ $economicCenter->id }}', '{{ $economicCenter->center_name }}')">
+                                                        <i class="fas fa-trash"></i> <span>Delete</span>
+                                                    </button>
+                                                </div>
+
+                                                <!-- Hidden delete form -->
+                                                <form id="delete-economic-center-form" action="" method="POST"
+                                                    style="display: none;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+
+                            {{-- Pagination --}}
+                            <div class="d-flex justify-content-end mt-3">
+                                {{ $economicCenters->links() }}
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 </x-admin-layout>
 
 {{-- Bootstrap CDN --}}

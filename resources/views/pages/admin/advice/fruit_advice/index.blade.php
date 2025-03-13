@@ -13,7 +13,8 @@
                 <div class="card">
                     <!-- Card Header -->
                     <div class="card-header bg-dark d-flex justify-content-between align-items-center">
-                        <h3 class="text-white mb-0"><i class="fas fa-apple-alt" style="margin-right: 10px;"></i>Fruit Advice</h3>
+                        <h3 class="text-white mb-0"><i class="fas fa-apple-alt" style="margin-right: 10px;"></i>Fruit
+                            Advice</h3>
                         <a href="{{ route('fruit_advice.create') }}"
                             class="btn btn-dark float-end border border-white d-flex align-items-center gap-2 justify-content-end">
                             <i class="fas fa-seedling"></i> <span>Add Fruit Advice</span>
@@ -23,98 +24,98 @@
                     <!-- Filter Section -->
                     <div class="card-body bg-light">
                         <form action="{{ route('fruit_advice.index') }}" method="GET">
-                            <div class="input-group">
-                                <select name="fruit_id" id="fruits" class="form-select select2"
-                                    onchange="this.form.submit()">
-                                    <option value="">Select a fruit to filter</option>
-                                    @foreach ($fruits as $id => $name)
-                                        <option value="{{ $id }}"
-                                            {{ request('fruit_id') == $id ? 'selected' : '' }}>
-                                            {{ $name }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                            <div class="row">
+                                <div class="col-12 col-md-8 mx-auto">
+                                    <div class="input-group">
+                                        <select name="fruit_id" id="fruits" class="form-select select2"
+                                            onchange="this.form.submit()">
+                                            <option value="">Select a fruit to filter</option>
+                                            @foreach ($fruits as $id => $name)
+                                                <option value="{{ $id }}"
+                                                    {{ request('fruit_id') == $id ? 'selected' : '' }}>
+                                                    {{ $name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                         </form>
                     </div>
 
                     <!-- Card Body -->
                     <div class="card-body">
-                        @if (Session::has('success'))
-                            <div class="alert alert-success">
-                                {{ Session::get('success') }}
-                            </div>
-                        @endif
-
-                        <table class="table table-striped">
-                            <thead style="text-align: center;">
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Description</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody style="text-align: center;">
-                                @if ($fruit_advice->isNotEmpty())
-                                    @foreach ($fruit_advice as $fruitAdvice)
-                                        <tr>
-                                            <td>{{ $fruitAdvice->id }}</td>
-                                            <td class="description-column">
-                                                {!! Str::limit(strip_tags($fruitAdvice->description), 50, '...') !!}
-                                            </td>
-                                            <td>
-                                                <div class="d-flex justify-content-end gap-2">
-                                                    <!-- Show Button -->
-                                                    <button type="button"
-                                                        class="btn btn-primary d-flex align-items-center gap-1"
-                                                        style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
-                                                        onclick="window.location.href='{{ route('fruit_advice.show', $fruitAdvice->id) }}'">
-                                                        <i class="fas fa-eye"></i> <span>Show</span>
-                                                    </button>
-
-                                                    <!-- Edit Button -->
-                                                    <button type="button"
-                                                        class="btn btn-warning d-flex align-items-center gap-1"
-                                                        style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
-                                                        onclick="window.location.href='{{ route('fruit_advice.edit', $fruitAdvice->id) }}'">
-                                                        <i class="fas fa-edit"></i> <span>Edit</span>
-                                                    </button>
-
-                                                    <button type="button"
-                                                        class="btn btn-danger btn-sm d-flex align-items-center gap-1"
-                                                        style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
-                                                        onclick="deleteFruitAdvice({{ $fruitAdvice->id }})">
-                                                        <i class="fas fa-trash"></i> Delete
-                                                    </button>
-                                                </div>
-
-                                                <!-- Hidden delete form -->
-                                                <form id="delete-fruit-advice-form{{ $fruitAdvice->id }}"
-                                                    action="{{ route('fruit_advice.destroy', $fruitAdvice->id) }}"
-                                                    method="POST" style="display: none;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                @else
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead class="text-center">
                                     <tr>
-                                        <td colspan="3" class="text-center">No fruit advice found</td>
+                                        <th>ID</th>
+                                        <th>Description</th>
+                                        <th>Action</th>
                                     </tr>
-                                @endif
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody style="text-align: center;">
+                                    @if ($fruit_advice->isNotEmpty())
+                                        @foreach ($fruit_advice as $fruitAdvice)
+                                            <tr>
+                                                <td>{{ $fruitAdvice->id }}</td>
+                                                <td class="description-column">
+                                                    {!! Str::limit(strip_tags($fruitAdvice->description), 50, '...') !!}
+                                                </td>
+                                                <td>
+                                                    <div
+                                                        class="d-flex flex-column flex-md-row justify-content-center gap-2">
+                                                        <!-- Show Button -->
+                                                        <button type="button"
+                                                            class="btn btn-primary d-flex align-items-center gap-1"
+                                                            style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
+                                                            onclick="window.location.href='{{ route('fruit_advice.show', $fruitAdvice->id) }}'">
+                                                            <i class="fas fa-eye"></i> <span>Show</span>
+                                                        </button>
 
-                        <!-- Pagination Links -->
-                        <div class="d-flex justify-content-center mt-4">
-                            {{ $fruit_advice->links() }}
+                                                        <!-- Edit Button -->
+                                                        <button type="button"
+                                                            class="btn btn-warning d-flex align-items-center gap-1"
+                                                            style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
+                                                            onclick="window.location.href='{{ route('fruit_advice.edit', $fruitAdvice->id) }}'">
+                                                            <i class="fas fa-edit"></i> <span>Edit</span>
+                                                        </button>
+
+                                                        <button type="button"
+                                                            class="btn btn-danger btn-sm d-flex align-items-center gap-1"
+                                                            style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
+                                                            onclick="deleteFruitAdvice({{ $fruitAdvice->id }})">
+                                                            <i class="fas fa-trash"></i> Delete
+                                                        </button>
+                                                    </div>
+
+                                                    <!-- Hidden delete form -->
+                                                    <form id="delete-fruit-advice-form{{ $fruitAdvice->id }}"
+                                                        action="{{ route('fruit_advice.destroy', $fruitAdvice->id) }}"
+                                                        method="POST" style="display: none;">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    @else
+                                        <tr>
+                                            <td colspan="3" class="text-center">No fruit advice found</td>
+                                        </tr>
+                                    @endif
+                                </tbody>
+                            </table>
+
+                            <!-- Pagination Links -->
+                            <div class="d-flex justify-content-center mt-4">
+                                {{ $fruit_advice->links() }}
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 </x-admin-layout>
 
 {{-- Bootstrap CDN --}}
