@@ -258,9 +258,12 @@ class MarketController extends Controller
     /**
      * Display the market profile page.
      */
-    public function marketProfile()
+    public function marketProfile(Request $request)
     {
-        return view('pages.market.profile.show');
+        return view('pages.market.profile.show', [
+            'request' => $request,
+            'user' => $request->user(),
+        ]);
     }
 
     /**

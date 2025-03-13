@@ -13,11 +13,11 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link class="text-white hove:text:black" href="{{ route('market.dashboard') }}" :active="request()->routeIs('market.dashboard')">
+                    <x-nav-link class="text-white" href="{{ route('market.dashboard') }}" :active="request()->routeIs('market.dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
 
-                    <x-nav-link class="text-white hove:text:black" href="{{ route('market.admin.contact') }}" :active="request()->routeIs('market.admin.contact')">
+                    <x-nav-link class="text-white" href="{{ route('market.admin.contact') }}" :active="request()->routeIs('market.admin.contact')">
                         {{ __('Admin contact') }}
                     </x-nav-link>
                 </div>

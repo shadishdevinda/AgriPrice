@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Fruit;
 use App\Models\Vegetable;
+use Illuminate\Http\Request;
 use App\Models\EconomicCenter;
 use Spatie\Permission\Models\Role;
 
@@ -41,8 +42,11 @@ class AdminController extends Controller
      *
      * @return \Illuminate\View\View The admin profile view.
      */
-    public function adminProfile()
+    public function adminProfile(Request $request)
     {
-        return view('pages.admin.profile.show');
+        return view('pages.admin.profile.show', [
+            'request' => $request,
+            'user' => $request->user(),
+        ]);
     }
 }
