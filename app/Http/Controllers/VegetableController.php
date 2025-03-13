@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Vegetable;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Routing\Controllers\Middleware;
 
 class VegetableController extends Controller
 {
@@ -201,6 +203,16 @@ class VegetableController extends Controller
      */
     public function destroy(Vegetable $vegetable)
     {
+        $user = Auth::user();
+
+        // Check if the user has permission to delete vegetables
+        if (!$user->hasPermissionTo('delete vegetables')) {
+            return response()->json([
+                'success' => false,
+                'message' => 'You do not have permission to delete vegetables.',
+            ], 403); // 403 Forbidden status code
+        }
+
         // Begin database transaction
         DB::beginTransaction();
 

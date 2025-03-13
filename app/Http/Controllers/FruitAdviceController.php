@@ -155,8 +155,8 @@ class FruitAdviceController extends Controller
     {
         // Validate the incoming request data
         $rules = [
-            'description' => 'required|min:3',
-            'fruits' => 'required|array', // Ensure 'fruits' is an array
+            'description' => 'nullable|min:3',
+            'fruits' => 'nullable|array', // Ensure 'fruits' is an array
         ];
 
         $validator = Validator::make($request->all(), $rules);

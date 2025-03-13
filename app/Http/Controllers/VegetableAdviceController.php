@@ -124,8 +124,8 @@ class VegetableAdviceController extends Controller
     public function update(Request $request, VegetableAdvice $vegetableAdvice)
     {
         $validator = Validator::make($request->all(), [
-            'description' => 'required|min:3',
-            'vegetables' => 'required|array',
+            'description' => 'nullable|min:3',
+            'vegetables' => 'nullable|array',
         ]);
 
         if ($validator->fails()) {
