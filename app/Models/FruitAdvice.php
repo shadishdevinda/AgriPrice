@@ -7,17 +7,29 @@ use Illuminate\Database\Eloquent\Model;
 
 class FruitAdvice extends Model
 {
-    use HasFactory;
+    use HasFactory; // Use Laravel's HasFactory trait for generating factory data
 
-    protected $table = 'fruit_advice';
+    // Define the table associated with this model
+    protected $table = 'fruit_advice'; // The table name is 'fruit_advice' in the database
 
+    // Define the attributes that are mass assignable
     protected $fillable = [
-        'description',
+        'description', // Description of the advice related to fruits (e.g., care tips, recipes)
     ];
 
-    // fruits for each advice
+    /**
+     * Define the relationship between FruitAdvice and Fruit.
+     *
+     * A piece of fruit advice can be associated with many fruits through a pivot table `fruit_has_advice`.
+     * The method establishes a many-to-many relationship with the Fruit model.
+     */
     public function fruits()
     {
-        return $this->belongsToMany(Fruit::class, 'fruit_has_advice', 'advice_id', 'fruit_id');
+        return $this->belongsToMany(
+            Fruit::class,          // The related model (Fruit)
+            'fruit_has_advice',    // The pivot table name
+            'advice_id',           // Foreign key on the pivot table for the advice
+            'fruit_id'             // Foreign key on the pivot table for the fruit
+        );
     }
 }
