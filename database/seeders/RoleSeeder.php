@@ -13,18 +13,6 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create the 'system-user' role
-        Role::create([
-            'name' => 'system-user',
-            'guard_name' => 'web',
-        ]);
-
-        // Create the 'market-user' role
-        Role::create([
-            'name' => 'market-user',
-            'guard_name' => 'web',
-        ]);
-
         // Create the 'system-admin' role
         Role::create([
             'name' => 'system-admin',

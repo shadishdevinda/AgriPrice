@@ -15,20 +15,21 @@ use App\Models\MarketRequestMessage;
 use Illuminate\Support\Facades\Auth;
 use App\Models\AdminContactNotification;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\DB;
 
 class MarketController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display the market dashboard with filtered vegetables and fruits.
      */
     public function index(Request $request)
     {
         // Get the authenticated user
         $user = Auth::user();
 
-        // Fetch the economic center details for the market user
+        // Fetch the economic center details for the market user (if the user is a market-admin)
         $economicCenter = null;
-        if ($user && $user->user_type === 'market-user') {
+        if ($user && $user->hasRole('market-admin')) {
             $economicCenter = EconomicCenter::find($user->center_id);
         }
 
@@ -36,39 +37,35 @@ class MarketController extends Controller
         $vegetables = Vegetable::pluck('name', 'id')->all();
         $fruits = Fruit::pluck('name', 'id')->all();
 
-        // Initialize the query for vegetables
+        // Initialize queries for filtering vegetables and fruits
         $vegetableQuery = Vegetable::orderBy('created_at', 'DESC');
-
-        // Initialize the query for fruits
         $fruitQuery = Fruit::orderBy('created_at', 'DESC');
 
-        // Filter by selected vegetable (if a vegetable is selected)
+        // Apply vegetable filter if specified in the request
         if ($request->has('vegetable_id') && $request->vegetable_id) {
             $vegetableQuery->where('id', $request->vegetable_id);
         }
 
-        // Filter by selected fruit (if a fruit is selected)
+        // Apply fruit filter if specified in the request
         if ($request->has('fruit_id') && $request->fruit_id) {
             $fruitQuery->where('id', $request->fruit_id);
         }
 
-        // Fetch the filtered vegetables with pagination
+        // Paginate the filtered lists of vegetables and fruits
         $vegetablesList = $vegetableQuery->paginate(10); // 10 items per page
-
-        // Fetch the filtered fruits with pagination
         $fruitList = $fruitQuery->paginate(10); // 10 items per page
 
-        // Fetch the prices from the center_has_vegetable table
+        // Fetch prices from the center_has_vegetable and center_has_fruit tables
         $vegetablePrices = CenterHasVegetables::where('center_id', $user->center_id)
             ->select('vegetable_id', 'vegetable_wholesale_price', 'vegetable_retail_price')
             ->get()
-            ->keyBy('vegetable_id') // Use vegetable_id as the key
+            ->keyBy('vegetable_id')
             ->toArray();
 
         $fruitPrices = CenterHasFruits::where('center_id', $user->center_id)
             ->select('fruit_id', 'fruit_wholesale_price', 'fruit_retail_price')
             ->get()
-            ->keyBy('fruit_id') // Use fruit_id as the key
+            ->keyBy('fruit_id')
             ->toArray();
 
         // Return JSON response for AJAX requests
@@ -89,30 +86,31 @@ class MarketController extends Controller
             ]);
         }
 
-        // Return full view for normal requests
+        // Return the full view for normal requests
         return view('pages.market.dashboard.dashboard', [
-            'vegetables' => $vegetables, // For the dropdown filter
-            'vegetablesList' => $vegetablesList, // For displaying the filtered list
-            'vegetablePrices' => $vegetablePrices, // For the prices
-            'fruits' => $fruits, // For the dropdown filter
-            'fruitPrices' => $fruitPrices, // For the prices
-            'fruitList' => $fruitList, // For displaying the filtered list
+            'vegetables' => $vegetables, // Dropdown filter for vegetables
+            'vegetablesList' => $vegetablesList, // Filtered vegetable list
+            'vegetablePrices' => $vegetablePrices, // Vegetable prices
+            'fruits' => $fruits, // Dropdown filter for fruits
+            'fruitPrices' => $fruitPrices, // Fruit prices
+            'fruitList' => $fruitList, // Filtered fruit list
             'economicCenter' => $economicCenter,
             'user' => $user,
         ]);
     }
 
     /**
-     * Update the specified vegetable prices resource in storage.
+     * Update vegetable prices in the database with transactions for safe operations.
      */
     public function vegetableUpdate(Request $request, $id)
     {
-        // Log the incoming request data
+        // Log incoming request data for debugging purposes
         Log::info('Update request received:', [
             'id' => $id,
             'data' => $request->all(),
         ]);
 
+        // Validate the incoming request data
         $request->validate([
             'Wholesale_Price' => 'required|numeric',
             'Retail_Price' => 'required|numeric',
@@ -121,20 +119,23 @@ class MarketController extends Controller
         // Get the authenticated user (market user)
         $user = Auth::user();
 
-        // Log the authenticated user
+        // Log authenticated user details for debugging
         Log::info('Authenticated user:', [
             'user_id' => $user->id,
             'center_id' => $user->center_id,
         ]);
 
+        // Use database transactions to ensure safe updates
+        DB::beginTransaction();
+
         try {
-            // Ensure the request is for vegetables
+            // Ensure the request is for updating vegetable prices
             if ($request->is('market/vegetable/*')) {
-                // Update the prices in the center_has_vegetable table
+                // Update or create the prices in the center_has_vegetable table
                 CenterHasVegetables::updateOrCreate(
                     [
-                        'center_id' => $user->center_id, // Use the market user's center_id
-                        'vegetable_id' => $id,          // Use the vegetable ID
+                        'center_id' => $user->center_id, // Market user's center_id
+                        'vegetable_id' => $id,            // Vegetable ID
                     ],
                     [
                         'vegetable_wholesale_price' => $request->Wholesale_Price,
@@ -142,7 +143,7 @@ class MarketController extends Controller
                     ]
                 );
 
-                // Log the center_has_vegetable update
+                // Log the update for center_has_vegetable
                 Log::info('center_has_vegetable updated:', [
                     'center_id' => $user->center_id,
                     'vegetable_id' => $id,
@@ -150,16 +151,23 @@ class MarketController extends Controller
                     'vegetable_retail_price' => $request->Retail_Price,
                 ]);
             } else {
+                // Log error if the URL does not match the expected format
                 Log::error('Invalid type specified in the request URL.');
                 return response()->json(['success' => false, 'message' => 'Invalid type specified.'], 400);
             }
+
+            // Commit the transaction after a successful update
+            DB::commit();
 
             // Log success
             Log::info('Prices updated successfully.');
 
             return response()->json(['success' => true]);
         } catch (\Exception $e) {
-            // Log the error
+            // Rollback the transaction in case of an error
+            DB::rollBack();
+
+            // Log the error details
             Log::error('Error updating prices:', [
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
@@ -170,16 +178,17 @@ class MarketController extends Controller
     }
 
     /**
-     * Update the specified fruit prices resource in storage.
+     * Update fruit prices in the database with transactions for safe operations.
      */
     public function fruitUpdate(Request $request, $id)
     {
-        // Log the incoming request data
+        // Log incoming request data for debugging purposes
         Log::info('Update request received:', [
             'id' => $id,
             'data' => $request->all(),
         ]);
 
+        // Validate the incoming request data
         $request->validate([
             'Wholesale_Price' => 'required|numeric',
             'Retail_Price' => 'required|numeric',
@@ -188,20 +197,23 @@ class MarketController extends Controller
         // Get the authenticated user (market user)
         $user = Auth::user();
 
-        // Log the authenticated user
+        // Log authenticated user details for debugging
         Log::info('Authenticated user:', [
             'user_id' => $user->id,
             'center_id' => $user->center_id,
         ]);
 
+        // Use database transactions to ensure safe updates
+        DB::beginTransaction();
+
         try {
-            // Ensure the request is for fruits
+            // Ensure the request is for updating fruit prices
             if ($request->is('market/fruit/*')) {
-                // Update the prices in the center_has_fruit table
+                // Update or create the prices in the center_has_fruit table
                 CenterHasFruits::updateOrCreate(
                     [
-                        'center_id' => $user->center_id, // Use the market user's center_id
-                        'fruit_id' => $id,                // Use the fruit ID
+                        'center_id' => $user->center_id, // Market user's center_id
+                        'fruit_id' => $id,                // Fruit ID
                     ],
                     [
                         'fruit_wholesale_price' => $request->Wholesale_Price,
@@ -209,7 +221,7 @@ class MarketController extends Controller
                     ]
                 );
 
-                // Log the center_has_fruit update
+                // Log the update for center_has_fruit
                 Log::info('center_has_fruit updated:', [
                     'center_id' => $user->center_id,
                     'fruit_id' => $id,
@@ -217,16 +229,23 @@ class MarketController extends Controller
                     'fruit_retail_price' => $request->Retail_Price,
                 ]);
             } else {
+                // Log error if the URL does not match the expected format
                 Log::error('Invalid type specified in the request URL.');
                 return response()->json(['success' => false, 'message' => 'Invalid type specified.'], 400);
             }
+
+            // Commit the transaction after a successful update
+            DB::commit();
 
             // Log success
             Log::info('Prices updated successfully.');
 
             return response()->json(['success' => true]);
         } catch (\Exception $e) {
-            // Log the error
+            // Rollback the transaction in case of an error
+            DB::rollBack();
+
+            // Log the error details
             Log::error('Error updating prices:', [
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
@@ -237,21 +256,24 @@ class MarketController extends Controller
     }
 
     /**
-     * Display the market profile.
+     * Display the market profile page.
      */
     public function marketProfile()
     {
         return view('pages.market.profile.show');
     }
 
+    /**
+     * Display the admin contact page.
+     */
     public function adminContactIndex()
     {
         // Get the authenticated user
         $user = Auth::user();
 
-        // Fetch the economic center details for the market user
+        // Fetch the economic center details for the market admin
         $economicCenter = null;
-        if ($user && $user->user_type === 'market-user') {
+        if ($user && $user->hasRole('market-admin')) {
             $economicCenter = EconomicCenter::find($user->center_id);
         }
 

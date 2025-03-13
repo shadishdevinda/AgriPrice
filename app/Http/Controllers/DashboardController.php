@@ -11,13 +11,18 @@ class DashboardController extends Controller
         // Get the currently authenticated user
         $user = Auth::user();
 
-        // Check the user's type and navigate to the appropriate dashboard
-        if ($user && $user->user_type === 'system-user') {
+        // Check if the user is authenticated
+        if (!$user) {
+            return redirect()->route('home')->with('error', 'Unauthorized access.');
+        }
+
+        // Check the user's role and navigate to the appropriate dashboard
+        if ($user->hasRole('system-admin')) {
             return redirect()->route('admin.dashboard');
-        } elseif ($user && $user->user_type === 'market-user') {
+        } elseif ($user->hasRole('market-admin')) {
             return redirect()->route('market.dashboard');
         } else {
-            // Default redirect if user_type does not match expected values
+            // Default redirect if the user does not have the required roles
             return redirect()->route('home')->with('error', 'Unauthorized access.');
         }
     }
