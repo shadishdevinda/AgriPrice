@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use App\Mail\SendLoginCredentials;
+use Illuminate\Support\Facades\Mail;
 
 class EconomicCenterController extends Controller
 {
@@ -216,7 +218,7 @@ class EconomicCenterController extends Controller
      */
     public function assignUserPage(EconomicCenter $economicCenter)
     {
-        $roles = Role::whereNotIn('name', ['system-user', 'market-user'])->pluck('name', 'name')->all();
+        $roles = Role::whereNotIn('name', ['system-admin'])->pluck('name', 'name')->all();
         return view('pages.admin.economicCenter.assignUser', compact('economicCenter', 'roles'));
     }
 
@@ -237,7 +239,14 @@ class EconomicCenterController extends Controller
                 'username' => 'required|string|max:255',
                 'roles' => 'required|array',
                 'email' => 'required|string|email|max:255|unique:users,email',
-                'password' => 'required|string|min:8|confirmed',
+                'password' => [
+                    'required',
+                    'string',
+                    'min:8', // Minimum 8 characters
+                    'confirmed', // Must match password_confirmation
+                    'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/', // Password strength
+                ],
+                'password_confirmation' => 'required|string|min:8',
             ]);
 
             Log::info('Validation successful.', ['validated_data' => $validated]);
@@ -281,6 +290,11 @@ class EconomicCenterController extends Controller
             }
 
             Log::info('User assigned to economic center.', ['user_id' => $user->id]);
+
+            // Send email with login credentials
+            Mail::to($user->email)->send(new SendLoginCredentials($user->email, $validated['password']));
+
+            Log::info('Login credentials email sent.', ['user_id' => $user->id]);
 
             // Commit the transaction
             DB::commit();

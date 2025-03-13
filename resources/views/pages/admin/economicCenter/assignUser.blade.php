@@ -129,23 +129,32 @@
                                             <i class="fas fa-eye"></i>
                                         </button>
                                     </div>
-                                    <small id="passwordHelp" class="form-text text-muted">Enter the password of the
-                                        user.</small>
+                                    <small id="passwordHelp" class="form-text text-muted">
+                                        Password must meet the following requirements:
+                                        <ul>
+                                            <li>Minimum 8 characters</li>
+                                            <li>At least one uppercase letter</li>
+                                            <li>At least one lowercase letter</li>
+                                            <li>At least one number</li>
+                                            <li>At least one special character (e.g., !@#$%^&*)</li>
+                                        </ul>
+                                    </small>
                                 </div>
+
                                 <div class="col-md-6">
                                     <label for="password_confirmation" class="form-label">Re-Password</label>
                                     <div class="input-group">
                                         <x-input type="password" name="password_confirmation" class="form-control"
-                                            id="password_confirmation" aria-describedby="passwordHelp" required />
+                                            id="password_confirmation" aria-describedby="password_confirmationHelp"
+                                            required />
                                         <button type="button" class="btn btn-outline-secondary"
                                             id="togglePasswordConfirmation">
                                             <i class="fas fa-eye"></i>
                                         </button>
                                     </div>
-                                    <small id="password_confirmationHelp" class="form-text text-muted">Re-enter the
-                                        password
-                                        of
-                                        the user.</small>
+                                    <small id="password_confirmationHelp" class="form-text text-muted">
+                                        Re-enter the password to confirm.
+                                    </small>
                                 </div>
                             </div>
 
@@ -214,22 +223,92 @@
         this.style.display = 'none';
     });
 
-    // Toggle password visibility
-    document.getElementById('togglePassword').addEventListener('click', function() {
+    document.addEventListener('DOMContentLoaded', function() {
         const passwordField = document.getElementById('password');
-        const icon = this.querySelector('i');
-        passwordField.type = (passwordField.type === 'password') ? 'text' : 'password';
-        icon.classList.toggle('fa-eye');
-        icon.classList.toggle('fa-eye-slash');
-    });
-
-    // Toggle password confirmation visibility
-    document.getElementById('togglePasswordConfirmation').addEventListener('click', function() {
         const passwordConfirmationField = document.getElementById('password_confirmation');
-        const icon = this.querySelector('i');
-        passwordConfirmationField.type = (passwordConfirmationField.type === 'password') ? 'text' : 'password';
-        icon.classList.toggle('fa-eye');
-        icon.classList.toggle('fa-eye-slash');
+        const passwordHelp = document.getElementById('passwordHelp');
+        const passwordConfirmationHelp = document.getElementById('password_confirmationHelp');
+
+        // Function to validate password
+        function validatePassword(password) {
+            const minLength = 8;
+            const hasUppercase = /[A-Z]/.test(password);
+            const hasLowercase = /[a-z]/.test(password);
+            const hasNumber = /\d/.test(password);
+            const hasSpecialChar = /[!@#$%^&*]/.test(password);
+
+            return {
+                isValid: password.length >= minLength && hasUppercase && hasLowercase && hasNumber &&
+                    hasSpecialChar,
+                messages: [
+                    password.length >= minLength ? '' : 'Password must be at least 8 characters.',
+                    hasUppercase ? '' : 'Password must contain at least one uppercase letter.',
+                    hasLowercase ? '' : 'Password must contain at least one lowercase letter.',
+                    hasNumber ? '' : 'Password must contain at least one number.',
+                    hasSpecialChar ? '' :
+                    'Password must contain at least one special character (e.g., !@#$%^&*).',
+                ].filter(message => message !== ''),
+            };
+        }
+
+        // Function to validate password confirmation
+        function validatePasswordConfirmation(password, confirmation) {
+            return password === confirmation;
+        }
+
+        // Event listener for password field
+        passwordField.addEventListener('input', function() {
+            const password = passwordField.value;
+            const validation = validatePassword(password);
+
+            if (validation.isValid) {
+                // Display success message in green
+                passwordHelp.innerHTML = `
+                <span style="color: green;">Password meets all requirements.</span>
+            `;
+            } else {
+                // Display individual requirements in red
+                passwordHelp.innerHTML = `
+                <span style="color: red;">
+                    Password must meet the following requirements:
+                    <ul>
+                        ${validation.messages.map(message => `<li>${message}</li>`).join('')}
+                    </ul>
+                </span>
+            `;
+            }
+        });
+
+        // Event listener for password confirmation field
+        passwordConfirmationField.addEventListener('input', function() {
+            const password = passwordField.value;
+            const confirmation = passwordConfirmationField.value;
+
+            if (validatePasswordConfirmation(password, confirmation)) {
+                passwordConfirmationHelp.innerHTML = 'Passwords match.';
+                passwordConfirmationHelp.style.color = 'green';
+            } else {
+                passwordConfirmationHelp.innerHTML = 'Passwords do not match.';
+                passwordConfirmationHelp.style.color = 'red';
+            }
+        });
+
+        // Toggle password visibility
+        const togglePassword = document.getElementById('togglePassword');
+        togglePassword.addEventListener('click', function() {
+            const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordField.setAttribute('type', type);
+            this.querySelector('i').classList.toggle('fa-eye-slash');
+        });
+
+        // Toggle password confirmation visibility
+        const togglePasswordConfirmation = document.getElementById('togglePasswordConfirmation');
+        togglePasswordConfirmation.addEventListener('click', function() {
+            const type = passwordConfirmationField.getAttribute('type') === 'password' ? 'text' :
+                'password';
+            passwordConfirmationField.setAttribute('type', type);
+            this.querySelector('i').classList.toggle('fa-eye-slash');
+        });
     });
 
     // Initial form submission handler (unchanged)
