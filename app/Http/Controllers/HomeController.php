@@ -15,9 +15,9 @@ use App\Models\EconomicCenter;
 use App\Models\FruitHasAdvice;
 use App\Models\VegetableHasAdvice;
 
-
 class HomeController extends Controller
 {
+    // Render the welcome page
     public function welcome()
     {
         // Fetch counts from the database
@@ -32,50 +32,57 @@ class HomeController extends Controller
         return view('pages.home.welcome', compact('vegetableCount', 'fruitCount', 'economicCenterCount', 'cropAdviceCount', 'totalProduceCount'));
     }
 
-    // Vegetable Price Index
+    // Display the vegetable price index (list of all vegetables)
     public function vegetableIndex()
     {
-        $vegetables = Vegetable::all(); // Fetch all vegetables from the database
+        // Fetch all vegetables from the database
+        $vegetables = Vegetable::all();
+        // Return the view with the list of vegetables
         return view('pages.home.prices.vegetable.index', compact('vegetables'));
     }
 
-    // Fruit Price Index
+    // Display the fruit price index (list of all fruits)
     public function fruitIndex()
     {
-        $fruits = Fruit::all(); // Fetch all fruits from the database
+        // Fetch all fruits from the database
+        $fruits = Fruit::all();
+        // Return the view with the list of fruits
         return view('pages.home.prices.fruit.index', compact('fruits'));
     }
 
-    // Vegetable Details
+    // Display detailed price information for a specific vegetable
     public function vegetableDetails(Request $request, $id)
     {
+        // Find the vegetable by ID
         $vegetable = Vegetable::findOrFail($id);
 
-        // Get all unique dates and centers
+        // Get all distinct dates when the vegetable's price was updated
         $dates = CenterHasVegetables::where('vegetable_id', $id)
                     ->selectRaw('DATE(created_at) as date')
                     ->distinct()
                     ->pluck('date');
 
+        // Get all distinct centers that sell this vegetable, including center details
         $centers = CenterHasVegetables::where('vegetable_id', $id)
                     ->with('center')
                     ->select('center_id')
                     ->distinct()
                     ->get();
 
-        // Fetch latest available date
+        // Fetch the latest available date for this vegetable
         $latestDate = CenterHasVegetables::where('vegetable_id', $id)
                         ->orderBy('created_at', 'desc')
                         ->value(DB::raw('DATE(created_at)'));
 
-        // Default selected date (if filtering by "All Centers", use latest date)
-        $selectedDate = $request->has('center_id') && $request->center_id != '' ? null : ($request->input('date') ?? $latestDate);
+        // Determine the default selected date (either a specific date or the latest date)
+        $selectedDate = $request->has('center_id') && $request->center_id != ''
+                        ? null : ($request->input('date') ?? $latestDate);
 
-        // Query for data
+        // Build the query to fetch the vegetable data
         $query = CenterHasVegetables::where('vegetable_id', $id);
 
+        // If a specific center is filtered, show data for the last 10 days
         if ($request->has('center_id') && $request->center_id != '') {
-            // If filtering by a specific center, show data for the last 10 days
             $query->where('center_id', $request->center_id)
                   ->whereDate('created_at', '>=', Carbon::now()->subDays(10));
             $isCenterFiltered = true;
@@ -85,43 +92,48 @@ class HomeController extends Controller
             $isCenterFiltered = false;
         }
 
+        // Fetch the filtered vegetable data
         $centerhasvegetable = $query->get();
 
+        // Return the view with all necessary data
         return view('pages.home.prices.vegetable.details', compact(
             'vegetable', 'centerhasvegetable', 'dates', 'centers', 'latestDate', 'selectedDate', 'isCenterFiltered'
         ));
     }
 
-    // Fruit Details
+    // Display detailed price information for a specific fruit
     public function fruitDetails(Request $request, $id)
     {
+        // Find the fruit by ID
         $fruit = Fruit::findOrFail($id);
 
-        // Get all unique dates and centers
+        // Get all distinct dates when the fruit's price was updated
         $dates = CenterHasFruits::where('fruit_id', $id)
                     ->selectRaw('DATE(created_at) as date')
                     ->distinct()
                     ->pluck('date');
 
+        // Get all distinct centers that sell this fruit, including center details
         $centers = CenterHasFruits::where('fruit_id', $id)
                     ->with('center')
                     ->select('center_id')
                     ->distinct()
                     ->get();
 
-        // Fetch latest available date
+        // Fetch the latest available date for this fruit
         $latestDate = CenterHasFruits::where('fruit_id', $id)
                         ->orderBy('created_at', 'desc')
                         ->value(DB::raw('DATE(created_at)'));
 
-        // Default selected date (if filtering by "All Centers", use latest date)
-        $selectedDate = $request->has('center_id') && $request->center_id != '' ? null : ($request->input('date') ?? $latestDate);
+        // Determine the default selected date (either a specific date or the latest date)
+        $selectedDate = $request->has('center_id') && $request->center_id != ''
+                        ? null : ($request->input('date') ?? $latestDate);
 
-        // Query for data
+        // Build the query to fetch the fruit data
         $query = CenterHasFruits::where('fruit_id', $id);
 
+        // If a specific center is filtered, show data for the last 10 days
         if ($request->has('center_id') && $request->center_id != '') {
-            // If filtering by a specific center, show data for the last 10 days
             $query->where('center_id', $request->center_id)
                   ->whereDate('created_at', '>=', Carbon::now()->subDays(10));
             $isCenterFiltered = true;
@@ -131,36 +143,48 @@ class HomeController extends Controller
             $isCenterFiltered = false;
         }
 
+        // Fetch the filtered fruit data
         $centerhasfruit = $query->get();
 
+        // Return the view with all necessary data
         return view('pages.home.prices.fruit.details', compact(
             'fruit', 'centerhasfruit', 'dates', 'centers', 'latestDate', 'selectedDate', 'isCenterFiltered'
         ));
     }
 
+    // Display a list of fruit advice
     public function fruitAdviceIndex()
     {
-       $fruits = Fruit::all();
-       return view('pages.home.advices.fruits.index', compact('fruits'));
+        // Fetch all fruits from the database
+        $fruits = Fruit::all();
+        // Return the view with the list of fruits
+        return view('pages.home.advices.fruits.index', compact('fruits'));
     }
 
+    // Show detailed advice for a specific fruit
     public function fruitAdviceShow($id)
     {
+        // Find the fruit along with its advice
         $fruit = Fruit::with('advice')->findOrFail($id);
+        // Return the view with the fruit and its advice
         return view('pages.home.advices.fruits.show', compact('fruit'));
     }
 
-
+    // Display a list of vegetable advice
     public function vegetableAdviceIndex()
     {
+        // Fetch all vegetables from the database
         $vegetables = Vegetable::all();
+        // Return the view with the list of vegetables
         return view('pages.home.advices.vegetable.index', compact('vegetables'));
     }
 
-
+    // Show detailed advice for a specific vegetable
     public function vegetableAdviceShow($id)
     {
+        // Find the vegetable along with its advice
         $vegetable = Vegetable::with('advice')->findOrFail($id);
+        // Return the view with the vegetable and its advice
         return view('pages.home.advices.vegetable.show', compact('vegetable'));
     }
 

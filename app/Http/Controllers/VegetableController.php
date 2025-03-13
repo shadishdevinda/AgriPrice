@@ -4,115 +4,119 @@ namespace App\Http\Controllers;
 
 use App\Models\Vegetable;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
-
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Routing\Controllers\Middleware;
 
 class VegetableController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of vegetables with optional filtering.
      */
     public function index(Request $request)
     {
-        // Fetch all vegetables for the dropdown
+        // Fetch all vegetables for the dropdown selection.
         $vegetables = Vegetable::pluck('name', 'id')->all();
 
-        // Initialize the query for vegetables
+        // Initialize query for listing vegetables, ordered by latest entry.
         $query = Vegetable::orderBy('created_at', 'DESC');
 
-        // Filter by selected vegetable (if a vegetable is selected)
+        // Apply filtering if a vegetable is selected.
         if ($request->has('vegetable_id') && $request->vegetable_id) {
             $query->where('id', $request->vegetable_id);
         }
 
-        // Fetch the filtered vegetables with pagination
-        $vegetablesList = $query->paginate(10); // 10 items per page
+        // Paginate results (10 items per page).
+        $vegetablesList = $query->paginate(10);
 
-        // Pass the data to the view
         return view('pages.admin.category.vegetables.index', [
-            'vegetables' => $vegetables, // For the dropdown filter
-            'vegetablesList' => $vegetablesList, // For displaying the filtered list
+            'vegetables' => $vegetables,
+            'vegetablesList' => $vegetablesList,
         ]);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new vegetable entry.
      */
     public function create()
     {
         return view('pages.admin.category.vegetables.create');
     }
+
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created vegetable in the database.
      */
     public function store(Request $request)
     {
+        // Validation rules
+        $rules = [
+            'name' => 'required|min:3|max:255|unique:vegetable',
+            'description' => 'required|min:3|max:1000',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+        ];
+
+        // Validate request data
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()->all(),
+            ], 422);
+        }
+
+        // Begin database transaction
+        DB::beginTransaction();
+
         try {
-            // Validation rules
-            $rules = [
-                'name' => 'required|min:3|max:255|unique:vegetable',
-                'description' => 'required|min:3|max:1000',
-                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
-            ];
-
-            // Validate the request
-            $validator = Validator::make($request->all(), $rules);
-
-            // If validation fails, return JSON response with errors
-            if ($validator->fails()) {
-                return response()->json([
-                    'success' => false,
-                    'errors' => $validator->errors()->all(),
-                ], 422);
-            }
-
-            // Initialize the vegetable object
+            // Create a new Vegetable entry
             $vegetable = new Vegetable();
             $vegetable->name = $request->name;
             $vegetable->description = $request->description;
 
             // Handle image upload
             if ($request->hasFile('image')) {
-                // Generate a unique filename using Str::random
                 $file = $request->file('image');
                 $fileExtension = $file->getClientOriginalExtension();
-                $vegetableName = $request->name; // Get the vegetable name
-                $fileName = $vegetableName . '.' . time() . '.' . $fileExtension;
+                $fileName = $request->name . '.' . time() . '.' . $fileExtension;
                 $filePath = 'vegetable-photos/' . $fileName;
 
-                // Store the file in the 'public' disk, under the 'vegetable-photos' directory
+                // Store image in the 'public' disk
                 Storage::disk('public')->put($filePath, file_get_contents($file));
-
-                // Store the relative file path in the database
                 $vegetable->image = $filePath;
 
-                // Log the image upload
+                // Log successful image upload
                 Log::info('New vegetable photo uploaded.', ['path' => $filePath]);
             }
 
             // Save the vegetable in the database
             $vegetable->save();
 
+            // Commit transaction
+            DB::commit();
+
             return response()->json([
                 'success' => true,
-                'message' => 'Product added successfully',
+                'message' => 'Vegetable added successfully',
             ], 200);
         } catch (\Exception $e) {
-            // Log the error
+            // Rollback transaction on error
+            DB::rollBack();
+
             Log::error('Error saving vegetable: ' . $e->getMessage());
 
             return response()->json([
                 'success' => false,
-                'message' => 'An error occurred while saving the product. Please try again.',
+                'message' => 'An error occurred while saving the vegetable. Please try again.',
             ], 500);
         }
     }
 
     /**
-     * Display the specified resource.
+     * Display details of a specific vegetable.
      */
     public function show(Vegetable $vegetable)
     {
@@ -120,7 +124,7 @@ class VegetableController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing an existing vegetable entry.
      */
     public function edit(Vegetable $vegetable)
     {
@@ -128,86 +132,115 @@ class VegetableController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update an existing vegetable in the database.
      */
     public function update(Request $request, Vegetable $vegetable)
     {
+        // Validation rules
+        $rules = [
+            'name' => 'required|min:3|max:255',
+            'description' => 'required|min:3|max:1000',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+        ];
+
+        // Validate request data
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()->all(),
+            ], 422);
+        }
+
+        // Begin database transaction
+        DB::beginTransaction();
+
         try {
-            $rules = [
-                'name' => 'required|min:5',
-                'description' => 'required|min:3',
-                'image' => 'nullable|image' // make sure the image is optional but must be an image file
-            ];
-
-            $validator = Validator::make($request->all(), $rules);
-
-            if ($validator->fails()) {
-                return response()->json([
-                    'success' => false,
-                    'errors' => $validator->errors()->all(),
-                ], 422);
-            }
-
-            // Update product object
+            // Update vegetable details
             $vegetable->name = $request->name;
             $vegetable->description = $request->description;
 
-            // Handle the image upload if it exists
+            // Handle image upload if a new image is provided
             if ($request->hasFile('image')) {
-                File::delete(public_path('uploads/vegetable/' . $vegetable->image));
+                // Delete old image if exists
+                if ($vegetable->image) {
+                    Storage::disk('public')->delete($vegetable->image);
+                }
 
+                // Store the new image
                 $image = $request->file('image');
-                $ext = $image->getClientOriginalExtension();
-                $imageName = time() . '.' . $ext; // unique image name
-
-                // Save the image in the 'uploads/products' directory
-                $image->move(public_path('uploads/vegetable'), $imageName);
-
-                // Set the image name in the product object
-                $vegetable->image = $imageName;
+                $fileName = $request->name . '.' . time() . '.' . $image->getClientOriginalExtension();
+                $filePath = 'vegetable-photos/' . $fileName;
+                Storage::disk('public')->put($filePath, file_get_contents($image));
+                $vegetable->image = $filePath;
             }
 
-            // Save the product in the database
+            // Save updated details in the database
             $vegetable->save();
+
+            // Commit transaction
+            DB::commit();
 
             return response()->json([
                 'success' => true,
-                'message' => 'Product updated successfully',
+                'message' => 'Vegetable updated successfully',
             ], 200);
         } catch (\Exception $e) {
-            Log::error('An exception occurred.', ['exception' => $e->getMessage()]);
+            // Rollback transaction on error
+            DB::rollBack();
+
+            Log::error('Error updating vegetable: ' . $e->getMessage());
 
             return response()->json([
                 'success' => false,
-                'message' => 'Error: ' . $e->getMessage(),
+                'message' => 'An error occurred while updating the vegetable. Please try again.',
             ], 500);
         }
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Delete a vegetable from the database.
      */
     public function destroy(Vegetable $vegetable)
     {
+        $user = Auth::user();
+
+        // Check if the user has permission to delete vegetables
+        if (!$user->hasPermissionTo('delete vegetables')) {
+            return response()->json([
+                'success' => false,
+                'message' => 'You do not have permission to delete vegetables.',
+            ], 403); // 403 Forbidden status code
+        }
+
+        // Begin database transaction
+        DB::beginTransaction();
+
         try {
-            // Delete the fruit image if it exists
+            // Delete image if it exists
             if ($vegetable->image) {
                 Storage::disk('public')->delete($vegetable->image);
             }
 
-            // Delete the fruit
+            // Delete the vegetable entry from the database
             $vegetable->delete();
+
+            // Commit transaction
+            DB::commit();
 
             return response()->json([
                 'success' => true,
                 'message' => 'Vegetable deleted successfully',
             ], 200);
         } catch (\Exception $e) {
+            // Rollback transaction on error
+            DB::rollBack();
+
             Log::error('Error deleting vegetable: ' . $e->getMessage());
 
             return response()->json([
                 'success' => false,
-                'message' => 'Error: ' . $e->getMessage(),
+                'message' => 'An error occurred while deleting the vegetable. Please try again.',
             ], 500);
         }
     }

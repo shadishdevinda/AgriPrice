@@ -5,6 +5,12 @@
             <x-authentication-card-logo />
         </x-slot>
 
+        <x-slot name="heading">
+            <h1 id="login-heading" class="text-2xl text-white font-bold">
+                Confirm Password
+            </h1>
+        </x-slot>
+
         <div class="mb-4 text-sm text-gray-600">
             {{ __('This is a secure area of the application. Please confirm your password before continuing.') }}
         </div>

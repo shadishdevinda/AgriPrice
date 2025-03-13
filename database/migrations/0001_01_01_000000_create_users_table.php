@@ -16,7 +16,6 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->string('user_type')->nullable();
             // Foreign key to economic_center table using a string `id`
             $table->string('center_id')->nullable(); // Make sure the foreign column is a string
             $table->foreign('center_id')

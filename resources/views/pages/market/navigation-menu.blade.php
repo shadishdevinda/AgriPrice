@@ -5,7 +5,7 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('market.dashboard') }}">
+                    <a href="{{ route('home') }}">
                         <x-application-mark class="block h-9 w-auto" />
                     </a>
                 </div>
@@ -13,11 +13,11 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link class="text-white hove:text:black" href="{{ route('market.dashboard') }}" :active="request()->routeIs('market.dashboard')">
+                    <x-nav-link class="text-white" href="{{ route('market.dashboard') }}" :active="request()->routeIs('market.dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
 
-                    <x-nav-link class="text-white hove:text:black" href="{{ route('market.admin.contact') }}" :active="request()->routeIs('market.admin.contact')">
+                    <x-nav-link class="text-white" href="{{ route('market.admin.contact') }}" :active="request()->routeIs('market.admin.contact')">
                         {{ __('Admin contact') }}
                     </x-nav-link>
                 </div>
@@ -157,6 +157,10 @@
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link href="{{ route('market.dashboard') }}" :active="request()->routeIs('market.dashboard')">
                 {{ __('Dashboard') }}
+            </x-responsive-nav-link>
+
+            <x-responsive-nav-link href="{{ route('market.admin.contact') }}" :active="request()->routeIs('market.admin.contact')">
+                {{ __('Admin contact') }}
             </x-responsive-nav-link>
         </div>
 

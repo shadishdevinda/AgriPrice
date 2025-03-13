@@ -110,6 +110,7 @@
                                                         onclick="window.location.href='{{ route('vegetable.edit', $vegetable->id) }}'">
                                                         <i class="fas fa-edit"></i> <span>Edit</span>
                                                     </button>
+
                                                     <!-- Delete Button -->
                                                     <button type="button"
                                                         class="btn btn-danger btn-sm d-flex align-items-center gap-1"
@@ -192,45 +193,51 @@
                     .then(data => {
                         if (data.success) {
                             // Store success message in localStorage before reloading
-                            localStorage.setItem('deleteSuccess', 'Vegetable deleted successfully!');
-
-                            // Reload the page immediately after successful deletion
-                            window.location.reload();
+                            localStorage.setItem('deleteMessage', JSON.stringify({
+                                type: 'success',
+                                message: data.message || 'Vegetable deleted successfully!'
+                            }));
                         } else {
-                            // Show error message if deletion fails
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Error',
-                                text: data.message ||
-                                    'An error occurred while deleting the vegetable.',
-                            });
+                            // Store error message in localStorage before reloading
+                            localStorage.setItem('deleteMessage', JSON.stringify({
+                                type: 'error',
+                                message: data.message || 'An error occurred while deleting the vegetable.'
+                            }));
                         }
+
+                        // Reload the page immediately after deletion attempt
+                        window.location.reload();
                     })
                     .catch(error => {
                         console.error('Error:', error);
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error',
-                            text: 'An unexpected error occurred.',
-                        });
+                        // Store unexpected error message in localStorage before reloading
+                        localStorage.setItem('deleteMessage', JSON.stringify({
+                            type: 'error',
+                            message: 'An unexpected error occurred.'
+                        }));
+
+                        // Reload the page immediately after unexpected error
+                        window.location.reload();
                     });
             }
         });
     }
 
-    // Show the delete success message after page reload
+    // Show the delete message after page reload
     document.addEventListener('DOMContentLoaded', function() {
-        const successMessage = localStorage.getItem('deleteSuccess');
-        if (successMessage) {
+        const deleteMessage = localStorage.getItem('deleteMessage');
+        if (deleteMessage) {
+            const { type, message } = JSON.parse(deleteMessage);
+
             Swal.fire({
-                icon: 'success',
-                title: 'Deleted!',
-                text: successMessage,
+                icon: type, // 'success' or 'error'
+                title: type === 'success' ? 'Deleted!' : 'Error!',
+                text: message,
                 confirmButtonText: 'Okay',
             });
 
-            // Remove the success message from localStorage after showing it
-            localStorage.removeItem('deleteSuccess');
+            // Remove the message from localStorage after showing it
+            localStorage.removeItem('deleteMessage');
         }
     });
 
