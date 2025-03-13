@@ -266,7 +266,7 @@
             </div>
 
             <!-- Navigation Links -->
-            <div class="nav-links">
+            <div class="nav-links" >
                 <!-- Home Navigation Links -->
                 <div class="dropdown">
                     <a href="{{ route('home') }}" class="dropdown-toggle">{{ __('Home') }}</a>
@@ -280,9 +280,9 @@
                 <a href="{{ route('fruits.index') }}" class="nav-link">{{ __('Fruits Prices') }}</a>
 
                 <!-- Advices Navigation Links -->
-                <div class="dropdown">
+                <div class="dropdown" >
                     <button class="dropdown-toggle">{{ __('Crops Advices') }}</button>
-                    <div class="dropdown-menu">
+                    <div class="dropdown-menu" id ="nav_bar">
                         <a href="{{ route('advices.vegetables.index') }}" class="dropdown-item">{{ __('Vegetable Advices') }}</a>
                         <a href="{{ route('advices.fruits.index') }}" class="dropdown-item">{{ __('Fruit Advices') }}</a>
                     </div>

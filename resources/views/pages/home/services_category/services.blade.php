@@ -59,7 +59,7 @@
                         </div>
                     </div>
                     <div class="img" style="background-image: url(images/services-3.jpg);">
-                        <a href="#"
+                        <a href="#nav_bar"
                             class="btn-custom d-flex align-items-center justify-content-center"><span
                                 class="fa fa-chevron-right"></span></a>
                     </div>
