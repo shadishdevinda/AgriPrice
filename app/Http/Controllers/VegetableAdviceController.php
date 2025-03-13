@@ -47,8 +47,7 @@ class VegetableAdviceController extends Controller
     public function create()
     {
         $vegetables = Vegetable::pluck('name', 'name')->all();
-        return view(
-            'pages.admin.advice.vegetable_advice.create',
+        return view('pages.admin.advice.vegetable_advice.create',
             [
                 'vegetables' => $vegetables
             ]

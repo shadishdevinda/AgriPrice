@@ -22,14 +22,14 @@ class HomeController extends Controller
     public function vegetableIndex()
     {
         $vegetables = Vegetable::all(); // Fetch all vegetables from the database
-        return view('pages.home.vegetable.index', compact('vegetables'));
+        return view('pages.home.prices.vegetable.index', compact('vegetables'));
     }
 
     // Fruit Price Index
     public function fruitIndex()
     {
         $fruits = Fruit::all(); // Fetch all fruits from the database
-        return view('pages.home.fruit.index', compact('fruits'));
+        return view('pages.home.prices.fruit.index', compact('fruits'));
     }
 
     // Vegetable Details
@@ -73,7 +73,7 @@ class HomeController extends Controller
 
         $centerhasvegetable = $query->get();
 
-        return view('pages.home.vegetable.details', compact(
+        return view('pages.home.prices.vegetable.details', compact(
             'vegetable', 'centerhasvegetable', 'dates', 'centers', 'latestDate', 'selectedDate', 'isCenterFiltered'
         ));
     }
@@ -119,7 +119,7 @@ class HomeController extends Controller
 
         $centerhasfruit = $query->get();
 
-        return view('pages.home.fruit.details', compact(
+        return view('pages.home.prices.fruit.details', compact(
             'fruit', 'centerhasfruit', 'dates', 'centers', 'latestDate', 'selectedDate', 'isCenterFiltered'
         ));
     }
